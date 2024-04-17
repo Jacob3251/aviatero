@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope&family=Noto+Serif:ital@0;1&display=swap")
+  @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  background-color: #1e1e1e;
+}
+body {
+  margin: 0;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  /* background-color: red; */
+}
