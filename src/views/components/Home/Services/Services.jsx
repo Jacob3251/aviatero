@@ -24,7 +24,8 @@ function Services() {
     },
   ];
   return (
-    <div className="bg-[#1E1E1E] grid grid-cols-1 lg:grid-cols-3 place-content-center gap-y-[80px] lg:gap-y-0  md:px-0 py-[120px] gap-x-0 lg:gap-x-[120px] xl:gap-x-[197px] h-auto lg:h-[754px] w-full">
+    // lg:h-[754px]
+    <div className="bg-[#1E1E1E] grid grid-cols-1 lg:grid-cols-3 place-content-center gap-y-[80px] lg:gap-y-0  md:px-0 py-[120px] gap-x-0 lg:gap-x-[120px] xl:gap-x-[20px] h-auto lg:h-[754px]  w-full">
       {data.map((item) => (
         <IndividualService data={item} key={item.id}></IndividualService>
       ))}

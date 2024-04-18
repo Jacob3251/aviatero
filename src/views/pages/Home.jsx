@@ -4,58 +4,34 @@ import LandingLayout from "../Layouts/LandingLayout";
 import herobg from "../../assets/images/home/bg.png";
 import Services from "../components/Home/Services/Services";
 import Hero from "../components/Home/Hero/Hero";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import Address from "../components/Home/Address/Address";
+
+import Footer from "../components/Footer/Footer";
 function Home() {
   return (
     <LandingLayout>
       <Hero></Hero>
       <Services></Services>
-      <div className="bg-root">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam numquam
-        optio blanditiis? Minus autem aliquid reiciendis dolore nam voluptatibus
-        cupiditate omnis? Amet velit praesentium laudantium quae accusamus
-        excepturi, tempora quam earum veniam a dolor, cupiditate minima enim
-        quia modi omnis recusandae ea iste facilis deleniti pariatur explicabo
-        aliquam! Doloribus placeat iusto modi beatae, id facere delectus eveniet
-        rem laudantium iure, illum quod minima ipsam cumque? Quisquam voluptates
-        sequi quo voluptatibus incidunt tempore rerum laboriosam libero. Enim ex
-        rerum ipsa voluptas sit eius. Et mollitia veniam adipisci ipsam illum
-        beatae voluptatibus. Quisquam sunt animi voluptatum accusantium, libero
-        nisi cupiditate vitae ipsum beatae veritatis laudantium pariatur est
-        corporis incidunt saepe sed blanditiis culpa sequi molestiae dignissimos
-        ullam dolores consequatur eveniet! Perferendis earum voluptate quasi
-        rerum, tempora quia neque et ex asperiores magnam quisquam minus ut quod
-        atque voluptatem assumenda! Veritatis explicabo recusandae esse quas
-        magni eos repellendus necessitatibus similique. Iusto et incidunt
-        aliquam placeat. Dolores reprehenderit error repudiandae corrupti in
-        adipisci aliquid itaque laboriosam deserunt sapiente tempore
-        voluptatibus quasi impedit molestiae facilis minus, earum odit
-        blanditiis ex cumque nesciunt unde assumenda, id modi! Voluptas amet
-        placeat eum aut magnam voluptatibus culpa rerum consequatur est odit.
-        Ipsum cupiditate fuga laudantium ex, velit earum! Odit provident
-        blanditiis quisquam veritatis, delectus beatae ut tenetur, magni aut
-        eaque perspiciatis suscipit, adipisci sequi. Rerum perspiciatis
-        quibusdam assumenda deleniti facere aspernatur cum officiis
-        reprehenderit, ex iusto obcaecati, maiores optio blanditiis! Mollitia
-        eos asperiores molestias repellat repellendus aliquid quasi a minima
-        vitae blanditiis, voluptas deleniti rerum, officiis veniam, est beatae
-        obcaecati earum omnis hic minus. Nobis fugit alias quos dolorem at
-        provident vitae mollitia consectetur optio fugiat illo porro quidem
-        voluptatem ad, eos vero ullam quas assumenda modi. Repellat quisquam
-        corporis exercitationem officia? Nostrum iste praesentium totam
-        laudantium exercitationem, facere voluptatum dolores. Ea maiores minima
-        in quis earum eum id placeat facilis, molestias dignissimos architecto
-        nemo unde aperiam dolore doloremque repudiandae quas sit pariatur
-        adipisci saepe praesentium doloribus corporis. Placeat cupiditate ut
-        eaque consectetur corrupti magnam delectus maiores, cum laboriosam,
-        alias ab reiciendis voluptate saepe laudantium amet, quaerat excepturi.
-        Omnis porro minus voluptatum deleniti et ratione exercitationem vitae,
-        voluptatibus odio pariatur molestiae expedita saepe laborum delectus
-        illum aliquid. Excepturi unde enim sed, voluptates vero illum eaque,
-        dolorem in eius debitis aperiam sint incidunt quae, dolore obcaecati.
-        Cumque, laboriosam perferendis soluta eligendi molestiae officia, id
-        esse quas at est a ullam repellat excepturi! Quaerat assumenda vitae
-        quia labore maiores facere.
+      <Address></Address>
+      {/* contact cta */}
+      <div className="px-[176px] my-[200px]">
+        <div className="flex flex-col justify-start items-start cta-border px-[113px] py-[78px] ">
+          <div className="text-primary text-[36px] font-medium font-noto mb-[35px]">
+            Take flight with Aviate Abroad.
+          </div>
+          <div className="flex justify-between w-full ">
+            <div className="font-monrope text-[24px] font-semibold text-white">
+              Start your journey now!
+            </div>
+            <div className="cursor-pointer font-monrope text-[24px] font-semibold text-primary flex justify-center items-center">
+              <span>Contact Us </span>
+              <MdKeyboardArrowRight className="text-[36px]" />
+            </div>
+          </div>
+        </div>
       </div>
+      <Footer></Footer>
     </LandingLayout>
   );
 }
