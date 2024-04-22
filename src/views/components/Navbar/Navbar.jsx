@@ -9,9 +9,9 @@ function Navbar() {
   return (
     <>
       <div
-        className={`py-[20px] flex justify-between items-center fixed top-0 min-w-[1440px]  bg-transparent z-30`}
+        className={`py-[20px] flex justify-between items-center fixed top-0 w-full max-w-[1440px]  bg-transparent z-30`}
       >
-        <div className="h-[142px] w-[195px] pl-[176px]">
+        <div className="h-[50px] md:h-[100px] xl:h-[142px] w-[70px] md:w-[120px] xl:w-[195px] pl-[48px] xl:pl-[176px]">
           <img className="w-full h-full" src={navlogo} alt="navigation_logo" />
         </div>
         <div
@@ -19,7 +19,7 @@ function Navbar() {
             setShowNavDrawer(true);
             console.log("clicked");
           }}
-          className="text-[50px] text-secondary cursor-pointer pr-[176px]"
+          className="text-[30px] md:text-[40px] xl:text-[50px] text-secondary cursor-pointer pr-[48px] xl:pr-[176px]"
         >
           <GiHamburgerMenu />
         </div>

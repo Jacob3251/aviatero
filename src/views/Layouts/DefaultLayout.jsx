@@ -16,15 +16,15 @@ function DefaultLayout({ children }) {
       <div className="bg-[#1e1e1e] absolute w-full top-0 ">
         <Navbar></Navbar>
       </div>
-      <div className="absolute top-[183px] w-full">
+      <div className="absolute top-[130px] xl:top-[183px] w-full">
         {children}
         <Footer></Footer>
       </div>
       {showNavDrawer && (
-        <div className=" h-[100vh] absolute right-0 w-full overflow-hidden z-50 ">
-          <div className="w-full flex justify-end relative h-[100vh] bg-root bg-opacity-80 z-50">
+        <div className=" h-full fixed top-0 bottom-0 right-0 w-full overflow-hidden z-50 ">
+          <div className="w-full flex justify-end relative h-full bg-root bg-opacity-80 z-50">
             <div
-              className={`w-[20%] p-[100px] h-[100vh] animate__animated animate__slideInRight bg-[#151511]`}
+              className={`w-[60%] sm:w-[50%] md:w-[35%] xl:w-[20%] p-[20px] xl:p-[100px] h-[100vh] animate__animated animate__slideInRight bg-[#151511]`}
             >
               <div className=" w-full flex flex-col justify-end mb-[80px]">
                 <div className="flex justify-end">
@@ -32,7 +32,7 @@ function DefaultLayout({ children }) {
                     onClick={() => {
                       setShowNavDrawer(false);
                     }}
-                    className="text-[45px] text-white cursor-pointer"
+                    className="text-[30px]  md:text-[45px] text-white cursor-pointer"
                   >
                     <IoClose />
                   </div>
@@ -50,7 +50,7 @@ function DefaultLayout({ children }) {
                         color: isActive ? "#D9B658" : "#FAFAFA",
                       };
                     }}
-                    className="no-underline list-none text-[36px] font-noto mb-[30px]"
+                    className="no-underline list-none text-[24px] xl:text-[36px] font-noto mb-[20px] xl:mb-[30px]"
                   >
                     Home
                   </NavLink>
@@ -64,7 +64,7 @@ function DefaultLayout({ children }) {
                         color: isActive ? "#D9B658" : "#FAFAFA",
                       };
                     }}
-                    className=" no-underline list-none text-[36px] font-noto mb-[30px]"
+                    className=" no-underline list-none text-[24px] xl:text-[36px] font-noto mb-[20px] xl:mb-[30px]"
                   >
                     Our Services
                   </NavLink>
@@ -78,7 +78,7 @@ function DefaultLayout({ children }) {
                         color: isActive ? "#D9B658" : "#FAFAFA",
                       };
                     }}
-                    className=" no-underline list-none text-[36px] font-noto mb-[30px]"
+                    className=" no-underline list-none text-[24px] xl:text-[36px] font-noto mb-[20px] xl:mb-[30px]"
                   >
                     The Team
                   </NavLink>
@@ -92,7 +92,7 @@ function DefaultLayout({ children }) {
                         color: isActive ? "#D9B658" : "#FAFAFA",
                       };
                     }}
-                    className=" no-underline list-none text-[36px] font-noto mb-[30px]"
+                    className=" no-underline list-none text-[24px] xl:text-[36px] font-noto mb-[20px] xl:mb-[30px]"
                   >
                     Partners
                   </NavLink>
@@ -106,7 +106,7 @@ function DefaultLayout({ children }) {
                         color: isActive ? "#D9B658" : "#FAFAFA",
                       };
                     }}
-                    className=" no-underline list-none text-[36px] font-noto mb-[30px]"
+                    className=" no-underline list-none text-[24px] xl:text-[36px] font-noto mb-[20px] xl:mb-[30px]"
                   >
                     Blogs
                   </NavLink>
@@ -120,7 +120,7 @@ function DefaultLayout({ children }) {
                         color: isActive ? "#D9B658" : "#FAFAFA",
                       };
                     }}
-                    className=" no-underline list-none text-[36px] font-noto mb-[30px]"
+                    className=" no-underline list-none text-[24px] xl:text-[36px] font-noto mb-[20px] xl:mb-[30px]"
                   >
                     Testimonials
                   </NavLink>
@@ -134,11 +134,11 @@ function DefaultLayout({ children }) {
                         color: isActive ? "#D9B658" : "#FAFAFA",
                       };
                     }}
-                    className=" no-underline list-none text-[36px] font-noto mb-[30px]"
+                    className=" no-underline list-none text-[24px] xl:text-[36px] font-noto mb-[20px] xl:mb-[30px]"
                   >
                     Contact
                   </NavLink>
-                  <li className=" text-secondary space-x-[40px] flex  items-center justify-start mt-[150px] text-[20px]">
+                  <li className=" text-secondary space-x-[40px] flex  items-center justify-start mt-[120px] text-[20px]">
                     <FaFacebookF />
                     <FaYoutube />
                     <FaLinkedinIn />

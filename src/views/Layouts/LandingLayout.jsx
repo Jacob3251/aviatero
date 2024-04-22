@@ -18,7 +18,7 @@ function LandingLayout({ children }) {
         <Footer></Footer>
       </div>
       {showNavDrawer && (
-        <div className="h-[100vh]  w-full  z-50 absolute top-0 left-0 ">
+        <div className="h-full fixed  w-full  z-50  top-0 left-0 ">
           <div className="w-full h-full flex justify-end relative bg-root bg-opacity-80 ">
             <div
               className={`w-[20%] p-[100px] h-[100vh] animate__animated animate__slideInRight bg-[#151511]`}

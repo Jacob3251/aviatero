@@ -57,13 +57,13 @@ function Team() {
   ];
   return (
     <DefaultLayout>
-      <div className="px-[176px]">
+      <div className="px-[50px] sm:px-[48px] lg:px-[150px] xl:px-[176px]">
         {/* heading part */}
-        <div className="mt-[150px] mb-[120px] flex flex-col justify-center items-center">
-          <div className="text-primary font-noto text-[64px] font-medium uppercase mb-[60px]">
+        <div className="md:mt-[30px] lg:mt-[150px] mb-[50px] lg:mb-[120px] flex flex-col justify-center items-center">
+          <div className="text-primary font-noto text-[34px] sm:text-[40px] lg:text-[64px] font-medium uppercase mb-[30px] lg:mb-[60px]">
             THE TEAM
           </div>
-          <div className="w-[80%] font-monrope text-[24px] text-secondary leading-[35px] font-extralight">
+          <div className="w-[80%] font-monrope text-[14px] sm:text-[18px] lg:text-[24px] text-secondary leading-6 text-center lg:text-left lg:leading-[35px] font-extralight">
             Experts in international education and immigration services, we're
             here to make your travel, study, or migration experience seamless.
             From visas to cultural adaptation, we've got you covered. Let us
@@ -71,18 +71,21 @@ function Team() {
           </div>
         </div>
         {/* Members grid */}
-        <div className="grid grid-cols-3 gap-x-[34px] gap-y-[60px] mb-[120px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[34px] gap-y-[60px] mb-[120px] ">
           {members.map((item) => (
-            <div key={item.id} className=" cta-border p-[32px]">
-              <div className="h-[328px] w-full mb-[32px]">
+            <div
+              key={item.id}
+              className=" cta-border px-[20px] py-[20px] sm:p-[20px] xl:p-[32px]"
+            >
+              <div className="w-full mb-[32px]">
                 <img
                   src={item.imageLink}
                   className="w-full h-full object-contain "
                   alt=""
                 />
               </div>
-              <div>
-                <div className="font-noto text-primary text-[32px] font-medium mb-[25px]">
+              <div className="">
+                <div className="font-noto  text-primary text-[32px] font-medium mb-[25px]">
                   {item.name}
                 </div>
                 <div className="font-noto text-secondary text-[16px]">
