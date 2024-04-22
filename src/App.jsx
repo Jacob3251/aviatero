@@ -1,7 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./views/pages/Home";
 import Services from "./views/pages/Services";
+import Contact from "./views/pages/Contact";
 import Testimonials from "./views/pages/Testimonials";
+import Team from "./views/pages/Team";
 function App() {
   const router = createBrowserRouter([
     {
@@ -12,13 +14,18 @@ function App() {
       path: "/services",
       element: <Services></Services>,
     },
+
+    {
+      path: "/contact-us",
+      element: <Contact></Contact>,
+    },
     {
       path: "/testimonials",
       element: <Testimonials></Testimonials>,
     },
     {
-      path: "/contact-us",
-      element: <div>Hello world!</div>,
+      path: "/teams",
+      element: <Team></Team>,
     },
   ]);
   return <RouterProvider router={router} />;

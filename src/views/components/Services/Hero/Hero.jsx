@@ -2,7 +2,7 @@ import { FaFacebookF, FaLinkedinIn, FaYoutube } from "react-icons/fa6";
 
 function Hero() {
   return (
-    <div className="w-full h-[894px] bg-blue-200">
+    <div className="w-full h-[894px] bg-[#1E1E1E]">
       <div className="w-full h-full relative">
         <div className="absolute right-[173px] top-[94px]">
           <div className="text-secondary text-[20px] space-y-[40px] flex flex-col items-end justify-end">
