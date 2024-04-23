@@ -27,37 +27,34 @@ function Services() {
   ];
   return (
     <div className="w-full  text-secondary  mb-[150px]">
-      <div className="text-center font-noto font-medium text-[36px] 2xl:text-[64px] text-primary">
+      <div className="text-center font-noto font-medium text-[36px] sm:text-[48px] 2xl:text-[64px] text-primary">
         Our Services
       </div>
-      <div className="my-[36px] 2xl:my-[150px] px-[40px] 2xl:px-[176px] bg-red-600">
+      <div className="my-[36px] 2xl:my-[150px] px-[40px] 2xl:px-[176px] ">
         {data.map((item, index) => (
-          <div
-            key={item.id}
-            className={`flex justify-center items-center w-full h-auto  mb=-[70px] xl:mb-[150px] ${
-              index % 2 === 0
-                ? " flex-col md:flex-row "
-                : " flex-col md:flex-row-reverse "
-            }`}
-          >
+          <div key={item.id} className="mb-[30px] xl:mb-[150px]">
             <div
-              className={`h-full min-h-[300px] max-h-[530px] w-full ${
-                index % 2 === 0 ? "md:mr-[140px]" : "md:ml-[140px]"
-              }`}
+              className={`grid grid-cols-1  w-full  md:grid-cols-2 md:gap-x-[20px] lg:gap-x-[50px] xl:gap-x-[144px] place-content-center`}
             >
-              <img
-                className="w-full h-full object-cover"
-                src={item.image}
-                alt=""
-              />
-            </div>
-            <div className="w-full h-full md:overflow-hidden">
-              <h1 className="text-[20px] md:text-[48px] text-primary font-noto mb-[20px] md:mb-[45px]">
-                {item.title}
-              </h1>
-              <p className="font-monrope text-[14px] md:text-[24px] text-secondary leading-[25px] md:leading-[35px]">
-                {item.details}
-              </p>
+              <div
+                className={`h-full  w-full  ${
+                  index % 2 == 1 && "md:order-last"
+                }`}
+              >
+                <img
+                  className="w-full h-full object-cover"
+                  src={item.image}
+                  alt=""
+                />
+              </div>
+              <div className="w-full h-full ">
+                <h1 className="text-[20px] sm:text-[32px] md:text-[36px] xl:text-[48px] text-primary font-noto mb-[20px] sm:mb-[20px] md:mb-[30px] xl:mb-[45px]">
+                  {item.title}
+                </h1>
+                <p className="font-monrope text-[14px] sm:text-[24px] md:sm:text-[24px] xl:sm:text-[24px] text-secondary leading-[25px] sm:leading-[35px] md:sm:leading-[35px] xl:sm:leading-[35px]">
+                  {item.details}
+                </p>
+              </div>
             </div>
           </div>
         ))}

@@ -9,7 +9,7 @@ function Address() {
           <div className="text-primary font-bold text-[36px] font-noto">
             Uk Office
           </div>
-          <div className="w-full">
+          <div className="w-full mt-5">
             <div className="text-primary font-medium text-[24px] mb-[35px]">
               Address
             </div>
@@ -19,7 +19,7 @@ function Address() {
               London <br /> WC1X 0AB <br /> United Kingdom
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full mt-5">
             <div className="text-primary font-medium text-[24px] mb-[35px]">
               Contact
             </div>
@@ -36,7 +36,7 @@ function Address() {
           <div className="text-primary font-bold text-[36px] font-noto">
             Bangladesh Office
           </div>
-          <div>
+          <div className="mt-5">
             <div className="text-primary font-medium text-[24px] mb-[35px]">
               Branch 1
             </div>
@@ -48,7 +48,7 @@ function Address() {
               <BsFillTelephoneFill className="text-primary" /> +8801968461325
             </h4>
           </div>
-          <div>
+          <div className="mt-5">
             <div className="text-primary font-medium text-[24px] mb-[35px]">
               Branch 2
             </div>

@@ -1,11 +1,16 @@
+import ExpertiseCarousel from "./ExpertiseCarousel/ExpertiseCarousel";
+
 function Expertise() {
   return (
-    <div className="px-[176px] mb-[250px]">
-      <div className="text-center text-[64px] font-noto font-medium text-primary mb-[150px]">
+    <div className="px-[40px] xl:px-[176px] mb-[250px]">
+      <div className="text-center text-[36px] xl:text-[64px] font-noto font-bold text-primary mb-[80px] xl:mb-[150px]">
         Why Choose Aviate Abroad?
       </div>
-      <div className="grid grid-cols-2 gap-[32px] place-content-center">
-        <div className=" cta-border p-[80px] text-left">
+      <div className="w-[95%] mx-auto lg:hidden">
+        <ExpertiseCarousel></ExpertiseCarousel>
+      </div>
+      <div className="hidden lg:grid grid-cols-2 gap-[32px] place-content-center  ">
+        <div className=" cta-border p-[40px] xl:p-[80px] text-left">
           <div className="text-[36px] text-primary font-medium font-noto mb-[45px]">
             Expert Guidance:
           </div>
@@ -16,7 +21,7 @@ function Expertise() {
             timely assistance throughout the visa or migration process.
           </div>
         </div>
-        <div className="cta-border p-[80px] text-left">
+        <div className="cta-border p-[40px] xl:p-[80px] text-left">
           <div className="text-[36px] text-primary font-medium font-noto mb-[45px]">
             Reliability and Trust:
           </div>
@@ -27,7 +32,7 @@ function Expertise() {
             fulfill your immigration goals.
           </div>
         </div>
-        <div className=" cta-border p-[80px] text-left">
+        <div className=" cta-border p-[40px] xl:p-[80px] text-left">
           <div className="text-[36px] text-primary font-medium font-noto mb-[45px]">
             Comprehensive <br />
             Support:
@@ -39,7 +44,7 @@ function Expertise() {
             focus on embracing new opportunities with confidence.
           </div>
         </div>
-        <div className="cta-border p-[80px] text-left">
+        <div className="cta-border p-[40px] xl:p-[80px] text-left">
           <div className="text-[36px] text-primary font-medium font-noto mb-[45px]">
             Customer-Centric Approach:
           </div>

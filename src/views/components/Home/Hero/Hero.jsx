@@ -5,7 +5,7 @@ import { FaYoutube } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
 function Hero() {
   return (
-    <div className="relative w-full h-[1024px] bg-red-500">
+    <div className="relative w-full h-[1024px] ">
       {/* hero */}
       <div className="w-full  max-w-[1440px] h-[1024px] absolute top-0 z-0">
         <div className="w-full h-[1024px]">

@@ -7,7 +7,6 @@ import Hero from "../components/Home/Hero/Hero";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import Address from "../components/Home/Address/Address";
 
-import Footer from "../components/Footer/Footer";
 function Home() {
   return (
     <LandingLayout>

@@ -1,0 +1,29 @@
+.expertise .swiper {
+  width: 100%;
+  height: 100%;
+}
+.expertise .swiper-wrapper {
+  display: flex;
+  align-items: center;
+
+  /* justify-content: center; */
+}
+.expertise .swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  width: 54vw;
+  /* height: 600px; */
+  height: 100%;
+  max-height: 700px;
+  min-height: 500px;
+  border: 1px solid #d9b75854;
+  padding: 40px;
+}
+
+.expertise .swiper {
+  margin-left: auto;
+  margin-right: auto;
+}
+.expertise .swiper-pagination-bullet-active {
+  background-color: #d9b658 !important;
+}
