@@ -15,18 +15,18 @@ function Home() {
       <Services></Services>
       <Address></Address>
       {/* contact cta */}
-      <div className="px-[176px] my-[200px]">
-        <div className="flex flex-col justify-start items-start cta-border px-[113px] py-[78px] ">
-          <div className="text-primary text-[36px] font-medium font-noto mb-[35px]">
+      <div className="px-[40px] xl:px-[176px] my-[200px]">
+        <div className="flex flex-col justify-center md:justify-start items-center md:items-start cta-border px-[34px] py-[45px] xl:px-[113px] xl:py-[78px] ">
+          <div className="text-primary text-center xl:text-left text-[36px] font-medium font-noto mb-[35px]">
             Take flight with Aviate Abroad.
           </div>
-          <div className="flex justify-between w-full ">
-            <div className="font-monrope text-[24px] font-semibold text-white">
+          <div className="flex flex-col space-y-[50px] xl:space-y-0 md:flex-row justify-between w-full ">
+            <div className="font-monrope text-center xl:text-left text-[18px] xl:text-[24px] font-semibold text-white">
               Start your journey now!
             </div>
-            <div className="cursor-pointer font-monrope text-[24px] font-semibold text-primary flex justify-center items-center">
+            <div className="cursor-pointer font-monrope text-[18px] xl:text-[24px] font-semibold text-primary flex justify-center items-center">
               <span>Contact Us </span>
-              <MdKeyboardArrowRight className="text-[36px]" />
+              <MdKeyboardArrowRight className="text-[24px] xl:text-[36px]" />
             </div>
           </div>
         </div>

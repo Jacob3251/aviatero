@@ -8,8 +8,8 @@ function Services() {
     <DefaultLayout>
       <Hero></Hero>
       <ServicesSection></ServicesSection>
-      <Expertise></Expertise>
-      <ContactForm></ContactForm>
+      {/* <Expertise></Expertise>
+      <ContactForm></ContactForm> */}
     </DefaultLayout>
   );
 }

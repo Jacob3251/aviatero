@@ -9,7 +9,7 @@ import Footer from "../components/Footer/Footer";
 function LandingLayout({ children }) {
   const { showNavDrawer, setShowNavDrawer } = useContext(AppContext);
   return (
-    <div className="w-full h-full max-h-screen max-w-[1440px] mx-auto relative">
+    <div className="w-full h-full max-h-screen max-w-[1440px] mx-auto relative ">
       <div className="absolute w-full top-0 ">
         <Navbar></Navbar>
       </div>
