@@ -16,7 +16,7 @@ function DefaultLayout({ children }) {
       <div className="bg-[#1e1e1e] absolute w-full top-0 ">
         <Navbar></Navbar>
       </div>
-      <div className="absolute top-[130px] xl:top-[183px] w-full">
+      <div className="absolute top-[90px] md:top-[120px] w-full">
         {children}
         <Footer></Footer>
       </div>
