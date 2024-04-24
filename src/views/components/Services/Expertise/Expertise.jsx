@@ -3,8 +3,9 @@ import ExpertiseCarousel from "./ExpertiseCarousel/ExpertiseCarousel";
 function Expertise() {
   return (
     <div className="px-[40px] xl:px-[176px] mb-[250px]">
-      <div className="text-center text-[36px] xl:text-[64px] font-noto font-bold text-primary mb-[80px] xl:mb-[150px]">
-        Why Choose Aviate Abroad?
+      <div className="text-center text-[24px] md:text-[32px] leading-[36px] xl:text-[64px] font-noto font-bold text-primary mb-[40px] xl:mb-[150px]">
+        Why Choose <br className="sm:hidden" />
+        Aviate Abroad?
       </div>
       <div className="w-[95%] mx-auto lg:hidden">
         <ExpertiseCarousel></ExpertiseCarousel>

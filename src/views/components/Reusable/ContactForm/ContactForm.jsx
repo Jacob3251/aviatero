@@ -4,10 +4,10 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 function ContactForm() {
   return (
     <div className="px-[40px] xl:px-[176px] mb-[140px]">
-      <div className="flex flex-col md:flex-row justify-start items-start md:space-x-10">
+      <div className="flex flex-col md:flex-row justify-start items-start md:space-x-20">
         {/* contact info */}
         <div className="w-full ">
-          <div className="text-center mb-[50px] font-noto font-medium text-[36px] sm:text-[48px] 2xl:text-[64px] text-primary">
+          <div className="text-center md:text-left mb-[50px] font-noto font-medium text-[36px] sm:text-[48px] 2xl:text-[64px] text-primary">
             Contact Us
           </div>
           <div className="text-secondary font-monrope text-[18px] xl:text-[24px] mb-[60px] xl:mb-[124px] font-medium">
