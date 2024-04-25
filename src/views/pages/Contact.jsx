@@ -5,7 +5,7 @@ import ContactForm from "../components/Reusable/ContactForm/ContactForm";
 function Contact() {
   return (
     <DefaultLayout>
-      <div className="my-[120px]">
+      <div className="my-[50px] xl:my-[120px]">
         <ContactForm></ContactForm>
       </div>
       <Address></Address>

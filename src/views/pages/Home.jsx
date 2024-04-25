@@ -6,8 +6,10 @@ import Services from "../components/Home/Services/Services";
 import Hero from "../components/Home/Hero/Hero";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import Address from "../components/Home/Address/Address";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
   return (
     <LandingLayout>
       <Hero></Hero>
@@ -23,7 +25,10 @@ function Home() {
             <div className="font-monrope text-center xl:text-left text-[18px] xl:text-[24px] font-semibold text-white">
               Start your journey now!
             </div>
-            <div className="cursor-pointer font-monrope text-[18px] xl:text-[24px] font-semibold text-primary flex justify-center items-center">
+            <div
+              onClick={() => navigate("/contact-us")}
+              className="cursor-pointer font-monrope text-[18px] xl:text-[24px] font-semibold text-primary flex justify-center items-center"
+            >
               <span>Contact Us </span>
               <MdKeyboardArrowRight className="text-[24px] xl:text-[36px]" />
             </div>

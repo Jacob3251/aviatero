@@ -39,7 +39,7 @@ function IndividualService({ data }) {
         className={`${subMenuTrigger === false ? "wrapper" : "wrapper open"} `}
       >
         <div
-          className={`expandable space-y-[20px] brightness-125 text-left rounded-lg mt-8 ${
+          className={`expandable space-y-[20px]  text-left rounded-lg mt-8 ${
             data.title === "Visit" && "w-[170px] px-10 "
           } ${data.title === "Study" && "w-[200px] px-10 "} ${
             data.title === "Migrate" && "w-[300px] px-10 "
