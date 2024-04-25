@@ -2,8 +2,8 @@ import { TiLocation } from "react-icons/ti";
 import { BsFillTelephoneFill } from "react-icons/bs";
 function Address() {
   return (
-    <div className="px-[40px] xl:px-[176px] ">
-      <div className="w-full xl:w-[80%] flex flex-col md:flex-row justify-center items-center space-y-[100px] md:space-y-0 md:items-start xl:space-x-[150px]   overflow-hidden   mx-auto">
+    <div className="px-[40px] xl:px-[176px]">
+      <div className="w-full sm:w-[70%] xl:w-[80%] flex flex-col md:flex-row justify-center items-center space-y-[100px] md:space-y-0 md:items-start xl:space-x-[150px]   overflow-hidden   mx-auto">
         {/* uk office */}
         <div className="w-full  flex flex-col  items-center md:items-start px-5 xl:px-0 ">
           <div className="text-primary font-bold text-left text-[24px] sm:text-[28px] uppercase md:text-[36px] font-noto">

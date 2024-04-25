@@ -8,12 +8,13 @@ function Hero() {
     <div className="relative w-full h-[1024px] ">
       {/* hero */}
       <div className="w-full  max-w-[1440px] h-[1024px] absolute top-0 z-0">
-        <div className="w-full h-[1024px]">
+        <div className="w-full h-[1024px] relative">
           <img
             className="w-full h-full object-cover md:object-fill"
             src={herobg}
             alt=""
           />
+          {/* <div className="h-[150px] w-full absolute top-[95%] backgoundMerge z-50"></div> */}
         </div>
       </div>
       <div className="hidden sm:block absolute top-[307px] left-0 right-0 z-[10]  w-full">

@@ -9,7 +9,7 @@ export default {
       colors: {
         primary: "#D9B658",
         secondary: "#FAFAFA",
-        root: "#1E1E1E",
+        root: "#151511",
       },
       fontFamily: {
         noto: ["Noto Serif", "serif"],

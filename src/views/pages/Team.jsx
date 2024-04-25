@@ -77,7 +77,7 @@ function Team() {
               key={item.id}
               className=" cta-border px-[20px] py-[20px] sm:p-[20px] xl:p-[32px]"
             >
-              <div className="w-full mb-[32px]">
+              <div className="w-full mb-3 md:mb-[28px] xl:mb-[32px]">
                 <img
                   src={item.imageLink}
                   className="w-full h-full object-contain "
@@ -85,10 +85,10 @@ function Team() {
                 />
               </div>
               <div className="">
-                <div className="font-noto  text-primary text-[32px] font-medium mb-[25px]">
+                <div className="font-noto  text-primary text-[20px] lg:text-[24px] xl:text-[32px] font-medium mb-2 sm:mb-5 xl:mb-[25px]">
                   {item.name}
                 </div>
-                <div className="font-noto text-secondary text-[16px]">
+                <div className="font-noto text-secondary text-[14px] md:text-[16px]">
                   {item.position}
                 </div>
               </div>
