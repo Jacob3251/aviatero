@@ -15,16 +15,16 @@ function App() {
       path: "/services",
       element: <Services></Services>,
     },
-    {
-      path: "/partners",
-      element: (
-        <div className=" w-[80%] mx-auto   h-screen flex justify-center items-center">
-          <div className="text-red-500 font-monrope text-[48px] animate__animated animate__infinite	infinite animate__pulse">
-            PAGE IN DEVELOPMENT
-          </div>
-        </div>
-      ),
-    },
+    // {
+    //   path: "/partners",
+    //   element: (
+    //     <div className=" w-[80%] mx-auto   h-screen flex justify-center items-center">
+    //       <div className="text-red-500 font-monrope text-[48px] animate__animated animate__infinite	infinite animate__pulse">
+    //         PAGE IN DEVELOPMENT
+    //       </div>
+    //     </div>
+    //   ),
+    // },
     {
       path: "/blogs",
       element: (

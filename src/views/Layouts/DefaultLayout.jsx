@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../utils/contexts/AppContext";
 import "animate.css";
 import { IoClose } from "react-icons/io5";
@@ -82,7 +82,7 @@ function DefaultLayout({ children }) {
                   >
                     The Team
                   </NavLink>
-                  <NavLink
+                  {/* <NavLink
                     to="/partners"
                     onClick={() => {
                       setShowNavDrawer(false);
@@ -95,7 +95,7 @@ function DefaultLayout({ children }) {
                     className=" no-underline list-none text-[24px] 2xl:text-[36px] font-noto mb-[18px] md:mb-[20px] xl:mb-[30px]"
                   >
                     Partners
-                  </NavLink>
+                  </NavLink> */}
                   <NavLink
                     to="/blogs"
                     onClick={() => {

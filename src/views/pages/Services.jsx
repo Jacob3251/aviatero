@@ -1,3 +1,4 @@
+import ScrollToTop from "../../utils/Other/ScrollToTop";
 import DefaultLayout from "../Layouts/DefaultLayout";
 import ContactForm from "../components/Reusable/ContactForm/ContactForm";
 import Expertise from "../components/Services/Expertise/Expertise";
@@ -6,6 +7,7 @@ import ServicesSection from "../components/Services/Services/Services";
 function Services() {
   return (
     <DefaultLayout>
+      <ScrollToTop />
       <Hero></Hero>
       <ServicesSection></ServicesSection>
       <Expertise></Expertise>

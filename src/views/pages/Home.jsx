@@ -7,11 +7,13 @@ import Hero from "../components/Home/Hero/Hero";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import Address from "../components/Home/Address/Address";
 import { useNavigate } from "react-router-dom";
+import ScrollToTop from "../../utils/Other/ScrollToTop";
 
 function Home() {
   const navigate = useNavigate();
   return (
     <LandingLayout>
+      <ScrollToTop />
       <Hero></Hero>
       <Services></Services>
       <Address></Address>

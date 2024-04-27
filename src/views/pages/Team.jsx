@@ -4,6 +4,7 @@ import image2 from "../../assets/images/Teams/2.png";
 import image3 from "../../assets/images/Teams/3.png";
 import image4 from "../../assets/images/Teams/4.png";
 import image5 from "../../assets/images/Teams/5.png";
+import ScrollToTop from "../../utils/Other/ScrollToTop";
 function Team() {
   const members = [
     {
@@ -57,6 +58,7 @@ function Team() {
   ];
   return (
     <DefaultLayout>
+      <ScrollToTop />
       <div className="px-[50px] sm:px-[48px] lg:px-[150px] xl:px-[176px]">
         {/* heading part */}
         <div className="md:mt-[30px] lg:mt-[150px] mb-[50px] lg:mb-[120px] flex flex-col justify-center items-center">
