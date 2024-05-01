@@ -16,6 +16,10 @@ body {
   border: 1px solid #d9b75854;
 }
 
+.subMenuAnimation {
+  --animate-duration: 0.4s;
+}
+
 .backgoundMerge {
   background: linear-gradient(transparent, #050d0d);
   /* filter: blur(2000px); */
@@ -37,6 +41,7 @@ body {
   grid-template-rows: 1fr;
 }
 
+/* Landing media query */
 .hero-bg {
   /* max-height: 100vh; */
   height: 100vh;
@@ -62,3 +67,5 @@ body {
     height: 1024px;
   }
 }
+
+/* Auth Media query */

@@ -9,7 +9,7 @@ function Hero() {
       {/* hero */}
       <div className="w-full  max-w-[1440px]  hero-bg absolute top-0 z-0">
         <div className="w-full h-full">
-          <img className="w-full h-full object-fill" src={herobg} alt="" />
+          <img className="w-full h-full object-cover" src={herobg} alt="" />
           <div className="h-[200px] w-full absolute top-[85%] z-50 backgroundMerge"></div>
         </div>
       </div>
