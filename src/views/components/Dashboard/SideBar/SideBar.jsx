@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
-import { RiPagesLine } from "react-icons/ri";
+import { RiPagesLine, RiUserStarLine } from "react-icons/ri";
 import "animate.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
-import { MdOutlineMail } from "react-icons/md";
-import { IoSettingsOutline } from "react-icons/io5";
+import { MdLeaderboard, MdOutlineMail } from "react-icons/md";
+import {
+  IoKeyOutline,
+  IoNotificationsOutline,
+  IoSettingsOutline,
+} from "react-icons/io5";
+import { FaKey } from "react-icons/fa6";
+import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
+import { removeFromLocale } from "../../../../utils/helper";
 function SideBar() {
   const [open, setOpen] = useState(false);
   const [subMenuItem, setSubMenuItem] = useState("");
@@ -104,7 +111,7 @@ function SideBar() {
                 </div>
               )}
             </div>
-            {/* expandable design */}
+            {/* expandable design clients */}
             <div className={`${!open && "w-full"}`}>
               {!open ? (
                 <div className="w-full flex flex-col justify-start items-start ">
@@ -150,16 +157,6 @@ function SideBar() {
                   {subMenuItem === "clients" && (
                     <div className="flex flex-col  items-start mt-3 pl-10 animate__animated subMenuAnimation animate__fadeInDown">
                       <div
-                        onClick={() => navigate("/dashboard/clients/addclient")}
-                        className={`font-monrope text-[18px] py-2 hover:text-primary duration-150 cursor-pointer ${
-                          location === "/dashboard/clients/addclient"
-                            ? "text-primary"
-                            : "text-secondary"
-                        }`}
-                      >
-                        - - Add Client
-                      </div>
-                      <div
                         onClick={() =>
                           navigate("/dashboard/clients/manageclient")
                         }
@@ -169,7 +166,17 @@ function SideBar() {
                             : "text-secondary"
                         }`}
                       >
-                        - - Manage Client
+                        - - All Client
+                      </div>{" "}
+                      <div
+                        onClick={() => navigate("/dashboard/clients/addclient")}
+                        className={`font-monrope text-[18px] py-2 hover:text-primary duration-150 cursor-pointer ${
+                          location === "/dashboard/clients/addclient"
+                            ? "text-primary"
+                            : "text-secondary"
+                        }`}
+                      >
+                        - - Add Client
                       </div>
                     </div>
                   )}
@@ -202,67 +209,85 @@ function SideBar() {
                 </div>
               )}
             </div>
-            {/* non expandable design */}
-            <div>
+            {/* non expandable design leads*/}
+            <div className={`${!open && "w-full"}`}>
               {!open ? (
-                <div
-                  onClick={() => {
-                    setSubMenuItem("");
-                    navigate("/dashboard/notifications");
-                  }}
-                  className="flex cursor-pointer items-center text-[24px] space-x-[32px] font-monrope"
-                >
-                  <svg
-                    width="30"
-                    height="40"
-                    viewBox="0 0 30 40"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M3.59701 11.2777C3.72988 9.16094 4.66447 7.17437 6.21051 5.72242C7.75656 4.27048 9.79783 3.46232 11.9188 3.46246H13.0208V1.97855C13.0208 1.4538 13.2293 0.950552 13.6003 0.579503C13.9714 0.208453 14.4746 0 14.9994 0C15.5241 0 16.0274 0.208453 16.3984 0.579503C16.7695 0.950552 16.9779 1.4538 16.9779 1.97855V3.46246H18.08C20.2009 3.46232 22.2422 4.27048 23.7882 5.72242C25.3343 7.17437 26.2689 9.16094 26.4017 11.2777L26.839 18.2699C27.0056 20.9359 27.9008 23.505 29.4269 25.6974C29.7422 26.1506 29.9349 26.6777 29.9862 27.2274C30.0374 27.7771 29.9456 28.3308 29.7195 28.8345C29.4935 29.3382 29.1409 29.7748 28.6961 30.1019C28.2513 30.429 27.7295 30.6354 27.1813 30.7011L20.4404 31.5083V33.6353C20.4404 35.0783 19.8671 36.4623 18.8467 37.4827C17.8263 38.503 16.4424 39.0763 14.9994 39.0763C13.5563 39.0763 12.1724 38.503 11.152 37.4827C10.1316 36.4623 9.55836 35.0783 9.55836 33.6353V31.5083L2.81746 30.6991C2.26959 30.6333 1.74807 30.4268 1.30356 30.0998C0.85906 29.7729 0.506684 29.3365 0.28067 28.8331C0.0546555 28.3297 -0.0373122 27.7764 0.0137022 27.2269C0.0647165 26.6775 0.256979 26.1505 0.571809 25.6974C2.09786 23.505 2.99301 20.9359 3.15975 18.2699L3.59701 11.2777ZM11.9188 6.43027C10.5527 6.43011 9.23798 6.95058 8.24219 7.88571C7.24641 8.82084 6.64445 10.1003 6.55889 11.4637L6.12361 18.4559C5.92248 21.6631 4.84531 24.7536 3.00938 27.391C2.98656 27.4238 2.97261 27.4619 2.96889 27.5017C2.96516 27.5414 2.97179 27.5815 2.98812 27.6179C3.00445 27.6544 3.02993 27.6859 3.06208 27.7096C3.09424 27.7333 3.13197 27.7483 3.17162 27.7531L10.5654 28.6414C13.5115 28.9936 16.4872 28.9936 19.4333 28.6414L26.8271 27.7531C26.8668 27.7483 26.9045 27.7333 26.9366 27.7096C26.9688 27.6859 26.9943 27.6544 27.0106 27.6179C27.0269 27.5815 27.0336 27.5414 27.0298 27.5017C27.0261 27.4619 27.0122 27.4238 26.9894 27.391C25.154 24.7534 24.0775 21.6629 23.8771 18.4559L23.4398 11.4637C23.3543 10.1003 22.7523 8.82084 21.7565 7.88571C20.7608 6.95058 19.446 6.43011 18.08 6.43027H11.9188ZM14.9994 36.1085C13.6342 36.1085 12.5262 35.0005 12.5262 33.6353V32.1514H17.4725V33.6353C17.4725 35.0005 16.3646 36.1085 14.9994 36.1085Z"
-                      fill={
-                        location === "/dashboard/notifications"
-                          ? "#D9B658"
-                          : "#FAFAFA"
+                <div className="w-full flex flex-col justify-start items-start ">
+                  <div
+                    onClick={() => {
+                      if (subMenuItem === "") {
+                        setSubMenuItem("leads");
+                        // navigate("/dashboard/clients");
+                      } else {
+                        setSubMenuItem("");
                       }
-                    />
-                  </svg>
-
-                  <span
-                    className={`${
-                      location === "/dashboard/notifications"
-                        ? "text-primary"
-                        : "text-secondary"
-                    }`}
+                    }}
+                    className="flex items-center text-[24px] space-x-[32px] font-monrope text-primary cursor-pointer"
                   >
-                    Notifications
-                  </span>
+                    <MdLeaderboard
+                      className="text-[40px]"
+                      style={{
+                        color:
+                          location === "/dashboard/leads/addlead" ||
+                          location === "/dashboard/leads/manageleads"
+                            ? "#D9B658"
+                            : "#FAFAFA",
+                      }}
+                    />
+                    <span
+                      className={`${
+                        location === "/dashboard/leads/addlead" ||
+                        location === "/dashboard/leads/manageleads"
+                          ? "text-primary"
+                          : "text-secondary"
+                      }`}
+                    >
+                      Leads
+                    </span>
+                  </div>
+                  {subMenuItem === "leads" && (
+                    <div className="flex flex-col  items-start mt-3 pl-10 animate__animated subMenuAnimation animate__fadeInDown">
+                      <div
+                        onClick={() => navigate("/dashboard/leads/manageleads")}
+                        className={`font-monrope text-[18px] py-2 hover:text-primary duration-150 cursor-pointer ${
+                          location === "/dashboard/leads/manageleads"
+                            ? "text-primary"
+                            : "text-secondary"
+                        }`}
+                      >
+                        - - All Leads
+                      </div>
+                      <div
+                        onClick={() => navigate("/dashboard/leads/addlead")}
+                        className={`font-monrope text-[18px] py-2 hover:text-primary duration-150 cursor-pointer ${
+                          location === "/dashboard/leads/addlead"
+                            ? "text-primary"
+                            : "text-secondary"
+                        }`}
+                      >
+                        - - Add Lead
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div className="flex items-center text-[24px] space-x-[32px] font-monrope text-primary">
-                  <svg
-                    onClick={() => navigate("/dashboard/notifications")}
-                    className="cursor-pointer"
-                    width="30"
-                    height="40"
-                    viewBox="0 0 30 40"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M3.59701 11.2777C3.72988 9.16094 4.66447 7.17437 6.21051 5.72242C7.75656 4.27048 9.79783 3.46232 11.9188 3.46246H13.0208V1.97855C13.0208 1.4538 13.2293 0.950552 13.6003 0.579503C13.9714 0.208453 14.4746 0 14.9994 0C15.5241 0 16.0274 0.208453 16.3984 0.579503C16.7695 0.950552 16.9779 1.4538 16.9779 1.97855V3.46246H18.08C20.2009 3.46232 22.2422 4.27048 23.7882 5.72242C25.3343 7.17437 26.2689 9.16094 26.4017 11.2777L26.839 18.2699C27.0056 20.9359 27.9008 23.505 29.4269 25.6974C29.7422 26.1506 29.9349 26.6777 29.9862 27.2274C30.0374 27.7771 29.9456 28.3308 29.7195 28.8345C29.4935 29.3382 29.1409 29.7748 28.6961 30.1019C28.2513 30.429 27.7295 30.6354 27.1813 30.7011L20.4404 31.5083V33.6353C20.4404 35.0783 19.8671 36.4623 18.8467 37.4827C17.8263 38.503 16.4424 39.0763 14.9994 39.0763C13.5563 39.0763 12.1724 38.503 11.152 37.4827C10.1316 36.4623 9.55836 35.0783 9.55836 33.6353V31.5083L2.81746 30.6991C2.26959 30.6333 1.74807 30.4268 1.30356 30.0998C0.85906 29.7729 0.506684 29.3365 0.28067 28.8331C0.0546555 28.3297 -0.0373122 27.7764 0.0137022 27.2269C0.0647165 26.6775 0.256979 26.1505 0.571809 25.6974C2.09786 23.505 2.99301 20.9359 3.15975 18.2699L3.59701 11.2777ZM11.9188 6.43027C10.5527 6.43011 9.23798 6.95058 8.24219 7.88571C7.24641 8.82084 6.64445 10.1003 6.55889 11.4637L6.12361 18.4559C5.92248 21.6631 4.84531 24.7536 3.00938 27.391C2.98656 27.4238 2.97261 27.4619 2.96889 27.5017C2.96516 27.5414 2.97179 27.5815 2.98812 27.6179C3.00445 27.6544 3.02993 27.6859 3.06208 27.7096C3.09424 27.7333 3.13197 27.7483 3.17162 27.7531L10.5654 28.6414C13.5115 28.9936 16.4872 28.9936 19.4333 28.6414L26.8271 27.7531C26.8668 27.7483 26.9045 27.7333 26.9366 27.7096C26.9688 27.6859 26.9943 27.6544 27.0106 27.6179C27.0269 27.5815 27.0336 27.5414 27.0298 27.5017C27.0261 27.4619 27.0122 27.4238 26.9894 27.391C25.154 24.7534 24.0775 21.6629 23.8771 18.4559L23.4398 11.4637C23.3543 10.1003 22.7523 8.82084 21.7565 7.88571C20.7608 6.95058 19.446 6.43011 18.08 6.43027H11.9188ZM14.9994 36.1085C13.6342 36.1085 12.5262 35.0005 12.5262 33.6353V32.1514H17.4725V33.6353C17.4725 35.0005 16.3646 36.1085 14.9994 36.1085Z"
-                      fill={
-                        location === "/dashboard/notifications"
+                <div
+                  onClick={() => {
+                    setOpen(!open);
+                    setSubMenuItem("leads");
+                  }}
+                  className="flex items-center text-[24px] space-x-[32px] font-monrope text-primary"
+                >
+                  <MdLeaderboard
+                    className="text-[40px]"
+                    style={{
+                      color:
+                        location === "/dashboard/leads/addlead" ||
+                        location === "/dashboard/leads/manageleads"
                           ? "#D9B658"
-                          : "#FAFAFA"
-                      }
-                    />
-                  </svg>
+                          : "#FAFAFA",
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -300,67 +325,68 @@ function SideBar() {
               )}
             </div>
             {/* LCM (Landing Content Management)*/}
-            <div className={`${!open && "w-full"}`}>
+            <div>
               {!open ? (
-                <div className="w-full flex flex-col justify-start items-start ">
-                  <div
-                    onClick={() => {
-                      if (subMenuItem === "") {
-                        setSubMenuItem("lcm");
-                        // navigate("/dashboard/clients");
-                      } else {
-                        setSubMenuItem("");
-                      }
-                    }}
-                    className={`flex cursor-pointer items-center text-[24px] space-x-[32px] font-monrope ${
-                      location === "/dashboard/lcm/option1" ||
-                      location === "/dashboard/lcm/option2"
-                        ? "text-primary"
-                        : "text-secondary"
-                    }`}
-                  >
-                    <RiPagesLine className="text-[40px]" />
-                    <span>Frontend Management</span>
-                  </div>
-                  {subMenuItem === "lcm" && (
-                    <div className="flex flex-col  items-start mt-3 pl-10 animate__animated subMenuAnimation animate__fadeInDown">
-                      <div
-                        onClick={() => navigate("/dashboard/lcm/option1")}
-                        className={`font-monrope text-[18px] py-2 hover:text-primary duration-150 cursor-pointer ${
-                          location === "/dashboard/lcm/option1"
-                            ? "text-primary"
-                            : "text-secondary"
-                        }`}
-                      >
-                        - - Option 1
-                      </div>
-                      <div
-                        onClick={() => navigate("/dashboard/lcm/option2")}
-                        className={`font-monrope text-[18px] py-2 hover:text-primary duration-150 cursor-pointer ${
-                          location === "/dashboard/lcm/option2"
-                            ? "text-primary"
-                            : "text-secondary"
-                        }`}
-                      >
-                        - - Option 2
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
                 <div
                   onClick={() => {
-                    setOpen(!open);
-                    setSubMenuItem("lcm");
+                    setSubMenuItem("");
+                    navigate("/dashboard/lcm");
                   }}
-                  className={`flex items-center text-[24px] space-x-[32px] font-monrope cursor-pointer ${
-                    location === "/dashboard/lcm/option1" ||
-                    location === "/dashboard/lcm/option2"
+                  className={`flex cursor-pointer items-center text-[24px] space-x-[32px] font-monrope ${
+                    location === "/dashboard/l"
                       ? "text-primary"
                       : "text-secondary"
                   }`}
                 >
                   <RiPagesLine className="text-[40px]" />
+
+                  <span>Frontend Management</span>
+                </div>
+              ) : (
+                <div
+                  className={`flex items-center text-[24px] space-x-[32px] font-monrope  ${
+                    location === "/dashboard/lcm"
+                      ? "text-primary"
+                      : "text-secondary"
+                  }`}
+                >
+                  <RiPagesLine
+                    onClick={() => navigate("/dashboard/lcm")}
+                    className="text-[40px] cursor-pointer"
+                  />
+                </div>
+              )}
+            </div>
+            {/* <IoNotificationsOutline /> */}
+            <div>
+              {!open ? (
+                <div
+                  onClick={() => {
+                    setSubMenuItem("");
+                    navigate("/dashboard/notifications");
+                  }}
+                  className={`flex cursor-pointer items-center text-[24px] space-x-[32px] font-monrope ${
+                    location === "/dashboard/notifications"
+                      ? "text-primary"
+                      : "text-secondary"
+                  }`}
+                >
+                  <IoNotificationsOutline className="text-[40px]" />
+
+                  <span>Notifications</span>
+                </div>
+              ) : (
+                <div
+                  className={`flex items-center text-[24px] space-x-[32px] font-monrope  ${
+                    location === "/dashboard/notifications"
+                      ? "text-primary"
+                      : "text-secondary"
+                  }`}
+                >
+                  <IoNotificationsOutline
+                    onClick={() => navigate("/dashboard/notifications")}
+                    className="text-[40px] cursor-pointer"
+                  />
                 </div>
               )}
             </div>
@@ -375,31 +401,76 @@ function SideBar() {
           } space-y-8`}
         >
           {/* Settings */}
-          <div>
+          <div className={`${!open && "w-full"}`}>
             {!open ? (
-              <div
-                onClick={() => {
-                  setSubMenuItem("");
-                  navigate("/dashboard/settings");
-                }}
-                className={`flex cursor-pointer items-center text-[24px] space-x-[32px] font-monrope hover:text-primary ${
-                  location === "/dashboard/settings"
-                    ? "text-primary"
-                    : "text-secondary"
-                }`}
-              >
-                <IoSettingsOutline className="text-[40px] " />
-
-                <span>Settings</span>
+              <div className="w-full flex flex-col justify-start items-start ">
+                <div
+                  onClick={() => {
+                    if (subMenuItem === "") {
+                      setSubMenuItem("settings");
+                    } else {
+                      setSubMenuItem("");
+                    }
+                  }}
+                  className={`flex cursor-pointer items-center text-[24px] space-x-[32px] font-monrope ${
+                    location === "/dashboard/settings/role" ||
+                    location === "/dashboard/settings/permission" ||
+                    location === "/dashboard/settings/config"
+                      ? "text-primary"
+                      : "text-secondary"
+                  }`}
+                >
+                  <IoSettingsOutline className="text-[40px] " />
+                  <span>Settings</span>
+                </div>
+                {subMenuItem === "settings" && (
+                  <div className="flex flex-col  items-start mt-3 pl-10 animate__animated subMenuAnimation animate__fadeInDown">
+                    <div
+                      onClick={() => navigate("/dashboard/settings/role")}
+                      className={`font-monrope text-[22px] py-2 hover:text-primary duration-150 cursor-pointer flex items-center ${
+                        location === "/dashboard/settings/role"
+                          ? "text-primary"
+                          : "text-secondary"
+                      }`}
+                    >
+                      <RiUserStarLine className="mr-2" /> Roles
+                    </div>
+                    <div
+                      onClick={() => navigate("/dashboard/settings/permission")}
+                      className={`font-monrope text-[22px] py-2 hover:text-primary duration-150 cursor-pointer flex items-center ${
+                        location === "/dashboard/settings/permission"
+                          ? "text-primary"
+                          : "text-secondary"
+                      }`}
+                    >
+                      <IoKeyOutline className="mr-2 text-[18px]" /> Permissions
+                    </div>
+                    <div
+                      onClick={() => navigate("/dashboard/settings/config")}
+                      className={`font-monrope text-[22px] py-2 hover:text-primary duration-150 cursor-pointer flex items-center ${
+                        location === "/dashboard/settings/config"
+                          ? "text-primary"
+                          : "text-secondary"
+                      }`}
+                    >
+                      <HiOutlineWrenchScrewdriver className="mr-2" /> Config
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div
-                onClick={() => navigate("/dashboard/settings")}
-                className={`flex items-center text-[24px] space-x-[32px] font-monrope text-primary ${
-                  location === "/dashboard/settings"
+                onClick={() => {
+                  setOpen(!open);
+                  setSubMenuItem("lcm");
+                }}
+                className={`flex items-center text-[24px] space-x-[32px] font-monrope cursor-pointer ${
+                  location === "/dashboard/settings/role" ||
+                  location === "/dashboard/settings/permission" ||
+                  location === "/dashboard/settings/config"
                     ? "text-primary"
                     : "text-secondary"
-                } cursor-pointer`}
+                }`}
               >
                 <IoSettingsOutline className="text-[40px] " />
               </div>
@@ -410,8 +481,8 @@ function SideBar() {
             {!open ? (
               <div
                 onClick={() => {
-                  setSubMenuItem("");
-                  navigate("/dashboard/notifications");
+                  removeFromLocale();
+                  window.location.reload();
                 }}
                 className="flex cursor-pointer items-center text-[24px] space-x-[32px] font-monrope text-secondary hover:text-primary"
               >

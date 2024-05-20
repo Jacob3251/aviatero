@@ -52,8 +52,7 @@ function IndividualService({ data }) {
             >
               <a
                 className="no-underline text-secondary font-monrope  hover:text-primary"
-                href="https://www.gre.ac.uk/"
-                target="_blank"
+                href="#"
               >
                 {item}
               </a>

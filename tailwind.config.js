@@ -17,6 +17,9 @@ export default {
         noto: ["Noto Serif", "serif"],
         monrope: ["Manrope", "sans-serif"],
       },
+      screens: {
+        xsm: "578px",
+      },
     },
   },
   plugins: [],

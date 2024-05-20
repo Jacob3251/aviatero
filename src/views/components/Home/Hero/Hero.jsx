@@ -3,7 +3,16 @@ import Navbar from "../../Navbar/Navbar";
 import { FaFacebookF } from "react-icons/fa6";
 import { FaYoutube } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
-function Hero() {
+import { useContext } from "react";
+function Hero({ siteConfig }) {
+  const {
+    home_banner,
+    home_sub_banner,
+    fb_link,
+    youtube_link,
+    instagram_link,
+  } = siteConfig;
+  console.log(fb_link);
   return (
     <div className="relative w-full hero-bg">
       {/* hero */}
@@ -15,17 +24,23 @@ function Hero() {
       </div>
       <div className="hidden sm:block absolute top-[307px] left-0 right-0 z-[10]  w-full">
         <div className="px-[60px] xl:px-[176px]  text-secondary text-[20px] space-y-[40px] flex flex-col items-end justify-end">
-          <FaFacebookF />
-          <FaYoutube />
-          <FaLinkedinIn />
+          <a href={fb_link} className="text-secondary" target="_blank">
+            <FaFacebookF />
+          </a>
+          <a href={youtube_link} className="text-secondary" target="_blank">
+            <FaYoutube />
+          </a>
+          <a href={instagram_link} className="text-secondary" target="_blank">
+            <FaLinkedinIn />
+          </a>
         </div>
       </div>
       <div className="absolute bottom-[100px] xl:bottom-[100px] left-[20px] sm:left-[60px] md:left-[40px] lg:left-[50px] xl:left-[176px] ">
         <div className=" text-[46px] lg:text-[64px] xl:text-[84px]  font-noto font-medium text-primary uppercase  tracking-tight">
-          Fly you <br /> TO the moon!
+          {home_banner}
         </div>
         <div className="text-[12px] xl:text-[24px] font-monrope font-bold text-secondary mt-[10px] uppercase ml-2 tracking-wide">
-          Study, Visit or Migration - Your Choice...
+          {home_sub_banner}
         </div>
       </div>
     </div>

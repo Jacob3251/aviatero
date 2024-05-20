@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope&family=Noto+Serif:ital@0;1&display=swap")
-  @tailwind base;
+@import url("https://fonts.googleapis.com/css2?family=Manrope&family=Noto+Serif:ital@0;1&display=swap");
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -14,6 +14,9 @@ body {
 }
 .cta-border {
   border: 1px solid #d9b75854;
+}
+.hidden-scrollbar {
+  scrollbar-width: none;
 }
 
 .subMenuAnimation {

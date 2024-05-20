@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 function DashboardNavbar() {
-  const { setHoverOverlay, setShowNavDrawer } = useContext(AppContext);
   const [navbarColor, setNavbarColor] = useState("bg-transparent");
   const [toggleProfile, setToggleProfile] = useState(false);
   const navigate = useNavigate();
@@ -16,10 +15,7 @@ function DashboardNavbar() {
       className={`py-[20px] flex justify-between items-center fixed top-0 w-full max-w-[1440px] ${navbarColor}  md:bg-opacity-90 z-30 duration-300`}
     >
       <div className="flex items-center space-x-3">
-        <div
-          onClick={() => navigate("/")}
-          className="h-[50px]   w-[70px]   pl-[48px]"
-        >
+        <div onClick={() => navigate("/")} className="h-[50px]   w-[70px]  ">
           <img className="w-full h-full" src={navlogo} alt="navigation_logo" />
         </div>
         <div className="text-[28px] text-primary font-noto font-bold uppercase">

@@ -37,7 +37,7 @@ function Navbar() {
       >
         <div
           onClick={() => navigate("/")}
-          className="h-[50px] md:h-[80px]  w-[70px] md:w-[110px]  pl-[48px] xl:pl-[176px]"
+          className="h-[50px] md:h-[80px]  w-[70px] md:w-[110px]  pl-[48px] xl:pl-[176px] cursor-pointer"
         >
           <img className="w-full h-full" src={navlogo} alt="navigation_logo" />
         </div>

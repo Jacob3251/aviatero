@@ -79,7 +79,7 @@ function LandingLayout({ children }) {
                   >
                     The Team
                   </NavLink>
-                  <NavLink
+                  {/* <NavLink
                     to="/partners"
                     onClick={() => {
                       setShowNavDrawer(false);
@@ -92,8 +92,8 @@ function LandingLayout({ children }) {
                     className=" no-underline list-none text-[24px] 2xl:text-[36px] font-noto mb-[18px] md:mb-[20px] xl:mb-[30px]"
                   >
                     Partners
-                  </NavLink>
-                  <NavLink
+                  </NavLink> */}
+                  {/* <NavLink
                     to="/blogs"
                     onClick={() => {
                       setShowNavDrawer(false);
@@ -106,7 +106,7 @@ function LandingLayout({ children }) {
                     className=" no-underline list-none text-[24px] 2xl:text-[36px] font-noto mb-[18px] md:mb-[20px] xl:mb-[30px]"
                   >
                     Blogs
-                  </NavLink>
+                  </NavLink> */}
                   <NavLink
                     to="/testimonials"
                     onClick={() => {
@@ -136,7 +136,13 @@ function LandingLayout({ children }) {
                     Contact
                   </NavLink>
                   <li className=" text-secondary space-x-[40px] flex  items-center justify-start mt-[80px] md:mt-[20px] xl:mt-[80px] text-[20px]">
-                    <FaFacebookF />
+                    <a
+                      href="https://www.facebook.com/aviateabroad"
+                      target="_blank"
+                      className="text-secondary"
+                    >
+                      <FaFacebookF />
+                    </a>
                     <FaYoutube />
                     <FaLinkedinIn />
                   </li>

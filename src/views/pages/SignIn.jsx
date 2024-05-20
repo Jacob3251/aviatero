@@ -1,13 +1,18 @@
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import AuthLayout from "../Layouts/AuthLayout";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { addToLocale } from "../../utils/helper";
+import { AppContext } from "../../utils/contexts/AppContext";
 function SignIn() {
   console.log();
 
   const currentLocation = window.location.pathname.split("/auth/")[1];
+  const { isLogged } = useContext(AppContext);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/dashboard";
   const [showPass, setShowPass] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -27,10 +32,31 @@ function SignIn() {
     setShowPass(!showPass);
   };
 
-  const handleSubmission = (event) => {
+  const handleSubmission = async (event) => {
     event.preventDefault();
     console.log("email: ", email, " Password: ", password);
+    const response = await axios.post(
+      "http://localhost:5000/api/user/autheticate",
+      formData
+    );
+    if (response.data) {
+      console.log(response.data);
+      addToLocale(response.data);
+      setFormData({
+        email: "",
+        password: "",
+      });
+      window.location.reload();
+    } else {
+      console.log(response);
+    }
   };
+
+  useEffect(() => {
+    if (isLogged) {
+      navigate(from, { replace: true });
+    }
+  }, [isLogged, navigate, from]);
 
   return (
     <AuthLayout>
