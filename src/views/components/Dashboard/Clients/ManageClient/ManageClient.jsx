@@ -6,6 +6,7 @@ import { MdDelete, MdOutlineRemoveRedEye } from "react-icons/md";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
 
 function ManageClient() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,212 +35,158 @@ function ManageClient() {
   };
   return (
     <div className=" ">
-      <div className="mb-5 text-[24px] font-monrope text-primary font-semibold">
-        <div>All Clients</div>
+      <div className="mb-5 text-[24px] font-monrope text-primary font-semibold px-5 lg:px-0 text-center lg:text-left uppercase">
+        All Clients
       </div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg border-primary border-2 p-5">
-        <div className=" flex items-center justify-between flex-column  md:flex-row space-y-4 md:space-y-0 space-x-2 pb-4  pt-3">
-          <div className="relative sm:w-auto">
-            <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-primary"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-            <input
-              type="text"
-              id="client-search"
-              className="block p-2 ps-10 text-sm text-primary placeholder:text-primary outline-none border-b-2 border-t-0  border-l-0 border-r-0 border-primary  w-full sm:w-80 bg-transparent "
-              placeholder="Search for users"
-            />
-          </div>
-          <div
-            onClick={() => navigate("/dashboard/clients/addclient")}
-            className=" py-2 px-3  uppercase font-monrope font-semibold flex  items-center space-x-2 text-[14px] cursor-pointer"
-          >
-            <div className="text-black bg-primary px-2 py-1.5 rounded-sm">
-              <FaPlus />
-            </div>
-            <div className="text-primary"> Add Client</div>
-          </div>
-        </div>
-        <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
-          <thead className="text-xs text-primary uppercase bg-transparent  ">
-            <tr className="uppercase font-monrope font-semibold text-[14px] ">
-              <th
-                scope="col"
-                className="px-6 py-5"
-                style={{
-                  borderBottom: "2px solid #fafafa",
-                  borderTop: "2px solid #fafafa",
-                  borderLeft: "2px solid #fafafa",
-                }}
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-5"
-                style={{
-                  borderBottom: "2px solid #fafafa",
-                  borderTop: "2px solid #fafafa",
-                }}
-              >
-                Action
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-5"
-                style={{
-                  borderBottom: "2px solid #fafafa",
-                  borderTop: "2px solid #fafafa",
-                }}
-              >
-                Contact No
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-5"
-                style={{
-                  borderBottom: "2px solid #fafafa",
-                  borderTop: "2px solid #fafafa",
-                }}
-              >
-                Email
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-5"
-                style={{
-                  borderBottom: "2px solid #fafafa",
-                  borderTop: "2px solid #fafafa",
-                  borderRight: "2px solid #fafafa",
-                }}
-              >
-                Client type
-              </th>
-            </tr>
-          </thead>
-          <tbody className="text-secondary font-monrope ">
-            {data.map((item) => (
-              <tr key={item.id} className="table-row">
-                <th
-                  style={{
-                    borderBottom: "2px solid #fafafa",
-                    borderLeft: "2px solid #fafafa",
-                  }}
-                  scope="row"
-                  className="px-6 py-4  whitespace-nowrap "
-                >
-                  {item.name ? item.name : "Null"}
-                </th>
-                <td
-                  className="px-6 py-4 flex space-x-2 text-[24px]"
-                  style={{
-                    borderBottom: "2px solid #fafafa",
-                  }}
-                >
-                  {" "}
-                  <div
-                    onClick={() =>
-                      navigate("/dashboard/clients/information/id")
-                    }
-                    className="cursor-pointer duration-300 hover:text-green-500"
+      <div className="px-5">
+        {data.length !== 0 ? (
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg border-primary border-2 p-5">
+            <div className=" flex items-center justify-between flex-column  md:flex-row space-y-4 md:space-y-0 space-x-2 pb-4  pt-3">
+              <div className="relative sm:w-auto">
+                <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-primary"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
                   >
-                    <MdOutlineRemoveRedEye />
-                  </div>
-                  <div
-                    onClick={() =>
-                      navigate(`/dashboard/clients/${item.id}/update`, {
-                        state: { item: item },
-                      })
-                    }
-                    className="cursor-pointer duration-300 hover:text-green-500"
-                  >
-                    <PiNotePencil />
-                  </div>
-                  <div
-                    onClick={() => handleDelete(item)}
-                    className="cursor-pointer duration-300 hover:text-red-500"
-                  >
-                    <MdDelete />
-                  </div>
-                </td>
-                <td
-                  className="px-6 py-4"
-                  style={{
-                    borderBottom: "2px solid #fafafa",
-                  }}
-                >
-                  {item.phone_no ? item.phone_no : "Null"}
-                </td>
-                <td
-                  className="px-6 py-4"
-                  style={{
-                    borderBottom: "2px solid #fafafa",
-                  }}
-                >
-                  {item.clientEmail ? item.clientEmail : "Null"}
-                </td>
-                <td
-                  className="px-6 py-4"
-                  style={{
-                    borderBottom: "2px solid #fafafa",
-                    borderRight: "2px solid #fafafa",
-                  }}
-                >
-                  {item.clientType ? item.clientType : "Null"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="w-full mt-5">
-          <div className=" w-full ">
-            <ul className="flex justify-start items-start h-10 list-none">
-              <li
-                className="cursor-pointer "
-                onClick={() => setCurrentPage(currentPage - 1)}
-              >
-                <button
-                  disabled={currentPage === 1 ? true : false}
-                  className="flex items-center justify-start px-4 h-10 ms-0 leading-tight bg-[#333333] rounded-l-md text-[12px] text-primary uppercase font-monrope font-bold disabled:hidden"
-                >
-                  Previous
-                </button>
-              </li>
-              <li className="">
-                <div className="flex items-center justify-start px-4 h-10 leading-tight  bg-[#333333] text-[12px] text-primary uppercase font-monrope font-bold">
-                  {metaData.currentPage}
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
                 </div>
-              </li>
+                <input
+                  type="text"
+                  id="client-search"
+                  className="block p-2 ps-10 text-sm text-primary placeholder:text-primary outline-none border-b-2 border-t-0  border-l-0 border-r-0 border-primary  w-full sm:w-80 bg-transparent "
+                  placeholder="Search for users"
+                />
+              </div>
+              <div
+                onClick={() => navigate("/dashboard/clients/addclient")}
+                className=" py-2 px-3  uppercase font-monrope font-semibold flex  items-center space-x-2 text-[14px] cursor-pointer"
+              >
+                <div className="text-black bg-primary px-2 py-1.5 rounded-sm">
+                  <FaPlus />
+                </div>
+                <div className="text-primary"> Add Client</div>
+              </div>
+            </div>
+            <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0 ">
+              <thead className="text-xs text-primary uppercase bg-transparent  ">
+                <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
+                  <th scope="col" className="px-6 py-5">
+                    Name
+                  </th>
+                  <th scope="col" className="px-6 py-5">
+                    Action
+                  </th>
+                  <th scope="col" className="px-6 py-5">
+                    Contact No
+                  </th>
+                  <th scope="col" className="px-6 py-5">
+                    Email
+                  </th>
+                  <th scope="col" className="px-6 py-5">
+                    Client type
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-secondary font-monrope ">
+                {data.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="table-row border-2 border-secondary"
+                  >
+                    <th scope="row" className="px-6 py-4  whitespace-nowrap ">
+                      {item.name ? item.name : "Null"}
+                    </th>
+                    <td className="px-6 py-4 flex space-x-2 text-[24px]">
+                      {" "}
+                      <div
+                        onClick={() =>
+                          navigate("/dashboard/clients/information/id")
+                        }
+                        className="cursor-pointer duration-300 hover:text-green-500"
+                      >
+                        <MdOutlineRemoveRedEye />
+                      </div>
+                      <div
+                        onClick={() =>
+                          navigate(`/dashboard/clients/${item.id}/update`, {
+                            state: { item: item },
+                          })
+                        }
+                        className="cursor-pointer duration-300 hover:text-green-500"
+                      >
+                        <PiNotePencil />
+                      </div>
+                      <div
+                        onClick={() => handleDelete(item)}
+                        className="cursor-pointer duration-300 hover:text-red-500"
+                      >
+                        <MdDelete />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      {item.phone_no ? item.phone_no : "Null"}
+                    </td>
+                    <td className="px-6 py-4">
+                      {item.clientEmail ? item.clientEmail : "Null"}
+                    </td>
+                    <td className="px-6 py-4">
+                      {item.clientType ? item.clientType : "Null"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="w-full mt-5">
+              <div className=" w-full ">
+                <ul className="flex justify-start items-start h-10 list-none">
+                  <li
+                    className="cursor-pointer "
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                  >
+                    <button
+                      disabled={currentPage === 1 ? true : false}
+                      className="flex items-center justify-start px-4 h-10 ms-0 leading-tight bg-[#333333] rounded-l-md text-[12px] text-primary uppercase font-monrope font-bold disabled:hidden"
+                    >
+                      Previous
+                    </button>
+                  </li>
+                  <li className="">
+                    <div className="flex items-center justify-start px-4 h-10 leading-tight  bg-[#333333] text-[12px] text-primary uppercase font-monrope font-bold">
+                      {metaData.currentPage}
+                    </div>
+                  </li>
 
-              <li className="cursor-pointer">
-                <button
-                  disabled={metaData.totalPages === currentPage ? true : false}
-                  onClick={() => {
-                    setCurrentPage(currentPage + 1);
-                    //   console.log(currentPage);
-                  }}
-                  className="flex items-center justify-start px-4 h-10 leading-tight bg-[#333333] rounded-r-md text-[12px] text-primary uppercase font-monrope font-bold disabled:hidden"
-                >
-                  Next
-                </button>
-              </li>
-            </ul>
+                  <li className="cursor-pointer">
+                    <button
+                      disabled={
+                        metaData.totalPages === currentPage ? true : false
+                      }
+                      onClick={() => {
+                        setCurrentPage(currentPage + 1);
+                        //   console.log(currentPage);
+                      }}
+                      className="flex items-center justify-start px-4 h-10 leading-tight bg-[#333333] rounded-r-md text-[12px] text-primary uppercase font-monrope font-bold disabled:hidden"
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <EmptyComponent heading="Client"> No Data</EmptyComponent>
+        )}
       </div>
     </div>
   );

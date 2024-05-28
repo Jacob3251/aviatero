@@ -45,7 +45,7 @@ function Notifications() {
   console.log("pending", metaData?.pending);
   return (
     <div className="w-full h-auto text-primary ">
-      <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center ">
+      <div className="mb-5 text-[24px] font-monrope text-primary font-semibold px-5 lg:px-0 text-center lg:text-left uppercase">
         <Link
           to="/dashboard"
           className="no-underline text-primary tracking-wider"

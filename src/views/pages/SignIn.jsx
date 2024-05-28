@@ -46,6 +46,7 @@ function SignIn() {
         email: "",
         password: "",
       });
+
       window.location.reload();
     } else {
       console.log(response);

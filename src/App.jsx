@@ -32,9 +32,11 @@ import IndividualNotification from "./views/components/Dashboard/Notifications/I
 import IndividualClient from "./views/components/Dashboard/Clients/IndividualClient/IndividualClient";
 import IndividualLead from "./views/components/Dashboard/Leads/IndividualLead/IndividualLead";
 import CreateRole from "./views/components/Dashboard/Settings/Role/Create/Create";
+import UpdateRole from "./views/components/Dashboard/Settings/Role/Update/Update";
 import CreatePermission from "./views/components/Dashboard/Settings/Permission/Create/Create";
 import CreateService from "./views/components/Dashboard/LandingManagement/Home/Service/Create";
 import AuthChecker from "./utils/Other/AuthChecker";
+import Blogs from "./views/pages/Blogs";
 
 function App() {
   const router = createBrowserRouter([
@@ -114,6 +116,10 @@ function App() {
           element: <CreateRole></CreateRole>,
         },
         {
+          path: "settings/role/:id/update",
+          element: <UpdateRole></UpdateRole>,
+        },
+        {
           path: "settings/permission",
           element: <Permission></Permission>,
         },
@@ -135,27 +141,9 @@ function App() {
         },
       ],
     },
-    // {
-    //   path: "/partners",
-    //   element: (
-    //     <div className=" w-[80%] mx-auto   h-screen flex justify-center items-center">
-    //       <div className="text-red-500 font-monrope text-[48px] animate__animated animate__infinite	infinite animate__pulse">
-    //         PAGE IN DEVELOPMENT
-    //       </div>
-    //     </div>
-    //   ),
-    // },
     {
       path: "/blogs",
-      element: (
-        <AuthChecker>
-          <div className=" w-[80%] mx-auto   h-screen flex justify-center items-center">
-            <div className="text-red-500 font-monrope text-[48px] animate__animated animate__infinite	infinite animate__pulse">
-              PAGE IN DEVELOPMENT
-            </div>
-          </div>
-        </AuthChecker>
-      ),
+      element: <Blogs></Blogs>,
     },
 
     {

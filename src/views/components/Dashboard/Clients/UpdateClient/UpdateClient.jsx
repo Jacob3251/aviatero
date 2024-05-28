@@ -46,7 +46,7 @@ function UpdateClient() {
   console.log(location.state.item);
   return (
     <div className="bg-root w-full h-full overflow-y-scroll hidden-scrollbar">
-      <div className="flex items-center space-x-2 text-[22px] ">
+      <div className="flex items-center space-x-2 text-[28px] px-5 lg:px-0 uppercase">
         <div className="">
           <Link to="/dashboard" className="text-primary no-underline">
             Dashboard
@@ -56,8 +56,8 @@ function UpdateClient() {
           <IoIosArrowForward />
         </div>
       </div>
-      <div className="p-20 space-y-5 font-monrope">
-        <div className="text-[24px] text-primary mb-5">Add Client</div>
+      <div className="p-5 lg:p-20 space-y-5 font-monrope">
+        <div className="text-[24px] text-primary mb-5">Update Client</div>
         {/* form parent div below */}
         <div>
           <form
@@ -65,7 +65,7 @@ function UpdateClient() {
             onSubmit={handleSubmit}
             className="flex flex-col space-y-10"
           >
-            <div className="flex space-x-10">
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
               {/* Name */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="name">Full Name *</label>
@@ -94,7 +94,7 @@ function UpdateClient() {
                 />
               </div>
             </div>
-            <div className="flex space-x-10">
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
               {/* client type */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="clientType">Client Type</label>
@@ -133,7 +133,7 @@ function UpdateClient() {
                 />
               </div>
             </div>
-            <div className="flex space-x-10">
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
               {/* client phone number */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="phone_no">Phone Number *</label>
@@ -165,7 +165,7 @@ function UpdateClient() {
                 />
               </div>
             </div>
-            <div className="flex space-x-10">
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
               {/* Deal Amount */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="dealAmount">Deal Amount</label>
@@ -193,7 +193,7 @@ function UpdateClient() {
                 />
               </div>
             </div>
-            <div className="flex ">
+            {/* <div className="flex ">
               <div className="w-[50%] text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="due">Deal Amount</label>
                 <input
@@ -206,7 +206,7 @@ function UpdateClient() {
                   placeholder="Exp: 1000$ / 50000$"
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className="">
               <input

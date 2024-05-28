@@ -6,25 +6,37 @@ import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
+import { removeFromLocale } from "../../../utils/helper";
 function DashboardNavbar() {
   const [navbarColor, setNavbarColor] = useState("bg-transparent");
+  const { setOpenDashboardMenu } = useContext(AppContext);
   const [toggleProfile, setToggleProfile] = useState(false);
   const navigate = useNavigate();
   return (
     <div
-      className={`py-[20px] flex justify-between items-center fixed top-0 w-full max-w-[1440px] ${navbarColor}  md:bg-opacity-90 z-30 duration-300`}
+      className={`py-[20px] px-5 flex justify-between items-center fixed top-0 w-full max-w-[1440px] bg-root  md:bg-opacity-90 z-30 duration-300`}
     >
       <div className="flex items-center space-x-3">
         <div onClick={() => navigate("/")} className="h-[50px]   w-[70px]  ">
           <img className="w-full h-full" src={navlogo} alt="navigation_logo" />
         </div>
-        <div className="text-[28px] text-primary font-noto font-bold uppercase">
+        <div className="text-[18px] lg:text-[28px] text-primary font-noto font-bold uppercase">
           Aviate Abroad
         </div>
       </div>
-      <div className="text-[34px] flex justify-center items-center space-x-[40px] text-secondary cursor-pointer pr-[48px] ">
-        <IoNotificationsOutline />
-        <IoSettingsOutline />
+      <div className="cursor-pointer lg:hidden">
+        <GiHamburgerMenu
+          className="text-secondary text-[28px]"
+          onClick={() => setOpenDashboardMenu(true)}
+        />
+      </div>
+      <div className="text-[34px] lg:flex justify-center items-center space-x-[40px] text-secondary cursor-pointer pr-[48px] hidden">
+        <IoNotificationsOutline
+          onClick={() => navigate("/dashboard/notifications")}
+        />
+        <IoSettingsOutline
+          onClick={() => navigate("/dashboard/settings/config")}
+        />
         <div className="w-[34px] h-[34px] p-1  bg-primary rounded-full  relative">
           <img
             onClick={() => setToggleProfile(!toggleProfile)}
@@ -47,7 +59,10 @@ function DashboardNavbar() {
                 </div>
                 <div className="h-[1px] my-2 w-full cta-border"></div>
                 <div
-                  onClick={() => setToggleProfile(!toggleProfile)}
+                  onClick={() => {
+                    removeFromLocale();
+                    window.location.reload();
+                  }}
                   className="flex items-center space-x-3 text-secondary hover:text-primary"
                 >
                   <FiLogOut />

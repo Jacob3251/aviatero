@@ -155,7 +155,9 @@ function LandingManagement() {
           <DefaultTestimonial></DefaultTestimonial>
         )}
         {/* contact page */}
-        {selectedPage === "contact" && <Contact></Contact>}
+        {selectedPage === "contact" && (
+          <Contact siteConfig={siteConfig}></Contact>
+        )}
       </div>
     </div>
   );

@@ -1,12 +1,70 @@
+import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { PiNotePencil } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 
-function Contact() {
+function Contact({ siteConfig }) {
   const navigate = useNavigate();
   const [editStatus, setEditStatus] = useState(false);
+  const {
+    uk_office_address,
+    uk_office_cell,
+    bd_corporate_address,
+    bd_corporate_cell,
+    bd_legal_address,
+    bd_legal_cell,
+  } = siteConfig;
+  const [formData, setFormData] = useState({
+    ukOfficeAddress: uk_office_address,
+    ukOfficeCell: uk_office_cell,
+    bdCorporateAddress: bd_corporate_address,
+    bdCorporateCell: bd_corporate_cell,
+    bdLegalAddress: bd_legal_address,
+    bdLegalCell: bd_legal_cell,
+  });
+  const {
+    ukOfficeAddress,
+    ukOfficeCell,
+    bdCorporateAddress,
+    bdCorporateCell,
+    bdLegalAddress,
+    bdLegalCell,
+  } = formData;
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = async () => {
+    console.log("home", formData);
+    const { data } = await axios.put(
+      "http://localhost:5000/api/siteconfig/00c491b9-3dfc-449c-9e99-99534f747bd1",
+      {
+        uk_office_address: ukOfficeAddress,
+        uk_office_cell: ukOfficeCell,
+        bd_corporate_address: bdCorporateAddress,
+        bd_corporate_cell: bdCorporateCell,
+        bd_legal_address: bdLegalAddress,
+        bd_legal_cell: bdLegalCell,
+      }
+    );
+    if (data) {
+      console.log(data);
+
+      toast.success("Socials Updated Successfully", {
+        style: {
+          backgroundColor: "#333333",
+          color: "#fafafa",
+        },
+        className: "font-monrope",
+      });
+    }
+  };
   return (
     <div>
       <div className="flex justify-between items-center font-bold uppercase ">
@@ -26,7 +84,10 @@ function Contact() {
           )}
           {editStatus && (
             <div
-              onClick={() => setEditStatus(false)}
+              onClick={() => {
+                setEditStatus(false);
+                handleSubmit();
+              }}
               className="bg-primary text-secondary px-5 py-2 rounded-md cursor-pointer"
             >
               Submit
@@ -41,27 +102,31 @@ function Contact() {
         <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
           {/* Banner Title */}
           <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-            <label htmlFor="uk_address">Address</label>
+            <label htmlFor="ukOfficeAddress">Address</label>
             <input
               disabled={!editStatus ? true : false}
               className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
               type="text"
-              name="uk_address"
-              id="uk_address"
+              name="ukOfficeAddress"
+              id="ukOfficeAddress"
               required
               placeholder="Street..."
+              value={ukOfficeAddress}
+              onChange={onChange}
             />
           </div>
           {/* Banner Sub Title */}
           <div className=" w-full text-primary font-semibold space-y-2 text-[18px] ">
-            <label htmlFor="uk_phone">Cell</label>
+            <label htmlFor="ukOfficeCell">Cell</label>
             <input
               disabled={!editStatus ? true : false}
               className="w-full py-2  text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
               type="text"
-              name="uk_phone"
-              id="uk_phone"
+              name="ukOfficeCell"
+              id="ukOfficeCell"
               placeholder="exp subtitle..."
+              value={ukOfficeCell}
+              onChange={onChange}
             />
           </div>
         </div>
@@ -76,27 +141,31 @@ function Contact() {
           <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
             {/* Banner Title */}
             <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-              <label htmlFor="corporate_db_address">Address</label>
+              <label htmlFor="bdCorporateAddress">Address</label>
               <input
                 disabled={!editStatus ? true : false}
                 className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                 type="text"
-                name="corporate_db_address"
-                id="corporate_db_address"
+                name="bdCorporateAddress"
+                id="bdCorporateAddress"
                 required
                 placeholder="Fly to the Moon.."
+                value={bdCorporateAddress}
+                onChange={onChange}
               />
             </div>
             <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-              <label htmlFor="corporate_bd_phone">Telephone No:</label>
+              <label htmlFor="bdCorporateCell">Telephone No:</label>
               <input
                 disabled={!editStatus ? true : false}
                 className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                 type="text"
-                name="corporate_bd_phone"
-                id="corporate_bd_phone"
+                name="bdCorporateCell"
+                id="bdCorporateCell"
                 required
                 placeholder="Fly to the Moon.."
+                value={bdCorporateCell}
+                onChange={onChange}
               />
             </div>
           </div>
@@ -106,27 +175,31 @@ function Contact() {
           <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
             {/* Banner Title */}
             <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-              <label htmlFor="legal_bd_address">Address</label>
+              <label htmlFor="bdLegalAddress">Address</label>
               <input
                 disabled={!editStatus ? true : false}
                 className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                 type="text"
-                name="legal_bd_address"
-                id="legal_bd_address"
+                name="bdLegalAddress"
+                id="bdLegalAddress"
                 required
                 placeholder="Fly to the Moon.."
+                value={bdLegalAddress}
+                onChange={onChange}
               />
             </div>
             <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-              <label htmlFor="legal_bd_phone">Telephone No:</label>
+              <label htmlFor="bdLegalCell">Telephone No:</label>
               <input
                 disabled={!editStatus ? true : false}
                 className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                 type="text"
-                name="legal_bd_phone"
-                id="legal_bd_phone"
+                name="bdLegalCell"
+                id="bdLegalCell"
                 required
                 placeholder="Fly to the Moon.."
+                value={bdLegalCell}
+                onChange={onChange}
               />
             </div>
           </div>

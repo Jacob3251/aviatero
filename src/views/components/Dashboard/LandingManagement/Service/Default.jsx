@@ -6,8 +6,46 @@ import { MdDelete } from "react-icons/md";
 import { PiNotePencil } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 
-function Default() {
+function Default({ siteConfig }) {
   const navigate = useNavigate();
+  const { services_banner, services_sub_banner, services_banner_content } =
+    siteConfig;
+  const [formData, setFormData] = useState({
+    serviceBanner: services_banner,
+    serviceBannerSub: services_sub_banner,
+    serviceBannerContent: services_banner_content,
+  });
+  // On Change for changing the banner & title section
+  const onSeviceDetailChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  // Service Banner Section Update
+  const handleBannerSubmit = async () => {
+    const { data } = await axios.put(
+      "http://localhost:5000/api/siteconfig/00c491b9-3dfc-449c-9e99-99534f747bd1",
+      {
+        services_banner: formData.serviceBanner,
+        services_sub_banner: formData.serviceBannerSub,
+        services_banner_content: formData.serviceBannerContent,
+      }
+    );
+    if (data) {
+      console.log(data);
+
+      toast.success("Service Page Info Successfully", {
+        style: {
+          backgroundColor: "#333333",
+          color: "#fafafa",
+        },
+        className: "font-monrope",
+      });
+    }
+  };
+  const { serviceBanner, serviceBannerSub, serviceBannerContent } = formData;
   const [editStatus, setEditStatus] = useState(false);
   const [packageFile, setPackageFile] = useState(null);
   const [expertiseForm, setExpertiseForm] = useState({
@@ -140,7 +178,10 @@ function Default() {
           )}
           {editStatus && (
             <div
-              onClick={() => setEditStatus(false)}
+              onClick={() => {
+                setEditStatus(false);
+                handleBannerSubmit();
+              }}
               className="bg-primary text-secondary px-5 py-2 rounded-md cursor-pointer"
             >
               Submit
@@ -155,42 +196,48 @@ function Default() {
             <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
               {/* Banner Title */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-                <label htmlFor="banner_title">Banner Title</label>
+                <label htmlFor="serviceBanner">Banner Title</label>
                 <input
                   disabled={!editStatus ? true : false}
                   className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                   type="text"
-                  name="banner_title"
-                  id="banner_title"
+                  name="serviceBanner"
+                  id="serviceBanner"
                   required
                   placeholder="Fly to the Moon.."
+                  value={serviceBanner}
+                  onChange={onSeviceDetailChange}
                 />
               </div>
               {/* Banner Sub Title */}
               <div className=" w-full text-primary font-semibold space-y-2 text-[18px] ">
-                <label htmlFor="banner_subtitle">Banner Subtitle</label>
+                <label htmlFor="serviceBannerSub">Banner Subtitle</label>
                 <input
                   disabled={!editStatus ? true : false}
                   className="w-full py-2  text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                   type="text"
-                  name="banner_subtitle"
-                  id="banner_subtitle"
+                  name="serviceBannerSub"
+                  id="serviceBannerSub"
                   placeholder="exp subtitle..."
+                  value={serviceBannerSub}
+                  onChange={onSeviceDetailChange}
                 />
               </div>
             </div>
             <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2 mt-5">
               {/* Banner Title */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-                <label htmlFor="banner_content">Banner Content</label>
+                <label htmlFor="serviceBannerContent">Banner Content</label>
                 <input
                   disabled={!editStatus ? true : false}
                   className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                   type="text"
-                  name="banner_content"
-                  id="banner_content"
+                  name="serviceBannerContent"
+                  id="serviceBannerContent"
                   required
                   placeholder="Fly to the Moon.."
+                  value={serviceBannerContent}
+                  onChange={onSeviceDetailChange}
                 />
               </div>
             </div>

@@ -48,7 +48,7 @@ function ContactForm({ siteConfig }) {
     reload();
   };
   return (
-    <div className="px-[40px] xl:px-[176px] mb-[140px]">
+    <div className="">
       <div className="flex flex-col md:flex-row justify-start items-start md:space-x-20">
         {/* contact info */}
         <div className="w-full ">

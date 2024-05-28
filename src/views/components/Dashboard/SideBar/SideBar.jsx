@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { RiPagesLine, RiUserStarLine } from "react-icons/ri";
 import "animate.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { MdLeaderboard, MdOutlineMail } from "react-icons/md";
 import {
@@ -11,15 +11,16 @@ import {
   IoNotificationsOutline,
   IoSettingsOutline,
 } from "react-icons/io5";
-import { FaKey } from "react-icons/fa6";
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
 import { removeFromLocale } from "../../../../utils/helper";
+import { AppContext } from "../../../../utils/contexts/AppContext";
 function SideBar() {
   const [open, setOpen] = useState(false);
+  const { loggedUserData } = useContext(AppContext);
   const [subMenuItem, setSubMenuItem] = useState("");
   const location = window.location.pathname;
   const navigate = useNavigate();
-  console.log(location);
+  console.log(loggedUserData);
 
   return (
     <div className=" h-full w-full">

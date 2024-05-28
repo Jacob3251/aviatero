@@ -3,27 +3,34 @@ import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import Select from "react-select";
-import { convertToReactSelectOptions } from "../../../../../../utils/helper";
+import {
+  convertToReactSelectOptions,
+  convertToReactSelectPermissionOptions,
+} from "../../../../../../utils/helper";
+import usePermissions from "../../../../../../utils/hooks/usePermissions";
 function Create() {
   const permissionRef = useRef();
-  const data = [
-    {
-      id: "4c5952e3-bc6e-4264-8aa7-79cd7c603796",
-      title: "super",
-      desc: "super af",
-    },
-    {
-      id: "2c0887e0-0ef0-47f9-943d-6d9af90df3d9",
-      title: "admin",
-      desc: "non super af",
-    },
-    {
-      id: "c1a461b0-d15e-4ae1-b129-f6201635cfff",
-      title: "Create Client",
-      desc: "Can create clients",
-    },
-  ];
-  const selectOptions = convertToReactSelectOptions(data);
+  const [addedPermissions] = usePermissions();
+  // const data = ;
+  // console.log(data);
+  // const data = [
+  //   {
+  //     id: "4c5952e3-bc6e-4264-8aa7-79cd7c603796",
+  //     title: "super",
+  //     desc: "super af",
+  //   },
+  //   {
+  //     id: "2c0887e0-0ef0-47f9-943d-6d9af90df3d9",
+  //     title: "admin",
+  //     desc: "non super af",
+  //   },
+  //   {
+  //     id: "c1a461b0-d15e-4ae1-b129-f6201635cfff",
+  //     title: "Create Client",
+  //     desc: "Can create clients",
+  //   },
+  // ];
+  const selectOptions = convertToReactSelectPermissionOptions(addedPermissions);
   const colourStyles = {
     control: (styles) => ({ ...styles, backgroundColor: "white" }),
     option: (styles) => {

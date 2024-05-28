@@ -25,23 +25,17 @@ function Create() {
     );
     if (data) {
       console.log(data);
-      setFormData({
-        name: "",
-        clientType: "",
-        clientDesc: "",
-        clientEmail: "",
-        phone_no: "",
-        preferredDestination: "",
-        dealAmount: 0,
 
-        recent_update: "",
-      });
-      toast.success("Client Added Successfully", {
+      toast.success("Permission Added Successfully", {
         style: {
           backgroundColor: "#333333",
           color: "#fafafa",
         },
         className: "font-monrope",
+      });
+      setFormData({
+        title: "",
+        desc: "",
       });
     }
   };

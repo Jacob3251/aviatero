@@ -10,7 +10,9 @@ function AppManager({ children }) {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("");
   const [modalData, setModalData] = useState({});
-  const loginValue = findInLocale();
+  const [openDashboardMenu, setOpenDashboardMenu] = useState(false);
+
+  // console.log("form context", token);
   const [siteLoading, setSiteLoading] = useState(true);
   const [siteConfig, setSiteConfig] = useState({
     home_banner: "",
@@ -31,8 +33,9 @@ function AppManager({ children }) {
     instagram_link: "",
     serviceExpertiseData: [],
   });
-
-  const [isLogged, setIsLogged] = useState(loginValue ? true : false);
+  const [loggedUserData, setLoggedUserData] = useState({});
+  // token ? true :
+  const [isLogged, setIsLogged] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
@@ -55,6 +58,15 @@ function AppManager({ children }) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const value = findInLocale();
+    if (value) {
+      const { userData } = value;
+      setLoggedUserData({ ...userData });
+      setIsLogged(true);
+    }
+  }, []);
+
   const appInfo = {
     hoverOverlay,
     setHoverOverlay,
@@ -72,6 +84,10 @@ function AppManager({ children }) {
     setSiteConfig,
     siteLoading,
     setSiteLoading,
+    loggedUserData,
+    setLoggedUserData,
+    openDashboardMenu,
+    setOpenDashboardMenu,
   };
   return <AppContext.Provider value={appInfo}>{children}</AppContext.Provider>;
 }

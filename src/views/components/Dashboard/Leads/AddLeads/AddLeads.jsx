@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { FaRegFileImage } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -16,7 +17,36 @@ function AddLeads() {
 
     recent_update: "",
   });
+  // attachments portion begin
 
+  const [attachments, setAttachments] = useState([
+    {
+      attachment_title: "",
+      attachment_description: "",
+      owner_id: "",
+      type: "LEADS",
+      attachment_file: null,
+    },
+  ]);
+
+  const handleAddAttachment = () => {
+    setAttachments([
+      ...attachments,
+      {
+        attachment_title: "",
+        attachment_description: "",
+        owner_id: "",
+        type: "LEADS",
+        attachment_file: null,
+      },
+    ]);
+  };
+
+  const handleAttachmentChange = (index, attachment) => {
+    const newAttachments = [...attachments];
+    newAttachments[index] = attachment;
+    setAttachments(newAttachments);
+  };
   const {
     name,
     clientType,
@@ -36,35 +66,60 @@ function AddLeads() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-    const { data } = await axios.post(
-      "http://localhost:5000/api/lead",
-      formData
-    );
-    if (data) {
-      console.log(data);
-      setFormData({
-        name: "",
-        clientType: "",
-        clientDesc: "",
-        clientEmail: "",
-        phone_no: "",
-        preferredDestination: "",
-        dealAmount: 0,
+    const { data } = await axios
+      .post("http://localhost:5000/api/lead", formData)
+      .then((data) => {
+        attachments.forEach(async (attachment) => {
+          const {
+            attachment_title,
+            attachment_description,
+            type,
+            attachment_file,
+          } = attachment;
+          await axios.post(
+            "http://localhost:5000/api/attachment",
+            {
+              title: attachment_title,
+              desc: attachment_description,
+              file: attachment_file,
+              ownerId: data.data.data.id,
+              type,
+            },
+            { headers: { "Content-Type": "multipart/form-data" } }
+          );
+        });
+        setFormData({
+          name: "",
+          clientType: "",
+          clientDesc: "",
+          clientEmail: "",
+          phone_no: "",
+          preferredDestination: "",
+          dealAmount: 0,
+          recent_update: "",
+        });
 
-        recent_update: "",
+        toast.success("Lead Added Successfully", {
+          style: {
+            backgroundColor: "#333333",
+            color: "#fafafa",
+          },
+          className: "font-monrope",
+        });
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message, {
+          style: {
+            backgroundColor: "#333333",
+            color: "#fafafa",
+          },
+          className: "font-monrope",
+        });
       });
-      toast.success("Client Added Successfully", {
-        style: {
-          backgroundColor: "#333333",
-          color: "#fafafa",
-        },
-        className: "font-monrope",
-      });
-    }
   };
   return (
     <div className="bg-root w-full h-full overflow-y-scroll hidden-scrollbar">
-      <div className="flex items-center space-x-2 text-[22px] ">
+      <div className="flex items-center space-x-2 text-[28px] px-5 lg:px-0 uppercase">
         <div className="">
           <Link to="/dashboard" className="text-primary no-underline">
             Dashboard
@@ -74,19 +129,19 @@ function AddLeads() {
           <IoIosArrowForward />
         </div>
       </div>
-      <div className="p-20 font-monrope">
+      <div className="p-5 lg:p-20 space-y-5 font-monrope">
         <div className="text-[24px] text-primary  font-semibold uppercase ">
           Add Lead
         </div>
-        <div className="w-full bg-primary h-[2px] mt-3 mb-5"></div>
+        {/* <div className="w-full bg-primary h-[2px] mt-3 mb-5"></div> */}
         {/* form parent div below */}
-        <div className="">
+        <div className="mt-5">
           <form
             action=""
             onSubmit={handleSubmit}
             className="flex flex-col space-y-10"
           >
-            <div className="flex space-x-10">
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
               {/* Name */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="name">Full Name *</label>
@@ -115,7 +170,7 @@ function AddLeads() {
                 />
               </div>
             </div>
-            <div className="flex space-x-10">
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
               {/* client type */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="clientType">Client Type</label>
@@ -153,7 +208,7 @@ function AddLeads() {
                 />
               </div>
             </div>
-            <div className="flex space-x-10">
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
               {/* client phone number */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="phone_no">Phone Number *</label>
@@ -185,7 +240,7 @@ function AddLeads() {
                 />
               </div>
             </div>
-            <div className="flex space-x-10">
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
               {/* Deal Amount */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="dealAmount">Deal Amount</label>
@@ -213,6 +268,31 @@ function AddLeads() {
                 />
               </div>
             </div>
+            {/* attachment div */}
+            <div className="flex flex-col ">
+              <div className="">
+                {attachments.map((attachment, index) => (
+                  <AttachmentComponent
+                    key={index}
+                    id={index}
+                    index={index}
+                    attachment={attachment}
+                    onChange={(newAttachment) =>
+                      handleAttachmentChange(index, newAttachment)
+                    }
+                  />
+                ))}
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="border-2 border-primary bg-primary px-3 py-2 rounded-md hover:bg-transparent duration-300 hover:text-primary mt-5"
+                  onClick={handleAddAttachment}
+                >
+                  Add Attachment
+                </button>
+              </div>
+            </div>
 
             <div className="">
               <input
@@ -229,3 +309,75 @@ function AddLeads() {
 }
 
 export default AddLeads;
+
+const AttachmentComponent = ({ attachment, onChange, index }) => {
+  const fileInputRef = useRef(null);
+  const handleDivClick = () => {
+    fileInputRef.current.click();
+  };
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    // Do whatever you want with the selected file
+    console.log("Selected file:", file);
+  };
+  return (
+    <div className=" flex flex-col border-2 border-primary p-5 rounded-md mb-5">
+      <div className="text-primary font-monrope uppercase font-bold">
+        Attachment No : {index + 1}
+      </div>
+      <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
+        <div className="w-full text-primary font-semibold space-y-2 text-[18px]">
+          <input
+            className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
+            type="text"
+            placeholder="Attachment Title"
+            value={attachment.attachment_title}
+            onChange={(e) =>
+              onChange({ ...attachment, attachment_title: e.target.value })
+            }
+          />
+        </div>
+        <div className="w-full text-primary font-semibold space-y-2 text-[18px]">
+          <input
+            className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
+            type="text"
+            placeholder="Attachment Description"
+            value={attachment.attachment_description}
+            onChange={(e) =>
+              onChange({
+                ...attachment,
+                attachment_description: e.target.value,
+              })
+            }
+          />
+        </div>
+      </div>
+
+      <div className="flex space-x-10">
+        <div
+          htmlFor="serviceImage"
+          onClick={handleDivClick}
+          className="w-full flex flex-col justify-center items-center my-5 text-primary cursor-pointer border-2 border-primary p-5 rounded-md"
+        >
+          <FaRegFileImage className="text-[46px]" />
+          <div>
+            {attachment.attachment_file !== null ? "Uploaded" : "Upload File"}
+          </div>
+        </div>
+        <input
+          type="file"
+          name="file"
+          id="file"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={(e) =>
+            onChange({
+              ...attachment,
+              attachment_file: e.target.files[0],
+            })
+          }
+        />
+      </div>
+    </div>
+  );
+};
