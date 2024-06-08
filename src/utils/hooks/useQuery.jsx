@@ -1,27 +1,42 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { AppContext } from "../contexts/AppContext";
 
 const useQuery = (currentpage) => {
   const [data, setData] = useState([]);
-  //   console.log(currentpage);
-  const [metaData, setMetaData] = useState({});
-  const [reloadTrigger, setReloadTrigger] = useState(0);
-  const reload = () => setReloadTrigger((prev) => prev + 1);
-  const fetchData = useCallback(async () => {
-    try {
-      const { data } = await axios.get(
-        `http://localhost:5000/api/querymsg?page=${currentpage}&limit=8`
-      );
-      setData(data.data);
-      setMetaData(data.metadata);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }, [currentpage]);
+  const { loggedUserData } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
+  const { isLogged, setPendingNotifications } = useContext(AppContext);
   useEffect(() => {
-    fetchData();
-  }, [currentpage, fetchData]);
-  return [data, setData, metaData, reload];
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://consultancy-crm-serverside.onrender.com/api/querymsg`,
+          {
+            headers: {
+              Authorization: `Bearer ${loggedUserData.token}`,
+            },
+          }
+        );
+        setData(data.data);
+        // setTotalNotifications(data.data.length);
+        setLoading(false);
+        console.log("notification data:", data.data);
+        // let counter = 0;
+        // const pending = data.data.filter((item) => item.status === "Pending");
+        // console.log(pending.length);
+        setPendingNotifications(data.pending);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (isLogged) {
+      setTimeout(() => {
+        fetchData();
+      }, 300);
+    }
+  }, [data, isLogged, setPendingNotifications]);
+  return [data, setData, loading];
 };
 
 export default useQuery;

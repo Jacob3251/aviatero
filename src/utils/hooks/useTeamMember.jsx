@@ -6,13 +6,15 @@ const useTeamMember = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`http://localhost:5000/api/teammember`);
+      const { data } = await axios.get(
+        `https://consultancy-crm-serverside.onrender.com/api/teammember`
+      );
       setData(data.data);
       setLoading(false);
     };
     fetchData();
   }, []);
-  return [data, loading];
+  return [data, loading, setData];
 };
 
 export default useTeamMember;

@@ -4,7 +4,7 @@ import { FaUserCheck, FaUserClock } from "react-icons/fa";
 import { TiMessages } from "react-icons/ti";
 import { BiMessageCheck } from "react-icons/bi";
 import { MdOutlineRateReview } from "react-icons/md";
-function ClientInfoBox() {
+function ClientInfoBox({ data }) {
   return (
     <div className="w-full flex flex-col justify-center items-start">
       <div className="text-[24px] font-monrope font-semibold mb-5"></div>
@@ -14,7 +14,9 @@ function ClientInfoBox() {
             <div className="text-[48px]">
               <FaUserCheck />
             </div>
-            <div className="text-secondary text-[24px]">50</div>
+            <div className="text-secondary text-[24px]">
+              {data.totalClients}
+            </div>
           </div>
           <div className="mt-[20px]">Total Clients</div>
         </div>
@@ -23,7 +25,7 @@ function ClientInfoBox() {
             <div className="text-[48px]">
               <FaUserClock />
             </div>
-            <div className="text-secondary text-[24px]">500</div>
+            <div className="text-secondary text-[24px]">{data.totalLeads}</div>
           </div>
           <div className="mt-[20px]">Total Leads</div>
         </div>
@@ -32,7 +34,9 @@ function ClientInfoBox() {
             <div className="text-[48px]">
               <TiMessages />
             </div>
-            <div className="text-secondary text-[24px]">20</div>
+            <div className="text-secondary text-[24px]">
+              {data.totalUnresolved}
+            </div>
           </div>
           <div className="mt-[20px]">Unresolved Messages</div>
         </div>
@@ -41,7 +45,9 @@ function ClientInfoBox() {
             <div className="text-[48px]">
               <BiMessageCheck />
             </div>
-            <div className="text-secondary text-[24px]">20</div>
+            <div className="text-secondary text-[24px]">
+              {data.totalResolved}
+            </div>
           </div>
           <div className="mt-[20px]">Resolved Messages</div>
         </div>
@@ -50,7 +56,9 @@ function ClientInfoBox() {
             <div className="text-[48px]">
               <MdOutlineRateReview />
             </div>
-            <div className="text-secondary text-[24px]">20</div>
+            <div className="text-secondary text-[24px]">
+              {data.totalReviews}
+            </div>
           </div>
           <div className="mt-[20px]">Reviews Added</div>
         </div>

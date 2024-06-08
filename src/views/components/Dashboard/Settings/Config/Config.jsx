@@ -38,8 +38,13 @@ function Config() {
       });
     } else {
       const { data } = await axios.post(
-        "http://localhost:5000/api/registeredemails",
-        submissionData
+        "https://consultancy-crm-serverside.onrender.com/api/registeredemails",
+        submissionData,
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
       );
       if (data) {
         console.log(data);
@@ -70,7 +75,12 @@ function Config() {
 
       try {
         await axios.delete(
-          `http://localhost:5000/api/registeredemails/${item.id}`
+          `https://consultancy-crm-serverside.onrender.com/api/registeredemails/${item.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loggedUserData.token}`,
+            },
+          }
         );
         toast.success("Email Deleted");
       } catch (error) {
@@ -83,9 +93,9 @@ function Config() {
   };
   console.log(userEmails);
   return (
-    <>
+    <div className="w-full h-full hidden-scrollbar">
       {emailLoading === false ? (
-        <div>
+        <div className=" px-5">
           <div className="font-monrope font-bold text-primary  text-[20px] uppercase">
             Settings / Config
           </div>
@@ -99,7 +109,7 @@ function Config() {
                 className="mb-5"
                 encType="multipart/form-data"
               >
-                <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+                <div className="flex flex-col md:flex-row md:space-y-0 md:space-x-10 px-2">
                   {/* Employee Name */}
                   <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                     <label htmlFor="member_name">Email</label>
@@ -148,37 +158,38 @@ function Config() {
                     Manage Emails
                   </div>
                   {userEmails && (
-                    <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
-                      <thead className="text-xs text-primary uppercase bg-transparent  ">
-                        <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
-                          <th scope="col" className="px-6 py-5">
-                            Serial No
-                          </th>
-                          <th scope="col" className="px-6 py-5">
-                            Email
-                          </th>
-
-                          <th scope="col" className="px-6 py-5">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-secondary font-monrope ">
-                        {userEmails.map((email, index) => (
-                          <tr
-                            key={email.id}
-                            className="table-row border-2 border-secondary"
-                          >
-                            <th
-                              scope="row"
-                              className="px-6 py-4  whitespace-nowrap "
-                            >
-                              {index + 1}
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg border-primary border-2 p-5 hidden-scrollbar">
+                      <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0 ">
+                        <thead className="text-xs text-primary uppercase bg-transparent">
+                          <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
+                            <th scope="col" className="px-6 py-5">
+                              Serial No
                             </th>
-                            <td className="px-6 py-4 ">{email.email}</td>
+                            <th scope="col" className="px-6 py-5">
+                              Email
+                            </th>
 
-                            <td className="px-6 py-4 flex space-x-2 text-[24px]">
-                              {/* <div
+                            <th scope="col" className="px-6 py-5">
+                              Actions
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-secondary font-monrope w-full overflow-x-scroll">
+                          {userEmails.map((email, index) => (
+                            <tr
+                              key={email.id}
+                              className="table-row border-2 border-secondary w-full"
+                            >
+                              <th
+                                scope="row"
+                                className="px-6 py-4  whitespace-nowrap "
+                              >
+                                {index + 1}
+                              </th>
+                              <td className="px-6 py-4 ">{email.email}</td>
+
+                              <td className="px-6 py-4 flex space-x-2 text-[24px]">
+                                {/* <div
                                 onClick={() =>
                                   navigate(`/dashboard/clients/${item.id}/update`, {
                                     state: { item: item },
@@ -188,20 +199,21 @@ function Config() {
                               >
                                 <PiNotePencil />
                               </div> */}
-                              <div
-                                onClick={() => handleDelete(email)}
-                                className="cursor-pointer duration-300 hover:text-red-500"
-                              >
-                                <MdDelete />
-                              </div>
-                            </td>
-                            {/* <td>
+                                <div
+                                  onClick={() => handleDelete(email)}
+                                  className="cursor-pointer duration-300 hover:text-red-500"
+                                >
+                                  <MdDelete />
+                                </div>
+                              </td>
+                              {/* <td>
                           <img src={member.member_imagelink} alt="" />
                         </td> */}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   )}
                 </div>
               </>
@@ -211,53 +223,55 @@ function Config() {
                   <div className="font-monrope font-bold text-primary  text-[20px] uppercase tracking-wider">
                     All Registered Emails
                   </div>
-                  <div className="border-2 border-primary p-5 mt-5">
+                  <div className="border-2 border-primary p-5 mt-5 ">
                     <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
                       Manage All Emails
                     </div>
-                    <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
-                      <thead className="text-xs text-primary uppercase bg-transparent  ">
-                        <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
-                          <th scope="col" className="px-6 py-5">
-                            Serial No
-                          </th>
-
-                          <th scope="col" className="px-6 py-5">
-                            Email
-                          </th>
-
-                          <th scope="col" className="px-6 py-5">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-secondary font-monrope ">
-                        {allEmails.map((emailItem, index) => (
-                          <tr
-                            key={emailItem.id}
-                            className="table-row border-2 border-secondary"
-                          >
-                            <th
-                              scope="row"
-                              className="px-6 py-4  whitespace-nowrap "
-                            >
-                              {index + 1}
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg border-primary border-2 p-5 hidden-scrollbar">
+                      <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
+                        <thead className="text-xs text-primary uppercase bg-transparent  ">
+                          <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
+                            <th scope="col" className="px-6 py-5">
+                              Serial No
                             </th>
 
-                            <td className="px-6 py-4 ">{emailItem.email}</td>
+                            <th scope="col" className="px-6 py-5">
+                              Email
+                            </th>
 
-                            <td className="px-6 py-4 flex space-x-2 text-[24px]">
-                              <div
-                                onClick={() => handleDelete(emailItem)}
-                                className="cursor-pointer duration-300 hover:text-red-500"
-                              >
-                                <MdDelete />
-                              </div>
-                            </td>
+                            <th scope="col" className="px-6 py-5">
+                              Actions
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody className="text-secondary font-monrope ">
+                          {allEmails.map((emailItem, index) => (
+                            <tr
+                              key={emailItem.id}
+                              className="table-row border-2 border-secondary"
+                            >
+                              <th
+                                scope="row"
+                                className="px-6 py-4  whitespace-nowrap "
+                              >
+                                {index + 1}
+                              </th>
+
+                              <td className="px-6 py-4 ">{emailItem.email}</td>
+
+                              <td className="px-6 py-4 flex space-x-2 text-[24px]">
+                                <div
+                                  onClick={() => handleDelete(emailItem)}
+                                  className="cursor-pointer duration-300 hover:text-red-500"
+                                >
+                                  <MdDelete />
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               )}
@@ -267,7 +281,7 @@ function Config() {
       ) : (
         <div className="bg-red-500 text-white">Loading</div>
       )}
-    </>
+    </div>
   );
 }
 

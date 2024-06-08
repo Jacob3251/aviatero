@@ -9,14 +9,25 @@ import { NavLink } from "react-router-dom";
 function DefaultLayout({ children }) {
   const { showNavDrawer, hoverOverlay, setShowNavDrawer } =
     useContext(AppContext);
-
+  const [navbarColor, setNavbarColor] = useState("bg-transparent");
+  const handleScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    if (scrollTop > 100) {
+      setNavbarColor("bg-root");
+    } else {
+      setNavbarColor("bg-transparent");
+    }
+  };
   return (
     // bg-[#1E1E1E]
-    <div className="w-full h-full max-h-screen max-w-[1440px] mx-auto relative ">
+    <div
+      onScroll={handleScroll}
+      className="w-full h-full max-h-screen max-w-[1440px] mx-auto relative flex flex-col "
+    >
       <div className="bg-[#1e1e1e] absolute w-full top-0 ">
         <Navbar></Navbar>
       </div>
-      <div className="absolute top-[90px] md:top-[120px] w-full">
+      <div className="absolute top-[90px] md:top-[120px] w-full h-[calc(100vh_-_90px)] md:h-[calc(100vh_-_120px)] overflow-y-scroll flex flex-col flex-1  hidden-scrollbar">
         {children}
         <Footer></Footer>
       </div>
@@ -24,7 +35,7 @@ function DefaultLayout({ children }) {
         <div className=" h-full fixed top-0 bottom-0 right-0 w-full overflow-hidden z-50 ">
           <div className="w-full flex justify-end relative h-full bg-root bg-opacity-80 z-50">
             <div
-              className={`w-[60%] sm:w-[50%] md:w-[35%] xl:w-[20%] p-[20px] xl:px-[50px] 2xl:p-[100px] h-[100vh] animate__animated animate__slideInRight  flex justify-start items-start flex-col bg-black`}
+              className={`animate__animated animate__slideInRight w-[60%] sm:w-[50%] md:w-[35%] p-[20px] xl:px-[50px] 2xl:px-[100px] h-[100vh]   flex justify-start items-start flex-col bg-black`}
             >
               <div className=" w-full flex flex-col justify-end mb-[100px] md:mb-[50px] 2xl:mb-[80px] ">
                 <div className="flex justify-end">

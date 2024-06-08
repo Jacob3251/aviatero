@@ -5,6 +5,7 @@ import herobg from "../../assets/images/home/bg.png";
 import Services from "../components/Home/Services/Services";
 import Hero from "../components/Home/Hero/Hero";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import Loader from "../components/Reusable/Loader/Loader";
 import Address from "../components/Home/Address/Address";
 import { useNavigate } from "react-router-dom";
 import ScrollToTop from "../../utils/Other/ScrollToTop";
@@ -27,7 +28,9 @@ function Home() {
           <CTA siteConfig={siteConfig}></CTA>
         </LandingLayout>
       ) : (
-        <div className="bg-red-500 text-white">Loading</div>
+        <div className="absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center">
+          <Loader></Loader>
+        </div>
       )}
     </>
   );

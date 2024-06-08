@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegFileImage } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function AddLeads() {
+  const { loggedUserData } = useContext(AppContext);
   const [formData, setFormData] = useState({
     name: "",
     clientType: "",
@@ -67,7 +69,15 @@ function AddLeads() {
     e.preventDefault();
     console.log(formData);
     const { data } = await axios
-      .post("http://localhost:5000/api/lead", formData)
+      .post(
+        "https://consultancy-crm-serverside.onrender.com/api/lead",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
+      )
       .then((data) => {
         attachments.forEach(async (attachment) => {
           const {
@@ -77,7 +87,7 @@ function AddLeads() {
             attachment_file,
           } = attachment;
           await axios.post(
-            "http://localhost:5000/api/attachment",
+            "https://consultancy-crm-serverside.onrender.com/api/attachment",
             {
               title: attachment_title,
               desc: attachment_description,
@@ -85,7 +95,12 @@ function AddLeads() {
               ownerId: data.data.data.id,
               type,
             },
-            { headers: { "Content-Type": "multipart/form-data" } }
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${loggedUserData.token}`,
+              },
+            }
           );
         });
         setFormData({

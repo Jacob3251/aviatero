@@ -4,7 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { RiPagesLine, RiUserStarLine } from "react-icons/ri";
 import "animate.css";
 import { useNavigate } from "react-router-dom";
-import { FiLogOut } from "react-icons/fi";
+import { FiLogOut, FiUser } from "react-icons/fi";
 import { MdLeaderboard, MdOutlineMail } from "react-icons/md";
 import {
   IoKeyOutline,
@@ -14,6 +14,7 @@ import {
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
 import { removeFromLocale } from "../../../../utils/helper";
 import { AppContext } from "../../../../utils/contexts/AppContext";
+import { FaUser } from "react-icons/fa6";
 function SideBar() {
   const [open, setOpen] = useState(false);
   const { loggedUserData } = useContext(AppContext);
@@ -414,6 +415,7 @@ function SideBar() {
                     }
                   }}
                   className={`flex cursor-pointer items-center text-[24px] space-x-[32px] font-monrope ${
+                    location === "/dashboard/settings/user-management" ||
                     location === "/dashboard/settings/role" ||
                     location === "/dashboard/settings/permission" ||
                     location === "/dashboard/settings/config"
@@ -426,6 +428,18 @@ function SideBar() {
                 </div>
                 {subMenuItem === "settings" && (
                   <div className="flex flex-col  items-start mt-3 pl-10 animate__animated subMenuAnimation animate__fadeInDown">
+                    <div
+                      onClick={() =>
+                        navigate("/dashboard/settings/user-management")
+                      }
+                      className={`font-monrope text-[22px] py-2 hover:text-primary duration-150 cursor-pointer flex items-center ${
+                        location === "/dashboard/settings/user-management"
+                          ? "text-primary"
+                          : "text-secondary"
+                      }`}
+                    >
+                      <FiUser className="mr-2" /> User Management
+                    </div>
                     <div
                       onClick={() => navigate("/dashboard/settings/role")}
                       className={`font-monrope text-[22px] py-2 hover:text-primary duration-150 cursor-pointer flex items-center ${
@@ -463,10 +477,11 @@ function SideBar() {
               <div
                 onClick={() => {
                   setOpen(!open);
-                  setSubMenuItem("lcm");
+                  setSubMenuItem("settings");
                 }}
                 className={`flex items-center text-[24px] space-x-[32px] font-monrope cursor-pointer ${
                   location === "/dashboard/settings/role" ||
+                  location === "/dashboard/settings/user-management" ||
                   location === "/dashboard/settings/permission" ||
                   location === "/dashboard/settings/config"
                     ? "text-primary"

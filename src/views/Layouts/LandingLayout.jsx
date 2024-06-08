@@ -1,17 +1,30 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaFacebookF, FaLinkedinIn, FaYoutube } from "react-icons/fa6";
 import { AppContext } from "../../utils/contexts/AppContext";
 import { NavLink } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
-
+import "animate.css";
 function LandingLayout({ children }) {
   const { showNavDrawer, setShowNavDrawer } = useContext(AppContext);
+  const [navbarColor, setNavbarColor] = useState("bg-transparent");
+
+  const handleScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    if (scrollTop > 100) {
+      setNavbarColor("bg-root");
+    } else {
+      setNavbarColor("bg-transparent");
+    }
+  };
   return (
-    <div className="w-full h-full max-h-screen max-w-[1440px] mx-auto relative ">
+    <div
+      onScroll={handleScroll}
+      className="w-full h-[100vh] overflow-y-scroll hidden-scrollbar max-w-[1440px] mx-auto relative "
+    >
       <div className="absolute w-full top-0 ">
-        <Navbar></Navbar>
+        <Navbar navbarColor={navbarColor}></Navbar>
       </div>
       <div className="absolute top-0 w-full">
         {children}
@@ -21,7 +34,7 @@ function LandingLayout({ children }) {
         <div className=" h-full fixed top-0 bottom-0 right-0 w-full overflow-hidden z-50 ">
           <div className="w-full flex justify-end relative h-full bg-root bg-opacity-40 z-50">
             <div
-              className={`w-[60%] sm:w-[50%] md:w-[35%] xl:w-[20%] p-[20px] xl:px-[50px] 2xl:p-[100px] h-[100vh] animate__animated animate__slideInRight  flex justify-start items-start flex-col bg-black`}
+              className={`animate__animated animate__slideInRight w-[60%] sm:w-[50%] md:w-[35%] p-[20px] xl:px-[50px] 2xl:px-[100px] h-[100vh]   flex justify-start items-start flex-col bg-black`}
             >
               <div className=" w-full flex flex-col justify-end mb-[100px] md:mb-[50px] 2xl:mb-[80px] ">
                 <div className="flex justify-end">

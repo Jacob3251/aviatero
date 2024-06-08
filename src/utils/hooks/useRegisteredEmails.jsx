@@ -10,10 +10,20 @@ const useRegisteredEmails = (currentpage) => {
   useEffect(() => {
     const fetchData = async () => {
       const userEmailsResponse = await axios.get(
-        `http://localhost:5000/api/registeredemails/${loggedUserData.id}`
+        `https://consultancy-crm-serverside.onrender.com/api/registeredemails/${loggedUserData.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
       );
       const allEmailsResponse = await axios.get(
-        `http://localhost:5000/api/registeredemails`
+        `https://consultancy-crm-serverside.onrender.com/api/registeredemails`,
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
       );
       if (userEmailsResponse.data) {
         setUserEmails(userEmailsResponse.data.data);

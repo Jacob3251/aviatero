@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import usePermissions from "../../../../../../utils/hooks/usePermissions";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AppContext } from "../../../../../../utils/contexts/AppContext";
 
 function Update() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { loggedUserData } = useContext(AppContext);
   const roleData = location.state.item;
   const [permissions, permissionLoading] = usePermissions();
   //   console.log(permissions);
@@ -26,10 +28,18 @@ function Update() {
     console.log("Checked items:", checkedItems);
     try {
       await axios
-        .put(`http://localhost:5000/api/role/${roleData.id}`, {
-          title: roleData.title,
-          permissions: checkedItems,
-        })
+        .put(
+          `https://consultancy-crm-serverside.onrender.com/api/role/${roleData.id}`,
+          {
+            title: roleData.title,
+            permissions: checkedItems,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${loggedUserData.token}`,
+            },
+          }
+        )
         .then((data) => {
           toast.success(`${roleData.title} Role Updated`);
           setCheckedItems([]);

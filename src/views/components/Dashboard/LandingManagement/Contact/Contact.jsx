@@ -1,13 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { PiNotePencil } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function Contact({ siteConfig }) {
   const navigate = useNavigate();
+  const { loggedUserData } = useContext(AppContext);
   const [editStatus, setEditStatus] = useState(false);
   const {
     uk_office_address,
@@ -43,7 +45,7 @@ function Contact({ siteConfig }) {
   const handleSubmit = async () => {
     console.log("home", formData);
     const { data } = await axios.put(
-      "http://localhost:5000/api/siteconfig/00c491b9-3dfc-449c-9e99-99534f747bd1",
+      "https://consultancy-crm-serverside.onrender.com/api/siteconfig/383ea8da-1b43-430e-aada-2e4f48dd9ec9",
       {
         uk_office_address: ukOfficeAddress,
         uk_office_cell: ukOfficeCell,
@@ -51,6 +53,11 @@ function Contact({ siteConfig }) {
         bd_corporate_cell: bdCorporateCell,
         bd_legal_address: bdLegalAddress,
         bd_legal_cell: bdLegalCell,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUserData.token}`,
+        },
       }
     );
     if (data) {
@@ -99,7 +106,7 @@ function Contact({ siteConfig }) {
         <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
           Uk Office
         </div>
-        <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+        <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
           {/* Banner Title */}
           <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
             <label htmlFor="ukOfficeAddress">Address</label>
@@ -138,7 +145,7 @@ function Contact({ siteConfig }) {
             Corporate Office
           </div>
 
-          <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+          <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
             {/* Banner Title */}
             <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
               <label htmlFor="bdCorporateAddress">Address</label>
@@ -172,7 +179,7 @@ function Contact({ siteConfig }) {
           <div className="text-[20px] font-monrope text-primary font-bold my-5">
             Legal Office
           </div>
-          <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+          <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
             {/* Banner Title */}
             <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
               <label htmlFor="bdLegalAddress">Address</label>

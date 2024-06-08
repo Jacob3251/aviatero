@@ -10,10 +10,13 @@ import useEmails from "../../../../utils/hooks/useEmails";
 import { format } from "date-fns";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Loader from "../../Reusable/Loader/Loader";
 function Email() {
-  const { setShowModal, setModalType } = useContext(AppContext);
+  const { setShowModal, setModalType, loggedUserData } = useContext(AppContext);
+
   const [data, setData] = useState(false);
   const [sentEmails, emailLoading, setSentEmails] = useEmails();
+  console.log(sentEmails);
   const handleDateFormat = (date) => {
     return format(new Date(date), "do MMMM, yyyy");
   };
@@ -28,7 +31,14 @@ function Email() {
       );
       setSentEmails(newSentEmails);
       axios
-        .delete(`http://localhost:5000/api/email/${item.id}`)
+        .delete(
+          `https://consultancy-crm-serverside.onrender.com/api/email/${item.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loggedUserData.token}`,
+            },
+          }
+        )
         .then((data) => {
           toast.success("Email Deleted");
         })
@@ -195,7 +205,9 @@ function Email() {
           </div>
         </div>
       ) : (
-        <div className="bg-red-500">Loading</div>
+        <div className="absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center">
+          <Loader></Loader>
+        </div>
       )}
     </>
   );

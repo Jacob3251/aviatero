@@ -1,20 +1,36 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegFileImage } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { PiNotePencil } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import useServiceExpertise from "../../../../../utils/hooks/useServiceExpertise";
+import useServicePackages from "../../../../../utils/hooks/useServicePackages";
+import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function Default({ siteConfig }) {
   const navigate = useNavigate();
   const { services_banner, services_sub_banner, services_banner_content } =
     siteConfig;
+  const { loggedUserData } = useContext(AppContext);
+  const [editStatus, setEditStatus] = useState(false);
+  const [packageFile, setPackageFile] = useState(null);
+  const [expertiseForm, setExpertiseForm] = useState({
+    service_expertise_title: "",
+    service_expertise_content: "",
+  });
+  const [packageForm, setPackageForm] = useState({
+    service_package_title: "",
+    service_package_content: "",
+  });
   const [formData, setFormData] = useState({
     serviceBanner: services_banner,
     serviceBannerSub: services_sub_banner,
     serviceBannerContent: services_banner_content,
   });
+  const { serviceBanner, serviceBannerSub, serviceBannerContent } = formData;
   // On Change for changing the banner & title section
   const onSeviceDetailChange = (e) => {
     const { name, value } = e.target;
@@ -26,11 +42,16 @@ function Default({ siteConfig }) {
   // Service Banner Section Update
   const handleBannerSubmit = async () => {
     const { data } = await axios.put(
-      "http://localhost:5000/api/siteconfig/00c491b9-3dfc-449c-9e99-99534f747bd1",
+      "https://consultancy-crm-serverside.onrender.com/api/siteconfig/383ea8da-1b43-430e-aada-2e4f48dd9ec9",
       {
         services_banner: formData.serviceBanner,
         services_sub_banner: formData.serviceBannerSub,
         services_banner_content: formData.serviceBannerContent,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUserData.token}`,
+        },
       }
     );
     if (data) {
@@ -45,17 +66,6 @@ function Default({ siteConfig }) {
       });
     }
   };
-  const { serviceBanner, serviceBannerSub, serviceBannerContent } = formData;
-  const [editStatus, setEditStatus] = useState(false);
-  const [packageFile, setPackageFile] = useState(null);
-  const [expertiseForm, setExpertiseForm] = useState({
-    service_expertise_title: "",
-    service_expertise_content: "",
-  });
-  const [packageForm, setPackageForm] = useState({
-    service_package_title: "",
-    service_package_content: "",
-  });
 
   const { service_expertise_title, service_expertise_content } = expertiseForm;
   const { service_package_title, service_package_content } = packageForm;
@@ -86,22 +96,27 @@ function Default({ siteConfig }) {
   // handle the submitted expertise items
   const handleExpertise = async (event) => {
     event.preventDefault();
-    const expertiseData = {
-      service_expertise_title,
-      service_expertise_content,
-    };
     // console.log(data);
     const { data } = await axios.post(
-      "http://localhost:5000/api/serviceexpertise",
-      expertiseData
+      "https://consultancy-crm-serverside.onrender.com/api/serviceexpertise",
+      {
+        service_expertise_title,
+        service_expertise_content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUserData.token}`,
+        },
+      }
     );
-    if (expertiseData) {
+    if (data) {
+      setExpertiseDatas((prev) => [...prev, data.data]);
       setExpertiseForm({
         service_expertise_title: "",
         service_expertise_content: "",
       });
       toast.success("Expertise Added");
-      window.location.reload();
+      // window.location.reload();
     } else {
       toast.error("Expertise Not Added");
     }
@@ -117,50 +132,70 @@ function Default({ siteConfig }) {
     console.log("service package data", servicePackageData);
     // console.log(data);
     const { data } = await axios.post(
-      "http://localhost:5000/api/servicepackage",
+      "https://consultancy-crm-serverside.onrender.com/api/servicepackage",
       servicePackageData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
     if (data) {
+      setPackageDatas((prev) => [...prev, data.data]);
       setPackageForm({
         service_package_title: "",
         service_package_content: "",
       });
+      setPackageFile(null);
       toast.success("Service Package Added");
-      window.location.reload();
+      // window.location.reload();
     } else {
       toast.error("Service Package Not Added");
     }
   };
-  const [expertiseDatas, setExpertiseDatas] = useState([]);
-  const [packageDatas, setPackageDatas] = useState([]);
-  useEffect(() => {
-    const fetchExpertiseData = async () => {
-      const { data } = await axios.get(
-        "http://localhost:5000/api/serviceexpertise"
-      );
-
-      if (data) {
-        setExpertiseDatas(data.data);
-      }
-    };
-    // setTimeout(() => {
-    fetchExpertiseData();
-    // }, 3000);
-  }, []);
-  useEffect(() => {
-    // servicepackage
-    const fetchPackageData = async () => {
-      const { data } = await axios.get(
-        "http://localhost:5000/api/servicepackage"
-      );
-
-      if (data) {
-        setPackageDatas(data.data);
-      }
-    };
-    fetchPackageData();
-  }, []);
+  const [expertiseDatas, expertiseDataLoading, setExpertiseDatas] =
+    useServiceExpertise();
+  const [packageDatas, packageDatasLoading, setPackageDatas] =
+    useServicePackages();
+  // deleting the expertise
+  const handleExpertiseDelete = async (item) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (confirm) {
+      await axios
+        .delete(
+          `https://consultancy-crm-serverside.onrender.com/api/serviceexpertise/${item.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loggedUserData.token}`,
+            },
+          }
+        )
+        .then((data) => {
+          toast.success("Item deleted Successfully.");
+          setExpertiseDatas(expertiseDatas.filter((i) => i.id !== item.id));
+        })
+        .catch((error) => {
+          toast.error("Couldn't delete item.");
+        });
+    }
+  };
+  // deleting the service packages
+  const handleServicePackageDelete = async (item) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (confirm) {
+      await axios
+        .delete(
+          `https://consultancy-crm-serverside.onrender.com/api/servicepackage/${item.id}`
+        )
+        .then((data) => {
+          toast.success("Item deleted Successfully.");
+          setPackageDatas(packageDatas.filter((i) => i.id !== item.id));
+        })
+        .catch((error) => {
+          toast.error("Couldn't delete item.");
+        });
+    }
+  };
   return (
     <div>
       <div className="font-monrope font-bold text-primary  text-[20px] uppercase">
@@ -193,7 +228,7 @@ function Default({ siteConfig }) {
             <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
               Banner Section
             </div>
-            <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+            <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
               {/* Banner Title */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="serviceBanner">Banner Title</label>
@@ -224,7 +259,7 @@ function Default({ siteConfig }) {
                 />
               </div>
             </div>
-            <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2 mt-5">
+            <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2 mt-5">
               {/* Banner Title */}
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="serviceBannerContent">Banner Content</label>
@@ -253,7 +288,7 @@ function Default({ siteConfig }) {
               className="mb-5"
               encType="multipart/form-data"
             >
-              <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+              <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
                 {/* package title */}
                 <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                   <label htmlFor="service_title">Service Title</label>
@@ -283,7 +318,7 @@ function Default({ siteConfig }) {
                   />
                 </div>
               </div>
-              <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2 mt-5">
+              <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2 mt-5">
                 {/* Service Image */}
                 <div
                   htmlFor="file"
@@ -291,7 +326,9 @@ function Default({ siteConfig }) {
                   className="w-full flex flex-col justify-center items-center my-5 text-primary cursor-pointer border-2 border-primary p-5 rounded-md"
                 >
                   <FaRegFileImage className="text-[46px]" />
-                  <div>Upload File</div>
+                  <div>
+                    {packageFile === null ? "Upload File" : "File Selected"}
+                  </div>
                 </div>
                 <input
                   type="file"
@@ -311,61 +348,74 @@ function Default({ siteConfig }) {
               </div>
             </form>
             {/* data table */}
-            <div className="border-2 border-primary p-5">
-              <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
-                Manage Service Items
+            {packageDatasLoading === false ? (
+              <div className="border-2 border-primary p-5">
+                <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
+                  Manage Service Items
+                </div>
+                {packageDatas.length === 0 ? (
+                  <EmptyComponent heading="Package"></EmptyComponent>
+                ) : (
+                  <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
+                    <thead className="text-xs text-primary uppercase bg-transparent  ">
+                      <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
+                        <th scope="col" className="px-6 py-5">
+                          Serial No
+                        </th>
+                        <th scope="col" className="px-6 py-5">
+                          Title
+                        </th>
+
+                        <th scope="col" className="px-6 py-5">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-secondary font-monrope ">
+                      {packageDatas.map((packageItem, index) => (
+                        <tr
+                          key={packageItem.id}
+                          className="table-row border-2 border-secondary"
+                        >
+                          <th
+                            scope="row"
+                            className="px-6 py-4  whitespace-nowrap "
+                          >
+                            {index + 1}
+                          </th>
+                          <td className="px-6 py-4 uppercase">
+                            {packageItem?.service_package_title}
+                          </td>
+
+                          <td className="px-6 py-4 flex space-x-2 text-[24px]">
+                            {/* <div
+                              // onClick={() =>
+                              //   navigate(`/dashboard/clients/${item.id}/update`, {
+                              //     state: { item: item },
+                              //   })
+                              // }
+                              className="cursor-pointer duration-300 hover:text-green-500"
+                            >
+                              <PiNotePencil />
+                            </div> */}
+                            <div
+                              onClick={() =>
+                                handleServicePackageDelete(packageItem)
+                              }
+                              className="cursor-pointer duration-300 hover:text-red-500"
+                            >
+                              <MdDelete />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
-              <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
-                <thead className="text-xs text-primary uppercase bg-transparent  ">
-                  <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
-                    <th scope="col" className="px-6 py-5">
-                      Serial No
-                    </th>
-                    <th scope="col" className="px-6 py-5">
-                      Title
-                    </th>
-
-                    <th scope="col" className="px-6 py-5">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-secondary font-monrope ">
-                  {packageDatas.map((packageItem, index) => (
-                    <tr
-                      key={packageItem.id}
-                      className="table-row border-2 border-secondary"
-                    >
-                      <th scope="row" className="px-6 py-4  whitespace-nowrap ">
-                        {index + 1}
-                      </th>
-                      <td className="px-6 py-4 uppercase">
-                        {packageItem?.service_package_title}
-                      </td>
-
-                      <td className="px-6 py-4 flex space-x-2 text-[24px]">
-                        <div
-                          // onClick={() =>
-                          //   navigate(`/dashboard/clients/${item.id}/update`, {
-                          //     state: { item: item },
-                          //   })
-                          // }
-                          className="cursor-pointer duration-300 hover:text-green-500"
-                        >
-                          <PiNotePencil />
-                        </div>
-                        <div
-                          // onClick={() => handleDelete(item)}
-                          className="cursor-pointer duration-300 hover:text-red-500"
-                        >
-                          <MdDelete />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            ) : (
+              <div className="bg-red-500 text-white">Loading</div>
+            )}
           </div>
           {/* expertise section */}
 
@@ -374,7 +424,7 @@ function Default({ siteConfig }) {
               Expertise Section
             </div>
             <form action="" className="mb-5" onSubmit={handleExpertise}>
-              <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+              <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
                 {/* expertise title */}
                 <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                   <label htmlFor="service_expertise_title">
@@ -418,54 +468,65 @@ function Default({ siteConfig }) {
               </div>
             </form>
             {/* data table */}
-            <div className="border-2 border-primary p-5">
-              <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
-                Manage Expertise Items
-              </div>
-              <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
-                <thead className="text-xs text-primary uppercase bg-transparent  ">
-                  <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
-                    <th scope="col" className="px-6 py-5">
-                      Serial No
-                    </th>
-                    <th scope="col" className="px-6 py-5">
-                      Title
-                    </th>
+            {expertiseDataLoading === false ? (
+              <div className="border-2 border-primary p-5">
+                <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
+                  Manage Expertise Items
+                </div>
+                {expertiseDatas.length === 0 ? (
+                  <EmptyComponent heading="Expertise"></EmptyComponent>
+                ) : (
+                  <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
+                    <thead className="text-xs text-primary uppercase bg-transparent  ">
+                      <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
+                        <th scope="col" className="px-6 py-5">
+                          Serial No
+                        </th>
+                        <th scope="col" className="px-6 py-5">
+                          Title
+                        </th>
 
-                    <th scope="col" className="px-6 py-5">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-secondary font-monrope ">
-                  {expertiseDatas.map((item, index) => (
-                    <tr
-                      key={index}
-                      className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary"
-                    >
-                      <th scope="row" className="px-6 py-4  whitespace-nowrap ">
-                        {index + 1}
-                      </th>
-                      <td className="px-6 py-4 uppercase">
-                        {item.service_expertise_title}
-                      </td>
-
-                      <td className="px-6 py-4 flex space-x-2 text-[24px]">
-                        <div className="cursor-pointer duration-300 hover:text-green-500">
-                          <PiNotePencil />
-                        </div>
-                        <div
-                          // onClick={() => handleDelete(item)}
-                          className="cursor-pointer duration-300 hover:text-red-500"
+                        <th scope="col" className="px-6 py-5">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-secondary font-monrope ">
+                      {expertiseDatas.map((item, index) => (
+                        <tr
+                          key={index}
+                          className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary"
                         >
-                          <MdDelete />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                          <th
+                            scope="row"
+                            className="px-6 py-4  whitespace-nowrap "
+                          >
+                            {index + 1}
+                          </th>
+                          <td className="px-6 py-4 uppercase">
+                            {item.service_expertise_title}
+                          </td>
+
+                          <td className="px-6 py-4 flex space-x-2 text-[24px]">
+                            {/* <div className="cursor-pointer duration-300 hover:text-green-500">
+                              <PiNotePencil />
+                            </div> */}
+                            <div
+                              onClick={() => handleExpertiseDelete(item)}
+                              className="cursor-pointer duration-300 hover:text-red-500"
+                            >
+                              <MdDelete />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            ) : (
+              <div className="bg-red-500 text-white">Loading</div>
+            )}
           </div>
         </div>
       </div>

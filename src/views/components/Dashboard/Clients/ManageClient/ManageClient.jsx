@@ -1,15 +1,17 @@
 import { FaPlus } from "react-icons/fa6";
 import useClient from "../../../../../utils/hooks/useClient";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { PiNotePencil } from "react-icons/pi";
 import { MdDelete, MdOutlineRemoveRedEye } from "react-icons/md";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function ManageClient() {
   const [currentPage, setCurrentPage] = useState(1);
+  const { loggedUserData } = useContext(AppContext);
   const [data, setData, metaData] = useClient(currentPage);
   const navigate = useNavigate();
   const handleDelete = async (item) => {
@@ -18,7 +20,12 @@ function ManageClient() {
     );
     if (confirm) {
       const { status } = await axios.delete(
-        `http://localhost:5000/api/client/${item.id}/delete`
+        `https://consultancy-crm-serverside.onrender.com/api/client/${item.id}/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
       );
       if (status === 200) {
         const updatedData = data.filter((client) => client.id !== item.id);
@@ -110,7 +117,7 @@ function ManageClient() {
                       {" "}
                       <div
                         onClick={() =>
-                          navigate("/dashboard/clients/information/id")
+                          navigate(`/dashboard/clients/information/${item.id}`)
                         }
                         className="cursor-pointer duration-300 hover:text-green-500"
                       >

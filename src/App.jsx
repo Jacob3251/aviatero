@@ -37,6 +37,9 @@ import CreatePermission from "./views/components/Dashboard/Settings/Permission/C
 import CreateService from "./views/components/Dashboard/LandingManagement/Home/Service/Create";
 import AuthChecker from "./utils/Other/AuthChecker";
 import Blogs from "./views/pages/Blogs";
+import User from "./views/components/Dashboard/Settings/User/User";
+import Update from "./views/components/Dashboard/Settings/User/Update/Update";
+import View from "./views/components/Dashboard/Settings/User/View/View";
 
 function App() {
   const router = createBrowserRouter([
@@ -107,6 +110,18 @@ function App() {
           element: <CreateService></CreateService>,
         },
 
+        {
+          path: "settings/user-management",
+          element: <User></User>,
+        },
+        {
+          path: "settings/user-management/:id",
+          element: <View></View>,
+        },
+        {
+          path: "settings/user-management/:id/update",
+          element: <Update></Update>,
+        },
         {
           path: "settings/role",
           element: <Role></Role>,

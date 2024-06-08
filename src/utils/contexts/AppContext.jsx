@@ -39,7 +39,7 @@ function AppManager({ children }) {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        "http://localhost:5000/api/siteInformation"
+        "https://consultancy-crm-serverside.onrender.com/api/siteInformation"
       );
       if (data) {
         const siteconfiguration = data.siteConfigs;
@@ -62,10 +62,33 @@ function AppManager({ children }) {
     const value = findInLocale();
     if (value) {
       const { userData } = value;
-      setLoggedUserData({ ...userData });
+      setLoggedUserData({ ...userData, token: value.token });
       setIsLogged(true);
     }
   }, []);
+  const [loggedUserInfoLoading, setLoggedUserInfoLoading] = useState(true);
+  const [loggedUserInfo, setLoggedUserInfo] = useState({});
+  useEffect(() => {
+    let userID;
+    const value = findInLocale();
+    if (value) {
+      const { userData } = value;
+      userID = userData.id;
+    }
+    const fetchData = async () => {
+      const { data } = await axios.get(
+        `https://consultancy-crm-serverside.onrender.com/api/user/${userID}`
+      );
+      console.log(data);
+      if (data) {
+        setLoggedUserInfo(data.data);
+        setLoggedUserInfoLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const [pendingNotifications, setPendingNotifications] = useState(0);
 
   const appInfo = {
     hoverOverlay,
@@ -88,6 +111,12 @@ function AppManager({ children }) {
     setLoggedUserData,
     openDashboardMenu,
     setOpenDashboardMenu,
+    pendingNotifications,
+    setPendingNotifications,
+    loggedUserInfo,
+    setLoggedUserInfo,
+    loggedUserInfoLoading,
+    setLoggedUserInfoLoading,
   };
   return <AppContext.Provider value={appInfo}>{children}</AppContext.Provider>;
 }

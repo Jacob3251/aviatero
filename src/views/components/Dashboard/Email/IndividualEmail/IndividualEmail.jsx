@@ -17,7 +17,11 @@ function IndividualEmail() {
         key={index}
         className="px-5 inline-flex justify-center items-center mr-10 h-12 bg-primary rounded text-root"
       >
-        <a href={`http://localhost:5000/${dta.path.split("\\")[1]}`}>
+        <a
+          href={`https://consultancy-crm-serverside.onrender.com/${
+            dta.path.split("\\")[1]
+          }`}
+        >
           {dta.filename}
         </a>
       </div>

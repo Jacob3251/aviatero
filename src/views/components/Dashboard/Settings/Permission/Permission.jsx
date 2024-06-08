@@ -3,13 +3,34 @@ import { MdDelete, MdOutlineRemoveRedEye } from "react-icons/md";
 import { PiNotePencil } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import usePermissions from "../../../../../utils/hooks/usePermissions";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Permission() {
   const navigate = useNavigate();
-  const [permissions, permissionLoading] = usePermissions();
+  const [permissions, permissionLoading, setPermissions] = usePermissions();
+  const handlePermissionDelete = async (permission) => {
+    const confirm = window.confirm(
+      `Are you sure you want to delete ${permission.title}?`
+    );
+    if (confirm) {
+      await axios
+        .delete(
+          `https://consultancy-crm-serverside.onrender.com/api/permission/${permission.id}`
+        )
+        .then((data) => {
+          toast.success(`${permission.title} permission deleted successfully.`);
+          const filtered = permissions.filter((p) => p.id !== permission.id);
+          setPermissions(filtered);
+        })
+        .catch((error) => {
+          toast.error(`Couldn't delete ${permission.title}!!`);
+        });
+    }
+  };
   console.log(permissions);
   return (
-    <div>
+    <div className="w-full h-full overflow-y-scroll hidden-scrollbar">
       <div className="p-5">
         <div>
           <div className="mb-5 text-[24px] font-monrope text-primary font-semibold">
@@ -27,7 +48,7 @@ function Permission() {
             </div>
           </div>
           {permissionLoading === false ? (
-            <div className="border-primary border-2 p-5">
+            <div className="border-primary border-2 p-5 w-full overflow-x-auto">
               <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0 ">
                 <thead className="text-xs text-primary uppercase bg-transparent  ">
                   <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
@@ -40,9 +61,9 @@ function Permission() {
                     <th scope="col" className="px-6 py-5">
                       Permission Description
                     </th>
-                    <th scope="col" className="px-6 py-5">
+                    {/* <th scope="col" className="px-6 py-5">
                       Action
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
                 <tbody className="text-secondary font-monrope ">
@@ -58,7 +79,7 @@ function Permission() {
                       <td className="px-6 py-4">{permission.title}</td>
                       <td className="px-6 py-4">{permission.desc}</td>
 
-                      <td className="px-6 py-4 flex space-x-2 text-[24px]">
+                      {/* <td className="px-6 py-4 flex space-x-2 text-[24px]">
                         {" "}
                         <div
                           // onClick={() =>
@@ -79,12 +100,12 @@ function Permission() {
                           <PiNotePencil />
                         </div>
                         <div
-                          // onClick={() => handleDelete(item)}
+                          onClick={() => handlePermissionDelete(permission)}
                           className="cursor-pointer duration-300 hover:text-red-500"
                         >
                           <MdDelete />
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>

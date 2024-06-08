@@ -1,10 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function UpdateLeads() {
+  const { loggedUserData } = useContext(AppContext);
   const location = useLocation();
   const [formData, setFormData] = useState(location.state.item);
   const {
@@ -28,8 +30,13 @@ function UpdateLeads() {
     e.preventDefault();
     console.log(formData);
     const { data } = await axios.put(
-      `http://localhost:5000/api/lead/${location.state.item.id}/update`,
-      formData
+      `https://consultancy-crm-serverside.onrender.com/api/lead/${location.state.item.id}/update`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUserData.token}`,
+        },
+      }
     );
     if (data) {
       console.log(data);

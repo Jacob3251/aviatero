@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import EmptyComponent from "../../EmptyComponent/EmptyComponent";
 import { MdDelete, MdOutlineRemoveRedEye } from "react-icons/md";
@@ -7,19 +7,27 @@ import { FaPlus } from "react-icons/fa6";
 import useQuery from "../../../../utils/hooks/useQuery";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { AppContext } from "../../../../utils/contexts/AppContext";
 
 function Notifications() {
   const navigate = useNavigate();
   // const [data, setData] = useState(false);
+  const { loggedUserData } = useContext(AppContext);
   const [currentPage, setCurrentPage] = useState(1);
-  const [data, setData, metaData] = useQuery(currentPage);
+  const [data, setData] = useQuery(currentPage);
+  // const { data, setdata } = useContext(AppContext);
   const handleDelete = async (item) => {
     const confirm = window.confirm(
       `Are you sure you want to delete ${item.name}?`
     );
     if (confirm) {
       const { status } = await axios.delete(
-        `http://localhost:5000/api/querymsg/${item.id}/delete`
+        `https://consultancy-crm-serverside.onrender.com/api/querymsg/${item.id}/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
       );
       if (status === 200) {
         const updatedData = data.filter((client) => client.id !== item.id);
@@ -42,7 +50,8 @@ function Notifications() {
       }
     }
   };
-  console.log("pending", metaData?.pending);
+  // console.log("pending", metaData?.pending);
+
   return (
     <div className="w-full h-auto text-primary ">
       <div className="mb-5 text-[24px] font-monrope text-primary font-semibold px-5 lg:px-0 text-center lg:text-left uppercase">
@@ -76,7 +85,7 @@ function Notifications() {
             </div>
             <div
               style={{ border: "2px solid #D9B658" }}
-              className="relative overflow-x-auto shadow-md sm:rounded-lg p-5"
+              className="relative overflow-x-auto shadow-md sm:rounded-lg p-5 hidden-scrollbar"
             >
               <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
                 <thead className="text-xs text-primary uppercase bg-transparent  border-2 border-secondary">
@@ -152,7 +161,7 @@ function Notifications() {
                 </tbody>
               </table>
               {/* pagination */}
-              <div className="w-full mt-5">
+              {/* <div className="w-full mt-5">
                 <div className=" w-full ">
                   <ul className="flex justify-start items-start h-10 list-none">
                     <li
@@ -188,7 +197,7 @@ function Notifications() {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         )}

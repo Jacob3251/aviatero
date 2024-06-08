@@ -8,7 +8,9 @@ function Permission({ permissionId }) {
     const fetchData = async () => {
       try {
         await axios
-          .get(`http://localhost:5000/api/permission/${permissionId}`)
+          .get(
+            `https://consultancy-crm-serverside.onrender.com/api/permission/${permissionId}`
+          )
           .then((data) => {
             setPermissionInfo(data.data.data);
             // console.log(data.data.data);

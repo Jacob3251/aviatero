@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import Select from "react-select";
@@ -8,9 +8,11 @@ import {
   convertToReactSelectPermissionOptions,
 } from "../../../../../../utils/helper";
 import usePermissions from "../../../../../../utils/hooks/usePermissions";
+import { AppContext } from "../../../../../../utils/contexts/AppContext";
 function Create() {
   const permissionRef = useRef();
   const [addedPermissions] = usePermissions();
+  const { loggedUserData } = useContext(AppContext);
   // const data = ;
   // console.log(data);
   // const data = [
@@ -69,8 +71,13 @@ function Create() {
     };
     console.log("payload=>", payload);
     const { data } = await axios.post(
-      "http://localhost:5000/api/role",
-      payload
+      "https://consultancy-crm-serverside.onrender.com/api/role",
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUserData.token}`,
+        },
+      }
     );
     if (data) {
       console.log(data);

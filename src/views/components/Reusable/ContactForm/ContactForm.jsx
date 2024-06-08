@@ -1,13 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FaFacebookF, FaLinkedinIn, FaYoutube } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import useQuery from "../../../../utils/hooks/useQuery";
+import { AppContext } from "../../../../utils/contexts/AppContext";
 
 function ContactForm({ siteConfig }) {
-  const [currentpage, setCurrentpage] = useState(1);
-  const [data, setData, metaData, reload] = useQuery(currentpage);
+  // const [currentpage, setCurrentpage] = useState(1);
+  // const [data, setData] = useQuery(currentpage);
+  const { loggedUserData } = useContext(AppContext);
   const { fb_link, youtube_link, instagram_link } = siteConfig;
   const [formData, setFormData] = useState({
     name: "",
@@ -26,7 +28,15 @@ function ContactForm({ siteConfig }) {
     e.preventDefault();
     console.log(formData);
     await axios
-      .post("http://localhost:5000/api/querymsg", formData)
+      .post(
+        "https://consultancy-crm-serverside.onrender.com/api/querymsg",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
+      )
       .then((data) => {
         console.log(data);
         setFormData({
@@ -45,7 +55,7 @@ function ContactForm({ siteConfig }) {
       })
       .catch((error) => console.log(error.message));
 
-    reload();
+    // reload();
   };
   return (
     <div className="">

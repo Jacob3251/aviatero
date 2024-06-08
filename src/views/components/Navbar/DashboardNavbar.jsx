@@ -6,10 +6,11 @@ import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import { removeFromLocale } from "../../../utils/helper";
+import { removeFromLocale, site_sensitive_info } from "../../../utils/helper";
 function DashboardNavbar() {
   const [navbarColor, setNavbarColor] = useState("bg-transparent");
-  const { setOpenDashboardMenu } = useContext(AppContext);
+  const { setOpenDashboardMenu, pendingNotifications, loggedUserInfo } =
+    useContext(AppContext);
   const [toggleProfile, setToggleProfile] = useState(false);
   const navigate = useNavigate();
   return (
@@ -31,9 +32,14 @@ function DashboardNavbar() {
         />
       </div>
       <div className="text-[34px] lg:flex justify-center items-center space-x-[40px] text-secondary cursor-pointer pr-[48px] hidden">
-        <IoNotificationsOutline
-          onClick={() => navigate("/dashboard/notifications")}
-        />
+        <span className="relative">
+          <IoNotificationsOutline
+            onClick={() => navigate("/dashboard/notifications")}
+          />
+          <span className="absolute text-[12px] right-0 top-0 rounded-full bg-primary px-1.5">
+            {pendingNotifications}
+          </span>
+        </span>
         <IoSettingsOutline
           onClick={() => navigate("/dashboard/settings/config")}
         />
@@ -41,7 +47,11 @@ function DashboardNavbar() {
           <img
             onClick={() => setToggleProfile(!toggleProfile)}
             className="w-full h-full rounded-full object-fill"
-            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={
+              loggedUserInfo.storage_link
+                ? site_sensitive_info.site_origin + loggedUserInfo.storage_link
+                : ""
+            }
             alt=""
           />
           {toggleProfile && (

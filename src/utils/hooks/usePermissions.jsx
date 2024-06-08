@@ -7,7 +7,9 @@ const usePermissions = () => {
   const [permissionLoading, setPermissionLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`http://localhost:5000/api/permission`);
+      const response = await axios.get(
+        `https://consultancy-crm-serverside.onrender.com/api/permission`
+      );
       if (response.data) {
         setPermissions(response.data.data);
         // console.log(response);

@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function IndividualNotification() {
+  const { loggedUserData } = useContext(AppContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState({});
@@ -23,11 +25,19 @@ function IndividualNotification() {
   const handleReply = async (event) => {
     event.preventDefault();
     await axios
-      .put(`http://localhost:5000/api/querymsg/${data?.id}/update`, {
-        ...data,
-        reply: reply,
-        status: "Answered",
-      })
+      .put(
+        `https://consultancy-crm-serverside.onrender.com/api/querymsg/${data?.id}/update`,
+        {
+          ...data,
+          reply: reply,
+          status: "Answered",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
+      )
       .then(() => {
         toast.success("Reply Sent");
         setFormData({
@@ -42,7 +52,14 @@ function IndividualNotification() {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(`http://localhost:5000/api/querymsg/${param}`)
+        .get(
+          `https://consultancy-crm-serverside.onrender.com/api/querymsg/${param}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loggedUserData.token}`,
+            },
+          }
+        )
         .then((data) => {
           console.log(data);
           setData(data.data.data);
@@ -102,6 +119,8 @@ function IndividualNotification() {
         </div>
         <div className="text-primary font-bold">Message Content:</div>
         <div>{data?.message}</div>
+        <div className="text-primary font-bold">Latest Given Reply:</div>
+        <div>{data?.reply}</div>
         <form onSubmit={handleReply}>
           <textarea
             rows={5}

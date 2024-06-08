@@ -1,15 +1,16 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../contexts/AppContext";
+import axios from "axios";
 
-const useIndividualEmail = (id) => {
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(true);
+const useIndividualClient = (id) => {
   const { loggedUserData } = useContext(AppContext);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/email/${id}`,
+        `https://consultancy-crm-serverside.onrender.com/api/client/${id}`,
         {
           headers: {
             Authorization: `Bearer ${loggedUserData.token}`,
@@ -17,11 +18,12 @@ const useIndividualEmail = (id) => {
         }
       );
       setData(data.data);
+      console.log(data);
       setLoading(false);
     };
     fetchData();
   }, []);
-  return [data, loading];
+  return [data, loading, setData];
 };
 
-export default useIndividualEmail;
+export default useIndividualClient;

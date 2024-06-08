@@ -1,13 +1,15 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { PiNotePencil } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../../../../../utils/contexts/AppContext";
 
 function Default({ siteConfig }) {
   const navigate = useNavigate();
+  const { loggedUserData } = useContext(AppContext);
   const [editStatus, setEditStatus] = useState(false);
   const { home_banner, home_sub_banner, cta_title, cta_sub_title } = siteConfig;
   const [formData, setFormData] = useState({
@@ -28,12 +30,17 @@ function Default({ siteConfig }) {
   const handleSubmit = async () => {
     console.log("home", formData);
     const { data } = await axios.put(
-      "http://localhost:5000/api/siteconfig/00c491b9-3dfc-449c-9e99-99534f747bd1",
+      "https://consultancy-crm-serverside.onrender.com/api/siteconfig/00c491b9-3dfc-449c-9e99-99534f747bd1",
       {
         home_banner: formData.homeBanner,
         home_sub_banner: formData.homeSubBanner,
         cta_title: formData.ctaTitle,
         cta_sub_title: formData.ctaSubTitle,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUserData.token}`,
+        },
       }
     );
     if (data) {
@@ -75,7 +82,7 @@ function Default({ siteConfig }) {
         <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
           Banner Section
         </div>
-        <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+        <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
           {/* Banner Title */}
           <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
             <label htmlFor="homeBanner">Banner Title</label>
@@ -110,7 +117,7 @@ function Default({ siteConfig }) {
           CTA Section
         </div>
         <div>
-          <div className="flex flex-col md:flex-row space-x-10 md:space-y-0 md:space-x-10 px-2">
+          <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
             {/* Banner Title */}
             <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
               <label htmlFor="ctaTitle">CTA Title</label>

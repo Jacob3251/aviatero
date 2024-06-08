@@ -1,11 +1,15 @@
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegFileImage } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function AddClient() {
+  const { loggedUserData } = useContext(AppContext);
+  const [file, setFile] = useState(null);
+  const [userImage, setUserImage] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     clientType: "",
@@ -59,63 +63,81 @@ function AddClient() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  // file handle function
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUserImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formData);
-    const response = await axios
-      .post("http://localhost:5000/api/client", formData)
-      .then((data) => {
-        console.log(data.data.data.id);
-        attachments.forEach(async (attachment) => {
+    console.log(formData);
+    const { data } = await axios.post(
+      "https://consultancy-crm-serverside.onrender.com/api/client",
+      { ...formData, file },
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUserData.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    if (data) {
+      console.log(data.data);
+      if (attachments.length !== 0) {
+        attachments.map(async (item) => {
           const {
             attachment_title,
             attachment_description,
             type,
             attachment_file,
-          } = attachment;
-          await axios.post(
-            "http://localhost:5000/api/attachment",
-            {
-              title: attachment_title,
-              desc: attachment_description,
-              file: attachment_file,
-              ownerId: data.data.data.id,
-              type,
-            },
-            { headers: { "Content-Type": "multipart/form-data" } }
-          );
-        });
-        setFormData({
-          name: "",
-          clientType: "",
-          clientDesc: "",
-          clientEmail: "",
-          phone_no: "",
-          preferredDestination: "",
-          dealAmount: 0,
-          recent_update: "",
-        });
+          } = item;
+          if (attachment_file !== null) {
+            await axios.post(
+              "https://consultancy-crm-serverside.onrender.com/api/attachment",
+              {
+                title: attachment_title,
+                desc: attachment_description,
+                file: attachment_file,
+                ownerId: data.data.id,
+                type,
+              },
 
-        toast.success("Client Added Successfully", {
-          style: {
-            backgroundColor: "#333333",
-            color: "#fafafa",
-          },
-          className: "font-monrope",
+              {
+                headers: {
+                  Authorization: `Bearer ${loggedUserData.token}`,
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+          }
         });
-      })
-      .catch((error) => {
-        console.log(error.response.data.message);
-        toast.error(error.response.data.message, {
-          style: {
-            backgroundColor: "#333333",
-            color: "#fafafa",
-          },
-          className: "font-monrope",
-        });
+      }
+      setFormData({
+        name: "",
+        clientType: "",
+        clientDesc: "",
+        clientEmail: "",
+        phone_no: "",
+        preferredDestination: "",
+        dealAmount: 0,
+        recent_update: "",
       });
 
-    console.log(attachments);
+      toast.success("Client Added Successfully", {
+        style: {
+          backgroundColor: "#333333",
+          color: "#fafafa",
+        },
+        className: "font-monrope",
+      });
+    }
+    window.location.reload();
   };
 
   return (
@@ -134,8 +156,7 @@ function AddClient() {
         <div className="text-[24px] text-primary  font-semibold uppercase ">
           Add Client
         </div>
-        {/* <div className="w-full bg-primary h-[2px] mt-3 mb-5"></div> */}
-        {/* form parent div below */}
+
         <div>
           <form
             action=""
@@ -255,19 +276,28 @@ function AddClient() {
                   placeholder="Exp: 1000$ / 50000$"
                 />
               </div>
-              {/* Recent Update */}
-              <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-                <label htmlFor="recent_update">Recent Update</label>
+              <div className="w-full text-primary font-semibold space-y-5 text-[18px] ">
+                <label htmlFor="recent_update">Select Client Picture</label>
                 <input
-                  value={recent_update}
-                  onChange={onChange}
-                  className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
-                  type="text"
-                  name="recent_update"
-                  id="recent_update"
-                  placeholder="Exp: NO UPDATE"
+                  type="file"
+                  name=""
+                  id=""
+                  onChange={handleFileInputChange}
                 />
               </div>
+            </div>
+            {/* Recent Update */}
+            <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
+              <label htmlFor="recent_update">Recent Update</label>
+              <input
+                value={recent_update}
+                onChange={onChange}
+                className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
+                type="text"
+                name="recent_update"
+                id="recent_update"
+                placeholder="Exp: NO UPDATE"
+              />
             </div>
             {/* attachment div */}
             <div className="flex flex-col ">
@@ -330,6 +360,7 @@ const AttachmentComponent = ({ attachment, onChange, index }) => {
             className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
             type="text"
             placeholder="Attachment Title"
+            required
             value={attachment.attachment_title}
             onChange={(e) =>
               onChange({ ...attachment, attachment_title: e.target.value })
@@ -368,6 +399,7 @@ const AttachmentComponent = ({ attachment, onChange, index }) => {
           name="file"
           id="file"
           ref={fileInputRef}
+          required
           style={{ display: "none" }}
           onChange={(e) =>
             onChange({

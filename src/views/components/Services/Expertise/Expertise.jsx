@@ -9,7 +9,9 @@ function Expertise({ siteConfig }) {
         Aviate Abroad?
       </div>
       <div className="w-[95%] mx-auto lg:hidden">
-        <ExpertiseCarousel></ExpertiseCarousel>
+        <ExpertiseCarousel
+          expertiseData={serviceExpertiseData}
+        ></ExpertiseCarousel>
       </div>
       <div className="hidden lg:grid grid-cols-2 gap-[32px] place-content-center  ">
         {serviceExpertiseData.map((expertise, index) => (

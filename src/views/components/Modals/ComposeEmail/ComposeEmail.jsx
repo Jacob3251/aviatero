@@ -143,11 +143,16 @@ function ComposeEmail() {
       formData.append("files", file);
     });
     await axios
-      .post("http://localhost:5000/api/sendemail", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post(
+        "https://consultancy-crm-serverside.onrender.com/api/sendemail",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
+      )
       .then((data) => {
         // clearing all the value
         fromRef.current.clearValue();
@@ -167,7 +172,12 @@ function ComposeEmail() {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        "http://localhost:5000/api/registeredemails/party-email"
+        "https://consultancy-crm-serverside.onrender.com/api/registeredemails/party-email",
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
       );
       if (data) {
         setPartyEmails(data.data);

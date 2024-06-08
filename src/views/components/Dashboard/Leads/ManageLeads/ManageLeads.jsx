@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -7,9 +7,11 @@ import { PiNotePencil } from "react-icons/pi";
 import { MdDelete, MdOutlineRemoveRedEye } from "react-icons/md";
 import useLead from "../../../../../utils/hooks/useLead";
 import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function ManageLeads() {
   const [currentPage, setCurrentPage] = useState(1);
+  const { loggedUserData } = useContext(AppContext);
   const [data, setData, metaData] = useLead(currentPage);
   const navigate = useNavigate();
   const handleDelete = async (item) => {
@@ -18,7 +20,12 @@ function ManageLeads() {
     );
     if (confirm) {
       const { status } = await axios.delete(
-        `http://localhost:5000/api/lead/${item.id}/delete`
+        `https://consultancy-crm-serverside.onrender.com/api/lead/${item.id}/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
       );
       if (status === 200) {
         const updatedData = data.filter((lead) => lead.id !== item.id);

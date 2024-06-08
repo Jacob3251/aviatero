@@ -6,6 +6,7 @@ import ContactForm from "../components/Reusable/ContactForm/ContactForm";
 import Expertise from "../components/Services/Expertise/Expertise";
 import Hero from "../components/Services/Hero/Hero";
 import ServicesSection from "../components/Services/Services/Services";
+import Loader from "../components/Reusable/Loader/Loader";
 function Services() {
   const { siteConfig, siteLoading } = useContext(AppContext);
   return (
@@ -13,13 +14,21 @@ function Services() {
       {siteLoading === false ? (
         <DefaultLayout>
           <ScrollToTop />
-          <Hero siteConfig={siteConfig}></Hero>
-          <ServicesSection></ServicesSection>
-          <Expertise siteConfig={siteConfig}></Expertise>
-          <ContactForm siteConfig={siteConfig}></ContactForm>
+          <div>
+            <Hero siteConfig={siteConfig}></Hero>
+            <div className="mt-10 sm:mt-0 px-[40px] xl:px-[176px] mb-[140px]">
+              <ServicesSection></ServicesSection>
+            </div>
+            <Expertise siteConfig={siteConfig}></Expertise>
+            <div className="my-[50px] xl:my-[120px] px-[40px] xl:px-[176px] mb-[140px]">
+              <ContactForm siteConfig={siteConfig}></ContactForm>
+            </div>
+          </div>
         </DefaultLayout>
       ) : (
-        <div className="bg-red-500 text-white">Loading</div>
+        <div className="fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center">
+          <Loader></Loader>
+        </div>
       )}
     </>
   );

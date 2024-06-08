@@ -11,11 +11,13 @@ function Contact() {
     <>
       {siteLoading === false ? (
         <DefaultLayout>
-          <ScrollToTop />
-          <div className="my-[50px] xl:my-[120px] px-[40px] xl:px-[176px] mb-[140px]">
-            <ContactForm siteConfig={siteConfig}></ContactForm>
+          <div className="w-full">
+            <ScrollToTop />
+            <div className="my-[50px] xl:my-[120px] px-[40px] xl:px-[176px] mb-[140px]">
+              <ContactForm siteConfig={siteConfig}></ContactForm>
+            </div>
+            <Address siteConfig={siteConfig}></Address>
           </div>
-          <Address siteConfig={siteConfig}></Address>
         </DefaultLayout>
       ) : (
         <div className="bg-red-500 text-white">Loading</div>

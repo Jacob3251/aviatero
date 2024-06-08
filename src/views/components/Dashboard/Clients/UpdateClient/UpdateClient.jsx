@@ -1,12 +1,36 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { AppContext } from "../../../../../utils/contexts/AppContext";
+import useIndividualClient from "../../../../../utils/hooks/useIndividualClient";
+import { site_sensitive_info } from "../../../../../utils/helper";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { HiMiniPencilSquare } from "react-icons/hi2";
 
 function UpdateClient() {
   const location = useLocation();
-  const [formData, setFormData] = useState(location.state.item);
+  const { loggedUserData } = useContext(AppContext);
+  const { id } = useParams();
+  const [clientData, clientDataLoading] = useIndividualClient(id);
+  const [formData, setFormData] = useState({
+    name: "",
+    clientType: "",
+    clientDesc: "",
+    clientEmail: "",
+    phone_no: "",
+    preferredDestination: "",
+    dealAmount: "",
+    recent_update: "",
+  });
+  useEffect(() => {
+    if (clientDataLoading === false) {
+      setFormData({
+        ...clientData,
+      });
+    }
+  }, [clientDataLoading, clientData]);
   const {
     name,
     clientType,
@@ -24,12 +48,21 @@ function UpdateClient() {
       [e.target.name]: e.target.value,
     }));
   };
+  const [updateAttachments, setUpdatedAttachments] = useState(false);
+  const handleAttachmentUpdate = () => {
+    setUpdatedAttachments(!updateAttachments);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
     const { data } = await axios.put(
-      `http://localhost:5000/api/client/${location.state.item.id}/update`,
-      formData
+      `https://consultancy-crm-serverside.onrender.com/api/client/${clientData.id}/update`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUserData.token}`,
+        },
+      }
     );
     if (data) {
       console.log(data);
@@ -43,7 +76,7 @@ function UpdateClient() {
       });
     }
   };
-  console.log(location.state.item);
+  // console.log(location.state.item);
   return (
     <div className="bg-root w-full h-full overflow-y-scroll hidden-scrollbar">
       <div className="flex items-center space-x-2 text-[28px] px-5 lg:px-0 uppercase">
@@ -207,7 +240,43 @@ function UpdateClient() {
                 />
               </div>
             </div> */}
-
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
+              {clientDataLoading === false && (
+                <div>
+                  {clientData?.attachments?.map((item) => (
+                    <div key={item.id}>
+                      <div>{item.title}</div>
+                      <div className="text-primary font-bold uppercase">
+                        {item.title}
+                      </div>
+                      <a
+                        href={
+                          site_sensitive_info.site_origin +
+                          item.fileLink.split("uploads\\")[1]
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline cursor-pointer mr-2"
+                      >
+                        View
+                      </a>
+                      <div>
+                        <div>
+                          <HiMiniPencilSquare
+                            onClick={handleAttachmentUpdate}
+                            className="text-primary"
+                          />
+                        </div>
+                        {updateAttachments && <div>Hello</div>}
+                        <div>
+                          <FaRegTrashCan className="text-red-500" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <div className="">
               <input
                 className="bg-primary text-white px-5 py-3 text-[18px] rounded-sm hover:border-primary border-2 border-transparent hover:bg-transparent  duration-300 cursor-pointer"
