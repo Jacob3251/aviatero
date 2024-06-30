@@ -13,7 +13,7 @@ function useDashboardData() {
     const fetchData = async () => {
       await axios
         .get(
-          `https://consultancy-crm-serverside.onrender.com/api/dashboarddata`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/dashboarddata`,
           {
             headers: {
               Authorization: `Bearer ${loggedUserData.token}`,
@@ -21,12 +21,12 @@ function useDashboardData() {
           }
         )
         .then((data) => {
-          console.log(data.data.data);
+          // console.log(data.data.data);
           setData(data.data.data);
           setLoading(false);
         })
         .catch((error) => {
-          console.log();
+          // console.log();
           setErrorID(error.response.data.errorId);
         });
     };

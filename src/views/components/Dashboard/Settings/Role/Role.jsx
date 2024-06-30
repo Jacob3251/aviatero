@@ -9,6 +9,7 @@ import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
 import Permissions from "./Permissions/Permissions";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Loader from "../../../Reusable/Loader/Loader";
 function Role() {
   const navigate = useNavigate();
   const [rolesData, rolesLoading, setRolesData] = useRoles();
@@ -21,7 +22,7 @@ function Role() {
       try {
         await axios
           .delete(
-            `https://consultancy-crm-serverside.onrender.com/api/role/${role.id}`,
+            `https://consultancy-crm-serverside-1.onrender.com/api/role/${role.id}`,
             {
               headers: {
                 Authorization: `Bearer ${loggedUserData.token}`,
@@ -138,7 +139,9 @@ function Role() {
               )}
             </div>
           ) : (
-            <div className="bg-red-500 text-white">Loading</div>
+            <div className=" text-white w-full h-full absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center">
+              <Loader></Loader>
+            </div>
           )}
         </div>
         {/* Permission */}

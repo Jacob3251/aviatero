@@ -2,13 +2,22 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPlus } from "react-icons/fa6";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineRemoveRedEye } from "react-icons/md";
 import { PiNotePencil } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../../../../../utils/contexts/AppContext";
-
+import useCustomPages from "../../../../../../utils/hooks/useCustomPages";
+import EmptyComponent from "../../../../EmptyComponent/EmptyComponent";
+import Loader from "../../../../Reusable/Loader/Loader";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 function Default({ siteConfig }) {
   const navigate = useNavigate();
+  const [
+    customPages,
+    customPagesLoading,
+    setCustomPages,
+    setCustomPagesLoading,
+  ] = useCustomPages();
   const { loggedUserData } = useContext(AppContext);
   const [editStatus, setEditStatus] = useState(false);
   const { home_banner, home_sub_banner, cta_title, cta_sub_title } = siteConfig;
@@ -30,7 +39,7 @@ function Default({ siteConfig }) {
   const handleSubmit = async () => {
     console.log("home", formData);
     const { data } = await axios.put(
-      "https://consultancy-crm-serverside.onrender.com/api/siteconfig/00c491b9-3dfc-449c-9e99-99534f747bd1",
+      "https://consultancy-crm-serverside-1.onrender.com/api/siteconfig/79b9c0f0-feac-4d67-af61-cded304503fd",
       {
         home_banner: formData.homeBanner,
         home_sub_banner: formData.homeSubBanner,
@@ -53,6 +62,24 @@ function Default({ siteConfig }) {
         },
         className: "font-monrope",
       });
+    }
+  };
+  const handlePageDelete = async (page) => {
+    const confirm = window.confirm(
+      `Are you sure you want to delete ${page.pageTitle}`
+    );
+    if (confirm) {
+      console.log(page);
+      await axios
+        .delete(
+          `https://consultancy-crm-serverside-1.onrender.com/api/custompage/${page.id}`
+        )
+        .then((data) => {
+          setCustomPagesLoading(true);
+          const rest = customPages.filter((item) => item.id !== page.id);
+          setCustomPages(rest);
+          setCustomPagesLoading(false);
+        });
     }
   };
   return (
@@ -152,67 +179,133 @@ function Default({ siteConfig }) {
         <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary my-5">
           Service Section
         </div>
-        <div className="border-2 border-primary px-5 py-5 mt-5">
-          <div className="flex justify-between items-center  mb-5">
-            <div className=" py-2 px-3  uppercase font-monrope font-semibold flex  items-center space-x-2 text-[20px] cursor-pointer text-secondary tracking-wider">
-              Services
-            </div>
+
+        <div className="border-primary border-2 p-5">
+          <div className="mb-5 text-[24px] font-monrope text-primary font-semibold flex justify-between">
+            <div>All Pages</div>
             <div
-              onClick={() => navigate("/dashboard/lcm/home/add-service")}
-              className=" py-2 px-3  uppercase font-monrope font-semibold flex  items-center space-x-2 text-[14px] cursor-pointer"
+              onClick={() => navigate("/dashboard/lcm/home/add-page")}
+              className="cursor-pointer"
             >
-              <div className="text-black bg-primary px-2 py-1.5 rounded-sm">
-                <FaPlus />
-              </div>
-              <div className="text-primary"> Add Service</div>
+              Add Page
             </div>
           </div>
-          <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0 ">
-            <thead className="text-xs text-primary uppercase bg-transparent  ">
-              <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
-                <th scope="col" className="px-6 py-5">
-                  Title
-                </th>
-                <th scope="col" className="px-6 py-5">
-                  Category
-                </th>
-                <th scope="col" className="px-6 py-5">
-                  Site Link
-                </th>
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg border-secondary p-5 border-2">
+            {customPagesLoading === false ? (
+              <>
+                {customPages.length !== 0 ? (
+                  <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0">
+                    <thead className="text-xs text-primary uppercase bg-transparent  ">
+                      <tr className="uppercase font-monrope font-semibold text-[14px] border-secondary border-2 ">
+                        <th scope="col" className="px-6 py-5">
+                          Serial
+                        </th>
+                        <th scope="col" className="px-6 py-5">
+                          Page Title
+                        </th>
 
-                <th scope="col" className="px-6 py-5">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="text-secondary font-monrope ">
-              <tr className="table-row border-2 border-secondary">
-                <td className="px-6 py-4 uppercase">UK</td>
-                <td className="px-6 py-4 uppercase">Visit</td>
-                <td className="px-6 py-4 uppercase underline hover:text-primary cursor-pointer">
-                  View
-                </td>
-                <td className="px-6 py-4 flex space-x-2 text-[24px]">
-                  <div
-                    // onClick={() =>
-                    //   navigate(`/dashboard/clients/${item.id}/update`, {
-                    //     state: { item: item },
-                    //   })
-                    // }
-                    className="cursor-pointer duration-300 hover:text-green-500"
+                        <th scope="col" className="px-6 py-5">
+                          Page Url
+                        </th>
+
+                        <th scope="col" className="px-6 py-5">
+                          Page Category
+                        </th>
+                        <th scope="col" className="px-6 py-5">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-secondary font-monrope">
+                      {customPages.map((page, index) => (
+                        <tr
+                          key={page.id}
+                          className="table-row border-2 border-secondary"
+                        >
+                          <th
+                            scope="row"
+                            className="px-6 py-4  whitespace-nowrap "
+                          >
+                            {index + 1}
+                          </th>
+                          <th
+                            scope="row"
+                            className="px-6 py-4  whitespace-nowrap "
+                          >
+                            {page.pageTitle}
+                          </th>
+                          <td className="px-6 py-4">{page.siteUrl}</td>
+                          <td className="px-6 py-4">{page.category}</td>{" "}
+                          <td className="px-6 py-6 flex space-x-2 text-[24px]">
+                            <div
+                              onClick={() => navigate(`/blogs/${page.siteUrl}`)}
+                              className="cursor-pointer duration-300 hover:text-green-500"
+                            >
+                              <MdOutlineRemoveRedEye />
+                            </div>
+                            <div
+                              onClick={() =>
+                                navigate("/dashboard/lcm/home/update-page")
+                              }
+                              className="cursor-pointer duration-300 hover:text-green-500"
+                            >
+                              <HiOutlinePencilSquare />
+                            </div>
+
+                            <div
+                              onClick={() => handlePageDelete(page)}
+                              className="cursor-pointer duration-300 hover:text-red-500"
+                            >
+                              <MdDelete />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <EmptyComponent heading="Custom Pages"></EmptyComponent>
+                )}
+              </>
+            ) : (
+              <Loader></Loader>
+            )}
+            {/* <div className="w-full mt-5">
+              <div className=" w-full ">
+                <ul className="flex justify-start items-start h-10 list-none">
+                  <li
+                    className="cursor-pointer "
+                    onClick={() => setCurrentPage(currentPage - 1)}
                   >
-                    <PiNotePencil />
-                  </div>
-                  <div
-                    // onClick={() => handleDelete(item)}
-                    className="cursor-pointer duration-300 hover:text-red-500"
-                  >
-                    <MdDelete />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    <button
+                      disabled={currentPage === 1 ? true : false}
+                      className="flex items-center justify-start px-4 h-10 ms-0 leading-tight bg-[#333333] rounded-l-md text-[12px] text-primary uppercase font-monrope font-bold disabled:hidden"
+                    >
+                      Previous
+                    </button>
+                  </li>
+                  <li className="">
+                    <div className="flex items-center justify-start px-4 h-10 leading-tight  bg-[#333333] text-[12px] text-primary uppercase font-monrope font-bold">
+                      {metaData.currentPage}1
+                    </div>
+                  </li>
+
+                  <li className="cursor-pointer">
+                    <button
+                      disabled={metaData.totalPages === currentPage ? true : false}
+                      onClick={() => {
+                        setCurrentPage(currentPage + 1);
+                          console.log(currentPage);
+                      }}
+                      className="flex items-center justify-start px-4 h-10 leading-tight bg-[#333333] rounded-r-md text-[12px] text-primary uppercase font-monrope font-bold disabled:hidden"
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div> */}
+          </div>
         </div>
       </div>
     </div>

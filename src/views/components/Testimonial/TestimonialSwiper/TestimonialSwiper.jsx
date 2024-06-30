@@ -18,7 +18,7 @@ import EmptyComponent from "../../EmptyComponent/EmptyComponent";
 import { site_sensitive_info } from "../../../../utils/helper";
 function TestimonialSwiper({ testimonials }) {
   const swiperRef = useRef();
-
+  console.log(testimonials);
   // console.log(siteConfig);
   const generateStars = (star) => {
     let stars = [];
@@ -28,10 +28,10 @@ function TestimonialSwiper({ testimonials }) {
     return stars;
   };
   return (
-    <div className="h-full w-full relative ">
+    <div className="h-full w-full ">
       {testimonials.length !== 0 ? (
         <div className="h-full w-full relative ">
-          <div className="absolute top-0 w-full h-full flex flex-col justify-center items-center">
+          <div className=" w-full h-full flex flex-col justify-center items-center ">
             <Swiper
               onSwiper={(swiper) => {
                 swiperRef.current = swiper;
@@ -39,22 +39,19 @@ function TestimonialSwiper({ testimonials }) {
               slidesPerView={"auto"}
               spaceBetween={20}
               centeredSlides={true}
-              loop={true}
+              loop={false}
               modules={[]}
-              className="mySwiper"
+              className="mySwipertestimonial"
             >
               {testimonials.map((item) => (
                 <SwiperSlide key={item.id}>
-                  <div className="w-[75%]  max-h-full sm:max-h-full  h-full mx-auto   overflow-hidden flex justify-center items-center">
+                  <div className="w-full  sm:w-[75%]  min-h-full sm:max-h-full  h-full mx-auto flex justify-center items-center">
                     {/* flex flex-col md:flex-row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 place-content-center  p-[20px] sm:p-[30px] lg:p-[50px] border-primary border-2  w-full h-full gap-5 ">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 place-content-center   p-[15px] sm:p-[30px] lg:p-[50px] border-primary border-2  w-[] h-full sm:gap-5 ">
                       {/* h-[240px] sm:h-[280px]   */}
                       <div className="w-full h-full">
                         <img
-                          src={
-                            site_sensitive_info.site_origin +
-                            item.storage_imagelink.split("uploads/")[1]
-                          }
+                          src={item.client_imagelink}
                           alt=""
                           className="w-full h-full object-cover"
                         />

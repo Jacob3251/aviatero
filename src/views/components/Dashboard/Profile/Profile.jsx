@@ -19,7 +19,8 @@ function Profile() {
   const { loggedUserInfo, loggedUserInfoLoading } = useContext(AppContext);
   const [file, setFile] = useState(null);
   const [userImage, setUserImage] = useState(null);
-  console.log(loggedUserInfo);
+  const [userInfo, setUserInfo] = useState(loggedUserInfo);
+  console.log(userInfo);
   const [showUpdate, setShowUpdate] = useState(false);
   const [formData, setFormData] = useState({
     user_name: loggedUserInfo.name,
@@ -37,6 +38,7 @@ function Profile() {
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     setFile(file);
+    setUserInfo({ ...userInfo, storage_link: file });
     const reader = new FileReader();
     reader.onloadend = () => {
       setUserImage(reader.result);
@@ -54,14 +56,27 @@ function Profile() {
     };
     await axios
       .put(
-        `https://consultancy-crm-serverside.onrender.com/api/user/${loggedUserInfo.id}`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/user/${loggedUserInfo.id}`,
         uploadData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       )
       .then((data) => {
-        addToLocale(data.data);
+        const receivedData = data.data;
+
+        // console.log("receivedData++++++++++", receivedData);
+        const { id, name, email, photolink } = receivedData.data;
+        const modifiedUserData = {
+          data: {
+            id,
+            name,
+            email,
+            photolink,
+          },
+          token: receivedData.token,
+        };
+        addToLocale(modifiedUserData);
         toast.success("Profile Updated!!");
         window.location.reload();
       })
@@ -78,15 +93,10 @@ function Profile() {
             className="p-5 h-full text-primary flex flex-col justify-start items-start  space-y-5 text-left"
           >
             <div className="bg-slate-400 w-[300px] h-[250px] flex justify-center items-center rounded-lg mb-[50px]">
-              {loggedUserInfo.storage_link !== "" ? (
+              {userInfo.photolink !== null ? (
                 <img
                   className="w-full h-full"
-                  src={
-                    userImage
-                      ? userImage
-                      : site_sensitive_info.site_origin +
-                        loggedUserInfo.storage_link
-                  }
+                  src={userImage ? userImage : userInfo?.photolink}
                   alt=""
                 />
               ) : (
@@ -129,6 +139,7 @@ function Profile() {
                     onClick={() => {
                       setShowUpdate(false);
                       setFile(null);
+                      setUserInfo({ ...userInfo, storage_link: null });
                     }}
                     className="cursor-pointer "
                   />

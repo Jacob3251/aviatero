@@ -4,20 +4,37 @@ import axios from "axios";
 
 function useIndividualUserProfile() {
   const [data, setData] = useState({});
+  const [errorID, setErrorID] = useState(0);
   const [loading, setLoading] = useState(true);
-  const { loggedUserData } = useContext(AppContext);
+  const { loggedUserData, isLogged } = useContext(AppContext);
+  // console.log(loggedUserData);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/user/${loggedUserData.id}`
-      );
-      setData(data.data);
-      setLoading(false);
+      if (isLogged) {
+        await axios
+          .get(
+            `https://consultancy-crm-serverside-1.onrender.com/api/user/${loggedUserData.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${loggedUserData.token}`,
+              },
+            }
+          )
+          .then((data) => {
+            // console.log("foundya");
+            setData(data.data.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.log();
+            setErrorID(error.response.data.errorId);
+          });
+      }
     };
     fetchData();
-  }, []);
-  return [data, loading, setData, setLoading];
+  }, [loggedUserData, isLogged]);
+  return [data, loading, setData, setLoading, errorID];
 }
 
 export default useIndividualUserProfile;

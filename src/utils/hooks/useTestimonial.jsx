@@ -8,7 +8,7 @@ const useTestimonial = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/testimonial`
+        `https://consultancy-crm-serverside-1.onrender.com/api/testimonial`
       );
       setData(data.data);
       setLoading(false);

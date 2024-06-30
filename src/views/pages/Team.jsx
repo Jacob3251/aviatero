@@ -3,10 +3,14 @@ import ScrollToTop from "../../utils/Other/ScrollToTop";
 import useTeamMember from "../../utils/hooks/useTeamMember";
 import { site_sensitive_info } from "../../utils/helper";
 import Loader from "../components/Reusable/Loader/Loader";
+import { Helmet } from "react-helmet";
 function Team() {
   const [teammemberData, teammemberDataLoading] = useTeamMember();
   return (
     <>
+      <Helmet>
+        <title>Aviate - Teams</title>
+      </Helmet>
       {teammemberDataLoading === false ? (
         <DefaultLayout>
           <ScrollToTop />
@@ -32,10 +36,7 @@ function Team() {
                 >
                   <div className="w-full mb-3 md:mb-[28px] xl:mb-[32px]">
                     <img
-                      src={
-                        site_sensitive_info.site_origin +
-                        item.storage_imagelink.split("\\")[1]
-                      }
+                      src={item.member_imagelink}
                       className="w-full h-full object-contain "
                       alt=""
                     />

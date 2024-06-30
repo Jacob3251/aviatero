@@ -36,7 +36,7 @@ function SignIn() {
     event.preventDefault();
     console.log("email: ", email, " Password: ", password);
     const response = await axios.post(
-      "https://consultancy-crm-serverside.onrender.com/api/user/autheticate",
+      "https://consultancy-crm-serverside-1.onrender.com/api/user/autheticate",
       formData
     );
     if (response.data) {

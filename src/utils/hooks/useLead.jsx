@@ -10,7 +10,7 @@ const useLead = (currentpage) => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/lead?page=${currentpage}&limit=8`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/lead?page=${currentpage}&limit=8`,
         {
           headers: {
             Authorization: `Bearer ${loggedUserData.token}`,

@@ -12,15 +12,16 @@ import toast from "react-hot-toast";
 import useTestimonial from "../../../../../utils/hooks/useTestimonial";
 import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
 import { AppContext } from "../../../../../utils/contexts/AppContext";
+import Loader from "../../../Reusable/Loader/Loader";
 function Default() {
   const [testimonials, testimonialLoading, setTestimonials] = useTestimonial();
   const { loggedUserData } = useContext(AppContext);
   const [functionType, setFunctionType] = useState("add");
   const [testimonialId, setTestimonialId] = useState("");
   const [testimonialImglink, setTestimonialImglink] = useState("");
-  const [testimonialStoragelink, setTestimonialStoragelink] = useState("");
+  const [testimonialStoragelink, setTestimonialStoragelink] = useState({});
   const [testimonialRating, setTestimonialRating] = useState(99);
-  const [testimonialImage, setTestimonialImage] = useState("");
+  // const [testimonialImage, setTestimonialImage] = useState("");
   const [testimonialImagePreview, setTestimonialImagePreview] = useState(null);
   const [clientImage, setClientImage] = useState(null);
   const fileInputRef = useRef(null);
@@ -116,7 +117,7 @@ function Default() {
     };
     console.log(testimonialData);
     const { data } = await axios.post(
-      "https://consultancy-crm-serverside.onrender.com/api/testimonial",
+      "https://consultancy-crm-serverside-1.onrender.com/api/testimonial",
       testimonialData,
       {
         headers: {
@@ -150,7 +151,7 @@ function Default() {
     if (confirm) {
       await axios
         .delete(
-          `https://consultancy-crm-serverside.onrender.com/api/testimonial/${item.id}`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/testimonial/${item.id}`,
           {
             headers: {
               Authorization: `Bearer ${loggedUserData.token}`,
@@ -179,7 +180,7 @@ function Default() {
       };
       console.log(testimonialData);
       const { data } = await axios.put(
-        `https://consultancy-crm-serverside.onrender.com/api/testimonial/${testimonialId}`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/testimonial/${testimonialId}`,
         testimonialData,
         {
           headers: {
@@ -204,52 +205,15 @@ function Default() {
         setTestimonials((prev) => [...arr, data.data]);
         setClientImage("");
       } else {
-        toast.error("Testimonial Not Added");
+        toast.error("Testimonial Not Updated");
       }
-    }
-    const testimonialData = {
-      client_name: client_name,
-      client_address: client_address,
-      client_rating: rating,
-      client_review: client_review,
-      storage_imagelink: testimonialStoragelink,
-      client_imagelink: testimonialImglink,
-    };
-    console.log(testimonialData);
-    const { data } = await axios.put(
-      `https://consultancy-crm-serverside.onrender.com/api/testimonial/${testimonialId}`,
-      testimonialData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${loggedUserData.token}`,
-        },
-      }
-    );
-    if (data) {
-      console.log(data);
-      setFormData({
-        client_name: "",
-        client_address: "",
-        client_review: "",
-      });
-      const arr = testimonials.filter((item) => item.id !== testimonialId);
-      setTestimonials((prev) => [...arr, data.data]);
-
-      setRating("");
-      setTestimonialRating("");
-      ratingRef.current.clearValue();
-      fileInputRef.current.value = null;
-      toast.success("Testimonial Added");
-    } else {
-      toast.error("Testimonial Not Updated");
     }
 
     setFunctionType("add");
   };
   const generateStars = (star) => {
     let stars = [];
-    for (let i = 0; i <= star; i++) {
+    for (let i = 0; i < star; i++) {
       stars.push(<FaStar key={i}></FaStar>);
     }
     return stars;
@@ -259,7 +223,7 @@ function Default() {
   };
 
   return (
-    <>
+    <div className="">
       {testimonialLoading === false ? (
         <div>
           <div className="font-monrope font-bold text-primary  text-[20px] uppercase">
@@ -278,7 +242,7 @@ function Default() {
                 className="mb-5"
               >
                 <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
-                  {/* Employee Name */}
+                  {/* Client Name */}
                   <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                     <label htmlFor="client_name">Client Name</label>
                     <input
@@ -292,7 +256,7 @@ function Default() {
                       onChange={onTestimonialChange}
                     />
                   </div>
-                  {/* Employee Name */}
+                  {/* Client Address*/}
                   <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                     <label htmlFor="client_address">Address</label>
                     <input
@@ -306,7 +270,7 @@ function Default() {
                       value={client_address}
                     />
                   </div>
-                  {/* Employee Postion */}
+                  {/* Client Rating */}
                   <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                     <label htmlFor="service_content">Select Rating</label>
                     <Select
@@ -324,7 +288,7 @@ function Default() {
                   </div>
                 </div>
                 <div className="flex flex-col md:flex-row space-x-0 space-y-5 md:space-y-0 md:space-x-10 px-2">
-                  {/* Employee Name */}
+                  {/* CLient Review */}
                   <div className="w-full text-primary font-semibold space-y-2 text-[18px] mt-5">
                     <label htmlFor="client_review">Client Review</label>
                     <textarea
@@ -345,8 +309,7 @@ function Default() {
                       <img
                         src={`${
                           clientImage === null
-                            ? site_sensitive_info.site_origin +
-                              testimonialImage.split("\\")[1]
+                            ? testimonialImglink
                             : testimonialImagePreview
                         } `}
                         alt=""
@@ -390,9 +353,10 @@ function Default() {
                       onClick={() => {
                         setFunctionType("add");
                         setTestimonialRating("");
-                        setTestimonialImage("");
+                        // setTestimonialImage("");
                         setTestimonialImglink("");
                         setTestimonialStoragelink("");
+                        setTestimonialImagePreview(null);
                         setRating(0);
                         setTestimonialId("");
                         setFormData({
@@ -458,23 +422,33 @@ function Default() {
                           <td className="px-6 py-4 flex space-x-2 text-[24px]">
                             <div
                               onClick={() => {
+                                console.log(testimonial);
                                 setFunctionType("update");
                                 setTestimonialRating(testimonial.client_rating);
                                 setRating(testimonial.client_rating);
-                                setTestimonialImage(
-                                  testimonial.storage_imagelink
-                                );
+                                // setTestimonialImage(
+                                //   testimonial.storage_imagelink
+                                // );
                                 setTestimonialImglink(
                                   testimonial.client_imagelink
                                 );
-                                setTestimonialStoragelink(
-                                  testimonial.storage_imagelink
-                                );
+                                // const parsedTestimonial = JSON.parse(
+                                //   testimonial.storage_imagelink
+                                // );
+                                // console.log(
+                                //   "parsedTestimonial",
+                                //   parsedTestimonial
+                                // );
+                                // console.log(testimonial.storage_imagelink.url);
+
+                                // setTestimonialStoragelink({
+                                //   ...parsedTestimonial,
+                                // });
                                 setTestimonialId(testimonial.id);
                                 setFormData({
                                   client_name: testimonial.client_name,
                                   client_address: testimonial.client_address,
-                                  client_rating: testimonial.rating,
+                                  client_rating: testimonial.client_rating,
                                   client_review: testimonial.client_review,
                                 });
                                 // ratingRef.current.value = testimonial.client_rating;
@@ -502,9 +476,11 @@ function Default() {
           </div>
         </div>
       ) : (
-        <div className="bg-red-500">Loading Testimonial</div>
+        <div className="h-[50vh] w-full flex justify-center items-center ">
+          <Loader></Loader>
+        </div>
       )}
-    </>
+    </div>
   );
 }
 

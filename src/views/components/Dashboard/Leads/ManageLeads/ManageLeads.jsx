@@ -20,7 +20,7 @@ function ManageLeads() {
     );
     if (confirm) {
       const { status } = await axios.delete(
-        `https://consultancy-crm-serverside.onrender.com/api/lead/${item.id}/delete`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/lead/${item.id}/delete`,
         {
           headers: {
             Authorization: `Bearer ${loggedUserData.token}`,
@@ -116,7 +116,7 @@ function ManageLeads() {
                     <td className="px-6 py-4 flex space-x-2 text-[24px]">
                       <div
                         onClick={() =>
-                          navigate("/dashboard/leads/information/id")
+                          navigate(`/dashboard/leads/information/${item.id}`)
                         }
                         className="cursor-pointer duration-300 hover:text-green-500"
                       >

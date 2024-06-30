@@ -4,7 +4,7 @@ import { AppContext } from "../../../utils/contexts/AppContext";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaRegUserCircle } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { removeFromLocale, site_sensitive_info } from "../../../utils/helper";
 function DashboardNavbar() {
@@ -12,6 +12,7 @@ function DashboardNavbar() {
   const { setOpenDashboardMenu, pendingNotifications, loggedUserInfo } =
     useContext(AppContext);
   const [toggleProfile, setToggleProfile] = useState(false);
+
   const navigate = useNavigate();
   return (
     <div
@@ -43,17 +44,19 @@ function DashboardNavbar() {
         <IoSettingsOutline
           onClick={() => navigate("/dashboard/settings/config")}
         />
-        <div className="w-[34px] h-[34px] p-1  bg-primary rounded-full  relative">
-          <img
-            onClick={() => setToggleProfile(!toggleProfile)}
-            className="w-full h-full rounded-full object-fill"
-            src={
-              loggedUserInfo.storage_link
-                ? site_sensitive_info.site_origin + loggedUserInfo.storage_link
-                : ""
-            }
-            alt=""
-          />
+        <div className="w-[34px] h-[34px] p-[2px]  bg-primary rounded-full  relative">
+          {!loggedUserInfo.photolink ? (
+            <span>
+              <FaRegUserCircle />
+            </span>
+          ) : (
+            <img
+              onClick={() => setToggleProfile(!toggleProfile)}
+              className="w-full h-full rounded-full object-fill"
+              src={loggedUserInfo.photolink}
+              alt=""
+            />
+          )}
           {toggleProfile && (
             <div className=" absolute w-[180px] top-[130%] right-0 rounded-md bg-root cta-border z-[50]">
               <div className="px-5 py-5 text-[24px] flex flex-col justify-start items-start font-monrope capitalize">

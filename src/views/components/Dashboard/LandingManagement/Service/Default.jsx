@@ -9,6 +9,7 @@ import useServiceExpertise from "../../../../../utils/hooks/useServiceExpertise"
 import useServicePackages from "../../../../../utils/hooks/useServicePackages";
 import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
 import { AppContext } from "../../../../../utils/contexts/AppContext";
+import Loader from "../../../Reusable/Loader/Loader";
 
 function Default({ siteConfig }) {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ function Default({ siteConfig }) {
   // Service Banner Section Update
   const handleBannerSubmit = async () => {
     const { data } = await axios.put(
-      "https://consultancy-crm-serverside.onrender.com/api/siteconfig/383ea8da-1b43-430e-aada-2e4f48dd9ec9",
+      "https://consultancy-crm-serverside-1.onrender.com/api/siteconfig/79b9c0f0-feac-4d67-af61-cded304503fd",
       {
         services_banner: formData.serviceBanner,
         services_sub_banner: formData.serviceBannerSub,
@@ -98,7 +99,7 @@ function Default({ siteConfig }) {
     event.preventDefault();
     // console.log(data);
     const { data } = await axios.post(
-      "https://consultancy-crm-serverside.onrender.com/api/serviceexpertise",
+      "https://consultancy-crm-serverside-1.onrender.com/api/serviceexpertise",
       {
         service_expertise_title,
         service_expertise_content,
@@ -132,7 +133,7 @@ function Default({ siteConfig }) {
     console.log("service package data", servicePackageData);
     // console.log(data);
     const { data } = await axios.post(
-      "https://consultancy-crm-serverside.onrender.com/api/servicepackage",
+      "https://consultancy-crm-serverside-1.onrender.com/api/servicepackage",
       servicePackageData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
@@ -161,7 +162,7 @@ function Default({ siteConfig }) {
     if (confirm) {
       await axios
         .delete(
-          `https://consultancy-crm-serverside.onrender.com/api/serviceexpertise/${item.id}`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/serviceexpertise/${item.id}`,
           {
             headers: {
               Authorization: `Bearer ${loggedUserData.token}`,
@@ -185,7 +186,7 @@ function Default({ siteConfig }) {
     if (confirm) {
       await axios
         .delete(
-          `https://consultancy-crm-serverside.onrender.com/api/servicepackage/${item.id}`
+          `https://consultancy-crm-serverside-1.onrender.com/api/servicepackage/${item.id}`
         )
         .then((data) => {
           toast.success("Item deleted Successfully.");
@@ -224,6 +225,7 @@ function Default({ siteConfig }) {
           )}
         </div>
         <div>
+          {/* Service page Initial section */}
           <div className="">
             <div className="uppercase text-[20px] font-monrope font-semibold flex space-x-2 items-center text-primary mb-5">
               Banner Section
@@ -414,7 +416,9 @@ function Default({ siteConfig }) {
                 )}
               </div>
             ) : (
-              <div className="bg-red-500 text-white">Loading</div>
+              <div className="h-[50vh] w-full flex justify-center items-center ">
+                <Loader></Loader>
+              </div>
             )}
           </div>
           {/* expertise section */}
@@ -525,7 +529,9 @@ function Default({ siteConfig }) {
                 )}
               </div>
             ) : (
-              <div className="bg-red-500 text-white">Loading</div>
+              <div className="h-[50vh] w-full flex justify-center items-center ">
+                <Loader></Loader>
+              </div>
             )}
           </div>
         </div>

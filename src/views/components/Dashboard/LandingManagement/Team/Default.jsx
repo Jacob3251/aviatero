@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import useTeamMember from "../../../../../utils/hooks/useTeamMember";
 import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
 import { AppContext } from "../../../../../utils/contexts/AppContext";
+import Loader from "../../../Reusable/Loader/Loader";
 
 function Default() {
   const [roles, rolesLoading] = useRoles();
@@ -182,7 +183,7 @@ function Default() {
     console.log("service package data", memberData);
     // console.log(data);
     const { data } = await axios.post(
-      "https://consultancy-crm-serverside.onrender.com/api/teammember",
+      "https://consultancy-crm-serverside-1.onrender.com/api/teammember",
       memberData,
       {
         headers: {
@@ -212,7 +213,7 @@ function Default() {
     if (confirm) {
       await axios
         .delete(
-          `https://consultancy-crm-serverside.onrender.com/api/teammember/${item.id}`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/teammember/${item.id}`,
           {
             headers: {
               Authorization: `Bearer ${loggedUserData.token}`,
@@ -350,16 +351,6 @@ function Default() {
 
                               <td className="px-6 py-4 flex space-x-2 text-[24px]">
                                 <div
-                                  // onClick={() =>
-                                  //   navigate(`/dashboard/clients/${item.id}/update`, {
-                                  //     state: { item: item },
-                                  //   })
-                                  // }
-                                  className="cursor-pointer duration-300 hover:text-green-500"
-                                >
-                                  <PiNotePencil />
-                                </div>
-                                <div
                                   onClick={() => handleDelete(member)}
                                   className="cursor-pointer duration-300 hover:text-red-500"
                                 >
@@ -376,14 +367,18 @@ function Default() {
                     )}
                   </div>
                 ) : (
-                  <div className="bg-red-500">Loading Members</div>
+                  <div className="h-[50vh] w-full flex justify-center items-center ">
+                    <Loader></Loader>
+                  </div>
                 )}
               </>
             </div>
           </div>
         </div>
       ) : (
-        <div className="bg-red-500 text-white text-center">Loading</div>
+        <div className="h-[50vh] w-full flex justify-center items-center ">
+          <Loader></Loader>
+        </div>
       )}
     </>
   );

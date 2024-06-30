@@ -53,7 +53,7 @@ function SignUp() {
       return toast.error("Passwords did not match. Try again!!");
     }
     const { data } = await axios.get(
-      "https://consultancy-crm-serverside.onrender.com/api/user"
+      "https://consultancy-crm-serverside-1.onrender.com/api/user"
     );
     let role = "";
     if (data.data.length > 1) {
@@ -70,7 +70,7 @@ function SignUp() {
       contact_no: c_number,
     };
     return await axios
-      .post("https://consultancy-crm-serverside.onrender.com/api/user", user)
+      .post("https://consultancy-crm-serverside-1.onrender.com/api/user", user)
       .then((data) => {
         console.log(data);
         addToLocale(data.data);

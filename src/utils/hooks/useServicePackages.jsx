@@ -8,7 +8,7 @@ function useServicePackages() {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/servicepackage`
+        `https://consultancy-crm-serverside-1.onrender.com/api/servicepackage`
       );
       setData(data.data);
       setLoading(false);

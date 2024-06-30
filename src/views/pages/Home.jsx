@@ -16,13 +16,14 @@ function Home() {
   const navigate = useNavigate();
 
   const { siteConfig, siteLoading } = useContext(AppContext);
+
   return (
     <>
       {siteLoading === false ? (
         <LandingLayout>
           <ScrollToTop />
           <Hero siteConfig={siteConfig}></Hero>
-          <Services></Services>
+          <Services siteConfig={siteConfig}></Services>
           <Address siteConfig={siteConfig}></Address>
           {/* contact cta */}
           <CTA siteConfig={siteConfig}></CTA>

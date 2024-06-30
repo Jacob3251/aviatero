@@ -10,7 +10,7 @@ const useRoles = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/role`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/role`,
         {
           headers: {
             Authorization: `Bearer ${loggedUserData.token}`,

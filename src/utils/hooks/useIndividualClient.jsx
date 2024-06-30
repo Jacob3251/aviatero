@@ -10,7 +10,7 @@ const useIndividualClient = (id) => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/client/${id}`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/client/${id}`,
         {
           headers: {
             Authorization: `Bearer ${loggedUserData.token}`,

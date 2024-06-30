@@ -5,6 +5,7 @@ import TestimonialSwiper from "../components/Testimonial/TestimonialSwiper/Testi
 import { AppContext } from "../../utils/contexts/AppContext";
 import Loader from "../components/Reusable/Loader/Loader";
 import useTestimonial from "../../utils/hooks/useTestimonial";
+import { Helmet } from "react-helmet";
 
 function Testimonials() {
   const { siteConfig, siteLoading } = useContext(AppContext);
@@ -12,10 +13,13 @@ function Testimonials() {
   console.log(testimonials.length);
   return (
     <>
+      <Helmet>
+        <title>Aviate - Reviews</title>
+      </Helmet>
       {siteLoading === false && testimonialLoading === false ? (
         <DefaultLayout>
           <ScrollToTop />
-          <div className="h-[calc(100vh_-_146px)] sm:h-[calc(100vh_-_167px)] md:h-[calc(100vh_-_197px)] xl:h-[calc(100vh_-_221px)]  xl:w-[80%] mx-auto my-10">
+          <div className=" h-[calc(100vh_-_172px)] sm:h-[calc(100vh_-_167px)] md:h-[calc(100vh_-_197px)] xl:h-[calc(100vh_-_221px)] w-full  xl:w-[80%] mx-auto md:my-10">
             <TestimonialSwiper testimonials={testimonials}></TestimonialSwiper>
           </div>
         </DefaultLayout>

@@ -1,17 +1,13 @@
-.mySwiper .swiper {
+.mySwipertestimonial .swiper {
   width: 100%;
   height: 100%;
-
-  /* background-color: red; */
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 }
-.mySwiper .swiper-wrapper {
+.mySwipertestimonial .swiper-wrapper {
   display: flex;
   align-items: center;
+  /* background-color: green; */
 }
-.mySwiper .swiper-slide {
+.mySwipertestimonial .swiper-slide {
   text-align: center;
   font-size: 18px;
   width: 100%;
@@ -22,7 +18,7 @@
   background-color: green; */
 }
 
-.mySwiper .swiper {
+.mySwipertestimonial .swiper {
   margin-left: auto;
   margin-right: auto;
 }

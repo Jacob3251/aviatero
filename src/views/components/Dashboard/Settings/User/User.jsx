@@ -7,6 +7,7 @@ import { FaPlus } from "react-icons/fa6";
 import { PiNotePencil } from "react-icons/pi";
 import toast from "react-hot-toast";
 import axios from "axios";
+import Loader from "../../../Reusable/Loader/Loader";
 
 function User() {
   const [usersData, userLoading, setUsersData] = useUsers();
@@ -16,10 +17,11 @@ function User() {
       `Are you sure you want to delete ${user.name} role?`
     );
     if (confirm) {
+      console.log(user);
       try {
         await axios
           .delete(
-            `https://consultancy-crm-serverside.onrender.com/api/user/${user.id}`
+            `https://consultancy-crm-serverside-1.onrender.com/api/user/${user.id}`
           )
           .then((data) => {
             toast.success(`${user.name} user deleted successfully`);
@@ -161,7 +163,9 @@ function User() {
               )}
             </div>
           ) : (
-            <div className="bg-red-500 text-white">Loading</div>
+            <div className="h-[50vh] flex justify-center items-center">
+              <Loader></Loader>
+            </div>
           )}
         </div>
       </div>

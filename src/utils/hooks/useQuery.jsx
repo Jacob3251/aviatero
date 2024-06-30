@@ -11,7 +11,7 @@ const useQuery = (currentpage) => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `https://consultancy-crm-serverside.onrender.com/api/querymsg`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/querymsg`,
           {
             headers: {
               Authorization: `Bearer ${loggedUserData.token}`,

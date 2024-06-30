@@ -142,9 +142,10 @@ function ComposeEmail() {
     files.forEach((file) => {
       formData.append("files", file);
     });
+    console.log(formData);
     await axios
       .post(
-        "https://consultancy-crm-serverside.onrender.com/api/sendemail",
+        "https://consultancy-crm-serverside-1.onrender.com/api/sendemail",
         formData,
         {
           headers: {
@@ -164,6 +165,7 @@ function ComposeEmail() {
         setFiles([]);
         event.target.reset();
         toast.success("Email Sent successfully");
+        window.location.reload();
       })
       .catch((error) => {
         toast.error("Email not sent");
@@ -172,7 +174,7 @@ function ComposeEmail() {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        "https://consultancy-crm-serverside.onrender.com/api/registeredemails/party-email",
+        "https://consultancy-crm-serverside-1.onrender.com/api/registeredemails/party-email",
         {
           headers: {
             Authorization: `Bearer ${loggedUserData.token}`,

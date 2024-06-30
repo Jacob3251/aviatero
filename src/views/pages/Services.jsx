@@ -7,10 +7,14 @@ import Expertise from "../components/Services/Expertise/Expertise";
 import Hero from "../components/Services/Hero/Hero";
 import ServicesSection from "../components/Services/Services/Services";
 import Loader from "../components/Reusable/Loader/Loader";
+import { Helmet } from "react-helmet";
 function Services() {
   const { siteConfig, siteLoading } = useContext(AppContext);
   return (
     <>
+      <Helmet>
+        <title>Aviate - Services</title>
+      </Helmet>
       {siteLoading === false ? (
         <DefaultLayout>
           <ScrollToTop />

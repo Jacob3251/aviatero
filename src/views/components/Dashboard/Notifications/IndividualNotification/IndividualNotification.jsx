@@ -26,7 +26,7 @@ function IndividualNotification() {
     event.preventDefault();
     await axios
       .put(
-        `https://consultancy-crm-serverside.onrender.com/api/querymsg/${data?.id}/update`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/querymsg/${data?.id}/update`,
         {
           ...data,
           reply: reply,
@@ -53,7 +53,7 @@ function IndividualNotification() {
     const fetchData = async () => {
       await axios
         .get(
-          `https://consultancy-crm-serverside.onrender.com/api/querymsg/${param}`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/querymsg/${param}`,
           {
             headers: {
               Authorization: `Bearer ${loggedUserData.token}`,

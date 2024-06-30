@@ -35,7 +35,7 @@ function LandingManagement() {
     e.preventDefault();
     console.log(formData);
     const { data } = await axios.put(
-      "https://consultancy-crm-serverside.onrender.com/api/sociallinks/53c61ce3-a892-434e-adaa-006f36624338",
+      "https://consultancy-crm-serverside-1.onrender.com/api/sociallinks/48450d14-7e8c-428e-a96d-85e123a052e4",
       {
         fb_link: formData.facebookLink,
         youtube_link: formData.youtubeLink,
@@ -57,11 +57,12 @@ function LandingManagement() {
         },
         className: "font-monrope",
       });
+      window.location.reload();
     }
   };
   return (
     <div className="bg-root w-full h-full overflow-y-scroll hidden-scrollbar ">
-      <div className="text-white  p-5">
+      <div className="text-white  p-5 h-full">
         <div className="flex flex-col text-[20px] text-primary uppercase font-bold space-y-2 mb-5">
           <label htmlFor="">Select page</label>
           <select

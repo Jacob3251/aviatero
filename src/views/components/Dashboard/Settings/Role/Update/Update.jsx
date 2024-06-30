@@ -29,7 +29,7 @@ function Update() {
     try {
       await axios
         .put(
-          `https://consultancy-crm-serverside.onrender.com/api/role/${roleData.id}`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/role/${roleData.id}`,
           {
             title: roleData.title,
             permissions: checkedItems,

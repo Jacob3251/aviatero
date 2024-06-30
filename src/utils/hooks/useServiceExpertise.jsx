@@ -8,7 +8,7 @@ function useServiceExpertise() {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/serviceexpertise`
+        `https://consultancy-crm-serverside-1.onrender.com/api/serviceexpertise`
       );
       setData(data.data);
       setLoading(false);

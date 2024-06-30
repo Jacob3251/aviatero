@@ -38,7 +38,7 @@ function Config() {
       });
     } else {
       const { data } = await axios.post(
-        "https://consultancy-crm-serverside.onrender.com/api/registeredemails",
+        "https://consultancy-crm-serverside-1.onrender.com/api/registeredemails",
         submissionData,
         {
           headers: {
@@ -75,7 +75,7 @@ function Config() {
 
       try {
         await axios.delete(
-          `https://consultancy-crm-serverside.onrender.com/api/registeredemails/${item.id}`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/registeredemails/${item.id}`,
           {
             headers: {
               Authorization: `Bearer ${loggedUserData.token}`,

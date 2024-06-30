@@ -29,7 +29,7 @@ function ContactForm({ siteConfig }) {
     console.log(formData);
     await axios
       .post(
-        "https://consultancy-crm-serverside.onrender.com/api/querymsg",
+        "https://consultancy-crm-serverside-1.onrender.com/api/querymsg",
         formData,
         {
           headers: {

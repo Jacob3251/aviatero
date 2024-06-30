@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../../../../utils/contexts/AppContext";
 import useIndividualClient from "../../../../../utils/hooks/useIndividualClient";
 import { site_sensitive_info } from "../../../../../utils/helper";
@@ -11,9 +11,14 @@ import { HiMiniPencilSquare } from "react-icons/hi2";
 
 function UpdateClient() {
   const location = useLocation();
+  const [userImage, setUserImage] = useState(null);
   const { loggedUserData } = useContext(AppContext);
-  const { id } = useParams();
-  const [clientData, clientDataLoading] = useIndividualClient(id);
+  const { userid } = useParams();
+  const navigate = useNavigate();
+  const [clientData, clientDataLoading] = useIndividualClient(userid);
+  const { attachments, client_image, created_at, due, id, ...rest } =
+    clientData;
+  // console.log(rest);
   const [formData, setFormData] = useState({
     name: "",
     clientType: "",
@@ -22,15 +27,9 @@ function UpdateClient() {
     phone_no: "",
     preferredDestination: "",
     dealAmount: "",
+    client_address: "",
     recent_update: "",
   });
-  useEffect(() => {
-    if (clientDataLoading === false) {
-      setFormData({
-        ...clientData,
-      });
-    }
-  }, [clientDataLoading, clientData]);
   const {
     name,
     clientType,
@@ -39,42 +38,69 @@ function UpdateClient() {
     phone_no,
     preferredDestination,
     dealAmount,
+    client_address,
     recent_update,
-    due,
   } = formData;
+  console.log(formData);
+  useEffect(() => {
+    if (clientDataLoading === false) {
+      setFormData({
+        name: rest.name,
+        clientType: rest.clientType,
+        clientDesc: rest.clientDesc,
+        clientEmail: rest.clientEmail,
+        phone_no: rest.phone_no,
+        preferredDestination: rest.preferredDestination,
+        dealAmount: rest.dealAmount,
+        client_address: rest.client_address,
+        recent_update: rest.recent_update,
+      });
+    }
+  }, [clientDataLoading]);
+  console.log(formData);
+  const [file, setFile] = useState(null);
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
-  const [updateAttachments, setUpdatedAttachments] = useState(false);
-  const handleAttachmentUpdate = () => {
-    setUpdatedAttachments(!updateAttachments);
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUserImage(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    const { data } = await axios.put(
-      `https://consultancy-crm-serverside.onrender.com/api/client/${clientData.id}/update`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${loggedUserData.token}`,
-        },
-      }
-    );
-    if (data) {
-      console.log(data);
-
-      toast.success("Client updated Successfully", {
-        style: {
-          backgroundColor: "#333333",
-          color: "#fafafa",
-        },
-        className: "font-monrope",
+    const updatedFormData = { ...formData, file };
+    console.log(updatedFormData);
+    await axios
+      .put(
+        `https://consultancy-crm-serverside-1.onrender.com/api/client/${clientData.id}/update`,
+        updatedFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${loggedUserData.token}`,
+          },
+        }
+      )
+      .then((data) => {
+        toast.success("Client updated Successfully", {
+          style: {
+            backgroundColor: "#333333",
+            color: "#fafafa",
+          },
+          className: "font-monrope",
+        });
+        console.log(data);
+        navigate(`/dashboard/clients/information/${clientData.id}`);
       });
-    }
   };
   // console.log(location.state.item);
   return (
@@ -135,7 +161,6 @@ function UpdateClient() {
                 <select
                   onChange={onChange}
                   name="clientType"
-                  value={clientType}
                   id="clientType"
                   className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                 >
@@ -145,10 +170,30 @@ function UpdateClient() {
                   >
                     SELECT
                   </option>
-                  <option value="VISIT">VISIT</option>
-                  <option value="STUDY">STUDY</option>
-                  <option value="IMMIGRATION">IMMIGRATION</option>
-                  <option value="OTHER">OTHER</option>
+                  <option
+                    selected={clientType === "VISIT" ? true : false}
+                    value="VISIT"
+                  >
+                    VISIT
+                  </option>
+                  <option
+                    selected={clientType === "STUDY" ? true : false}
+                    value="STUDY"
+                  >
+                    STUDY
+                  </option>
+                  <option
+                    selected={clientType === "IMMIGRATION" ? true : false}
+                    value="IMMIGRATION"
+                  >
+                    IMMIGRATION
+                  </option>
+                  <option
+                    selected={clientType === "OTHER" ? true : false}
+                    value="OTHER"
+                  >
+                    OTHER
+                  </option>
                 </select>
               </div>
               {/* CLIENT DESC */}
@@ -181,20 +226,18 @@ function UpdateClient() {
                   placeholder="EXP: 017-XXXX-XXXX"
                 />
               </div>
-              {/* Preferred Destination */}
+              {/* Address */}
               <div className=" w-full text-primary font-semibold space-y-2 text-[18px] ">
-                <label htmlFor="preferredDestination">
-                  Preferred Destination *
-                </label>
+                <label htmlFor="preferredDestination">Address *</label>
                 <input
-                  value={preferredDestination}
+                  value={client_address}
                   onChange={onChange}
                   required
                   className="w-full py-2  text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                   type="text"
-                  name="preferredDestination"
-                  id="preferredDestination"
-                  placeholder="Exp: THAILAND, UK, USA, CANADA"
+                  name="client_address"
+                  id="client_address"
+                  placeholder="Exp: Road No:1.."
                 />
               </div>
             </div>
@@ -212,7 +255,35 @@ function UpdateClient() {
                   placeholder="Exp: 1000$ / 50000$"
                 />
               </div>
+              <div className="w-full text-primary font-semibold space-y-5 text-[18px] ">
+                <label htmlFor="recent_update">Select Client Picture</label>
+                <input
+                  type="file"
+                  name=""
+                  id=""
+                  onChange={handleFileInputChange}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
+              {/* preferred destination */}
+              <div className=" w-full text-primary font-semibold space-y-2 text-[18px] ">
+                <label htmlFor="preferredDestination">
+                  Preferred Destination *
+                </label>
+                <input
+                  value={preferredDestination}
+                  onChange={onChange}
+                  required
+                  className="w-full py-2  text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
+                  type="text"
+                  name="preferredDestination"
+                  id="preferredDestination"
+                  placeholder="Exp: THAILAND, UK, USA, CANADA"
+                />
+              </div>
               {/* Recent Update */}
+
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="recent_update">Recent Update</label>
                 <input
@@ -226,62 +297,12 @@ function UpdateClient() {
                 />
               </div>
             </div>
-            {/* <div className="flex ">
-              <div className="w-[50%] text-primary font-semibold space-y-2 text-[18px] ">
-                <label htmlFor="due">Deal Amount</label>
-                <input
-                  value={due}
-                  onChange={onChange}
-                  className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
-                  type="number"
-                  name="due"
-                  id="due"
-                  placeholder="Exp: 1000$ / 50000$"
-                />
-              </div>
-            </div> */}
-            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
-              {clientDataLoading === false && (
-                <div>
-                  {clientData?.attachments?.map((item) => (
-                    <div key={item.id}>
-                      <div>{item.title}</div>
-                      <div className="text-primary font-bold uppercase">
-                        {item.title}
-                      </div>
-                      <a
-                        href={
-                          site_sensitive_info.site_origin +
-                          item.fileLink.split("uploads\\")[1]
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline cursor-pointer mr-2"
-                      >
-                        View
-                      </a>
-                      <div>
-                        <div>
-                          <HiMiniPencilSquare
-                            onClick={handleAttachmentUpdate}
-                            className="text-primary"
-                          />
-                        </div>
-                        {updateAttachments && <div>Hello</div>}
-                        <div>
-                          <FaRegTrashCan className="text-red-500" />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+
             <div className="">
               <input
                 className="bg-primary text-white px-5 py-3 text-[18px] rounded-sm hover:border-primary border-2 border-transparent hover:bg-transparent  duration-300 cursor-pointer"
                 type="submit"
-                value="UPDATE"
+                value="SUBMIT"
               />
             </div>
           </form>

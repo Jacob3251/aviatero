@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import usePermissions from "../../../../../utils/hooks/usePermissions";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Loader from "../../../Reusable/Loader/Loader";
+import EmptyComponent from "../../../EmptyComponent/EmptyComponent";
 
 function Permission() {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ function Permission() {
     if (confirm) {
       await axios
         .delete(
-          `https://consultancy-crm-serverside.onrender.com/api/permission/${permission.id}`
+          `https://consultancy-crm-serverside-1.onrender.com/api/permission/${permission.id}`
         )
         .then((data) => {
           toast.success(`${permission.title} permission deleted successfully.`);
@@ -47,39 +49,45 @@ function Permission() {
               <div className="text-primary"> Add Permission</div>
             </div>
           </div>
-          {permissionLoading === false ? (
-            <div className="border-primary border-2 p-5 w-full overflow-x-auto">
-              <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0 ">
-                <thead className="text-xs text-primary uppercase bg-transparent  ">
-                  <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
-                    <th scope="col" className="px-6 py-5">
-                      Serial
-                    </th>
-                    <th scope="col" className="px-6 py-5">
-                      Permission Title
-                    </th>
-                    <th scope="col" className="px-6 py-5">
-                      Permission Description
-                    </th>
-                    {/* <th scope="col" className="px-6 py-5">
+          <>
+            {permissionLoading === false ? (
+              <>
+                {permissions.length !== 0 ? (
+                  <div className="border-primary border-2 p-5 w-full overflow-x-auto">
+                    <table className="w-full text-sm text-left rtl:text-right text-primary  px-5 py-5 border-spacing-0 ">
+                      <thead className="text-xs text-primary uppercase bg-transparent  ">
+                        <tr className="uppercase font-monrope font-semibold text-[14px] border-2 border-secondary">
+                          <th scope="col" className="px-6 py-5">
+                            Serial
+                          </th>
+                          <th scope="col" className="px-6 py-5">
+                            Permission Title
+                          </th>
+                          <th scope="col" className="px-6 py-5">
+                            Permission Description
+                          </th>
+                          {/* <th scope="col" className="px-6 py-5">
                       Action
                     </th> */}
-                  </tr>
-                </thead>
-                <tbody className="text-secondary font-monrope ">
-                  {permissions.map((permission, index) => (
-                    <tr
-                      key={permission.id}
-                      className="table-row border-2 border-secondary"
-                    >
-                      <th scope="row" className="px-6 py-4  whitespace-nowrap ">
-                        {index + 1}
-                      </th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-secondary font-monrope ">
+                        {permissions.map((permission, index) => (
+                          <tr
+                            key={permission.id}
+                            className="table-row border-2 border-secondary"
+                          >
+                            <th
+                              scope="row"
+                              className="px-6 py-4  whitespace-nowrap "
+                            >
+                              {index + 1}
+                            </th>
 
-                      <td className="px-6 py-4">{permission.title}</td>
-                      <td className="px-6 py-4">{permission.desc}</td>
+                            <td className="px-6 py-4">{permission.title}</td>
+                            <td className="px-6 py-4">{permission.desc}</td>
 
-                      {/* <td className="px-6 py-4 flex space-x-2 text-[24px]">
+                            {/* <td className="px-6 py-4 flex space-x-2 text-[24px]">
                         {" "}
                         <div
                           // onClick={() =>
@@ -106,14 +114,23 @@ function Permission() {
                           <MdDelete />
                         </div>
                       </td> */}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="bg-red-300 text-whtie">Loading</div>
-          )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <>
+                    <EmptyComponent heading="Permissions"></EmptyComponent>
+                  </>
+                )}
+              </>
+            ) : (
+              <div className="h-[50vh] flex justify-center items-center">
+                <Loader></Loader>
+              </div>
+            )}
+          </>
         </div>
       </div>
     </div>

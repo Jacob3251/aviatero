@@ -7,7 +7,7 @@ function useUsers() {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/user`
+        `https://consultancy-crm-serverside-1.onrender.com/api/user`
       );
       setData(data.data);
       setLoading(false);

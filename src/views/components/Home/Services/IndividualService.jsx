@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import visit from "../../../../assets/images/home/services/1.png";
 import study from "../../../../assets/images/home/services/2.png";
 import migrate from "../../../../assets/images/home/services/3.png";
@@ -7,15 +8,15 @@ import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
-function IndividualService({ data }) {
+function IndividualService({ datas }) {
   const [subMenuTrigger, setSubMenuTrigger] = useState(false);
-
+  // const { title, subMenu, imgLink } = data;
   return (
     <div className={`flex  w-[250px] flex-col justify-center items-center`}>
       <div className="w-[100px] h-[90px] xl:h-[180px]  xl:w-[140px] flex flex-col justify-center items-center">
         <img
           className="w-full h-full object-contain"
-          src={data.imgLink}
+          src={datas.imgLink}
           alt=""
         />
       </div>
@@ -26,7 +27,7 @@ function IndividualService({ data }) {
         }}
         className={`cursor-pointer mt-[30px] uppercase font-noto text-[32px] xl:text-[48px] text-secondary flex  justify-center items-center space-x-5  h-auto w-[300px] text-center`}
       >
-        <span>{data.title}</span>
+        <span>{datas.title}</span>
 
         {!subMenuTrigger ? (
           <MdOutlineKeyboardArrowDown />
@@ -40,22 +41,22 @@ function IndividualService({ data }) {
       >
         <div
           className={`expandable space-y-[20px]  text-left rounded-lg mt-8 ${
-            data.title === "Visit" && "w-[170px] px-10 "
-          } ${data.title === "Study" && "w-[200px] px-10 "} ${
-            data.title === "Migrate" && "w-[300px] px-10 "
+            datas.title === "Visit" && "w-[170px] lg:w-full px-10 "
+          } ${datas.title === "Study" && "w-[300px] lg:w-full px-10 "} ${
+            datas.title === "Migrate" && "w-[300px] lg:w-full px-10 "
           }`}
         >
-          {data.subMenu.map((item, index) => (
+          {datas.subMenu?.map((item, index) => (
             <div
-              className="text-left  cursor-pointer text-[20px] xl:text-[32px] p-2  "
+              className="text-center  cursor-pointer text-[20px] xl:text-[32px] py-2"
               key={index}
             >
-              <a
-                className="no-underline text-secondary font-monrope  hover:text-primary"
-                href="#"
+              <Link
+                className="no-underline text-secondary font-monrope  hover:text-primary capitalize"
+                to={`blogs/${item.siteUrl}`}
               >
-                {item}
-              </a>
+                {item.pageTitle}
+              </Link>
             </div>
           ))}
         </div>

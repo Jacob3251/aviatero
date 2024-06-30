@@ -22,7 +22,7 @@ function Notifications() {
     );
     if (confirm) {
       const { status } = await axios.delete(
-        `https://consultancy-crm-serverside.onrender.com/api/querymsg/${item.id}/delete`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/querymsg/${item.id}/delete`,
         {
           headers: {
             Authorization: `Bearer ${loggedUserData.token}`,

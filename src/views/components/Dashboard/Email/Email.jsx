@@ -32,7 +32,7 @@ function Email() {
       setSentEmails(newSentEmails);
       axios
         .delete(
-          `https://consultancy-crm-serverside.onrender.com/api/email/${item.id}`,
+          `https://consultancy-crm-serverside-1.onrender.com/api/email/${item.id}`,
           {
             headers: {
               Authorization: `Bearer ${loggedUserData.token}`,

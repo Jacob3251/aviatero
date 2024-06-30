@@ -12,7 +12,7 @@ function Hero({ siteConfig }) {
     youtube_link,
     instagram_link,
   } = siteConfig;
-  console.log(fb_link);
+  // console.log(fb_link);
   return (
     <div className="relative w-full hero-bg">
       {/* hero */}

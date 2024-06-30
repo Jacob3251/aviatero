@@ -7,7 +7,7 @@ const useTeamMember = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://consultancy-crm-serverside.onrender.com/api/teammember`
+        `https://consultancy-crm-serverside-1.onrender.com/api/teammember`
       );
       setData(data.data);
       setLoading(false);

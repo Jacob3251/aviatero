@@ -21,7 +21,7 @@ function SideBar() {
   const [subMenuItem, setSubMenuItem] = useState("");
   const location = window.location.pathname;
   const navigate = useNavigate();
-  console.log(loggedUserData);
+  // console.log(loggedUserData);
 
   return (
     <div className=" h-full w-full">

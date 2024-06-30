@@ -6,6 +6,7 @@ function IndividualEmail() {
   const params = useParams();
   console.log(params.id);
   const [data, loading] = useIndividualEmail(params.id);
+  console.log(data);
   const handleDateFormat = (date) => {
     return format(new Date(date), "do MMMM, yyyy");
   };
@@ -17,12 +18,9 @@ function IndividualEmail() {
         key={index}
         className="px-5 inline-flex justify-center items-center mr-10 h-12 bg-primary rounded text-root"
       >
-        <a
-          href={`https://consultancy-crm-serverside.onrender.com/${
-            dta.path.split("\\")[1]
-          }`}
-        >
-          {dta.filename}
+        {console.log(dta)}
+        <a href={dta?.url} target="_blank">
+          {dta.original_filename}
         </a>
       </div>
     ));
@@ -54,14 +52,14 @@ function IndividualEmail() {
               {data.email_subject}
             </div>
             <div>
-              <span className="text-primary font-bold">From:</span> "
-              {data.email_from}"
+              <span className="text-primary font-bold">From:</span>
+              {data.email_from}
             </div>
             <div>
               <span className="text-primary font-bold">To:</span>{" "}
               {data.email_to.map((item, index) => (
                 <span key={index}>
-                  "{item}" {index + 1 === data.email_to.length ? "." : ", "}
+                  {item} {index + 1 === data.email_to.length ? "." : ", "}
                 </span>
               ))}
             </div>

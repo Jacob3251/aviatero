@@ -3,11 +3,14 @@ import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegFileImage } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function AddLeads() {
   const { loggedUserData } = useContext(AppContext);
+  const [file, setFile] = useState(null);
+  const navigate = useNavigate();
+  const [userImage, setUserImage] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     clientType: "",
@@ -16,39 +19,9 @@ function AddLeads() {
     phone_no: "",
     preferredDestination: "",
     dealAmount: 0,
-
+    lead_address: "",
     recent_update: "",
   });
-  // attachments portion begin
-
-  const [attachments, setAttachments] = useState([
-    {
-      attachment_title: "",
-      attachment_description: "",
-      owner_id: "",
-      type: "LEADS",
-      attachment_file: null,
-    },
-  ]);
-
-  const handleAddAttachment = () => {
-    setAttachments([
-      ...attachments,
-      {
-        attachment_title: "",
-        attachment_description: "",
-        owner_id: "",
-        type: "LEADS",
-        attachment_file: null,
-      },
-    ]);
-  };
-
-  const handleAttachmentChange = (index, attachment) => {
-    const newAttachments = [...attachments];
-    newAttachments[index] = attachment;
-    setAttachments(newAttachments);
-  };
   const {
     name,
     clientType,
@@ -57,6 +30,7 @@ function AddLeads() {
     phone_no,
     preferredDestination,
     dealAmount,
+    lead_address,
     recent_update,
   } = formData;
   const onChange = (e) => {
@@ -65,44 +39,34 @@ function AddLeads() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  // file handle function
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUserImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    const modifiedFormData = { ...formData, file };
+    console.log(modifiedFormData);
     const { data } = await axios
       .post(
-        "https://consultancy-crm-serverside.onrender.com/api/lead",
-        formData,
+        "https://consultancy-crm-serverside-1.onrender.com/api/lead",
+        { ...formData, file },
         {
           headers: {
             Authorization: `Bearer ${loggedUserData.token}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       )
       .then((data) => {
-        attachments.forEach(async (attachment) => {
-          const {
-            attachment_title,
-            attachment_description,
-            type,
-            attachment_file,
-          } = attachment;
-          await axios.post(
-            "https://consultancy-crm-serverside.onrender.com/api/attachment",
-            {
-              title: attachment_title,
-              desc: attachment_description,
-              file: attachment_file,
-              ownerId: data.data.data.id,
-              type,
-            },
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${loggedUserData.token}`,
-              },
-            }
-          );
-        });
+        console.log(data);
         setFormData({
           name: "",
           clientType: "",
@@ -111,25 +75,22 @@ function AddLeads() {
           phone_no: "",
           preferredDestination: "",
           dealAmount: 0,
+          lead_address: "",
           recent_update: "",
         });
+        setFile(null);
 
-        toast.success("Lead Added Successfully", {
+        toast.success("Client Added Successfully", {
           style: {
             backgroundColor: "#333333",
             color: "#fafafa",
           },
           className: "font-monrope",
         });
+        navigate(`/dashboard/leads/information/${data.data.data.id}`);
       })
       .catch((error) => {
-        toast.error(error.response.data.message, {
-          style: {
-            backgroundColor: "#333333",
-            color: "#fafafa",
-          },
-          className: "font-monrope",
-        });
+        toast.error(error.response.data.message);
       });
   };
   return (
@@ -150,7 +111,7 @@ function AddLeads() {
         </div>
         {/* <div className="w-full bg-primary h-[2px] mt-3 mb-5"></div> */}
         {/* form parent div below */}
-        <div className="mt-5">
+        <div>
           <form
             action=""
             onSubmit={handleSubmit}
@@ -238,20 +199,18 @@ function AddLeads() {
                   placeholder="EXP: 017-XXXX-XXXX"
                 />
               </div>
-              {/* Preferred Destination */}
+              {/* Address */}
               <div className=" w-full text-primary font-semibold space-y-2 text-[18px] ">
-                <label htmlFor="preferredDestination">
-                  Preferred Destination *
-                </label>
+                <label htmlFor="preferredDestination">Address *</label>
                 <input
-                  value={preferredDestination}
+                  value={lead_address}
                   onChange={onChange}
                   required
                   className="w-full py-2  text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                   type="text"
-                  name="preferredDestination"
-                  id="preferredDestination"
-                  placeholder="Exp: THAILAND, UK, USA, CANADA"
+                  name="lead_address"
+                  id="lead_address"
+                  placeholder="Exp: Road No:1.."
                 />
               </div>
             </div>
@@ -269,7 +228,35 @@ function AddLeads() {
                   placeholder="Exp: 1000$ / 50000$"
                 />
               </div>
+              <div className="w-full text-primary font-semibold space-y-5 text-[18px] ">
+                <label htmlFor="recent_update">Select Client Picture</label>
+                <input
+                  type="file"
+                  name=""
+                  id=""
+                  onChange={handleFileInputChange}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
+              {/* preferred destination */}
+              <div className=" w-full text-primary font-semibold space-y-2 text-[18px] ">
+                <label htmlFor="preferredDestination">
+                  Preferred Destination *
+                </label>
+                <input
+                  value={preferredDestination}
+                  onChange={onChange}
+                  required
+                  className="w-full py-2  text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
+                  type="text"
+                  name="preferredDestination"
+                  id="preferredDestination"
+                  placeholder="Exp: THAILAND, UK, USA, CANADA"
+                />
+              </div>
               {/* Recent Update */}
+
               <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
                 <label htmlFor="recent_update">Recent Update</label>
                 <input
@@ -284,7 +271,7 @@ function AddLeads() {
               </div>
             </div>
             {/* attachment div */}
-            <div className="flex flex-col ">
+            {/* <div className="flex flex-col ">
               <div className="">
                 {attachments.map((attachment, index) => (
                   <AttachmentComponent
@@ -307,8 +294,7 @@ function AddLeads() {
                   Add Attachment
                 </button>
               </div>
-            </div>
-
+            </div> */}
             <div className="">
               <input
                 className="bg-primary text-white px-5 py-3 text-[18px] rounded-sm hover:border-primary border-2 border-transparent hover:bg-transparent  duration-300 cursor-pointer"

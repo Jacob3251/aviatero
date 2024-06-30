@@ -13,25 +13,7 @@ function Create() {
   const permissionRef = useRef();
   const [addedPermissions] = usePermissions();
   const { loggedUserData } = useContext(AppContext);
-  // const data = ;
-  // console.log(data);
-  // const data = [
-  //   {
-  //     id: "4c5952e3-bc6e-4264-8aa7-79cd7c603796",
-  //     title: "super",
-  //     desc: "super af",
-  //   },
-  //   {
-  //     id: "2c0887e0-0ef0-47f9-943d-6d9af90df3d9",
-  //     title: "admin",
-  //     desc: "non super af",
-  //   },
-  //   {
-  //     id: "c1a461b0-d15e-4ae1-b129-f6201635cfff",
-  //     title: "Create Client",
-  //     desc: "Can create clients",
-  //   },
-  // ];
+
   const selectOptions = convertToReactSelectPermissionOptions(addedPermissions);
   const colourStyles = {
     control: (styles) => ({ ...styles, backgroundColor: "white" }),
@@ -71,7 +53,7 @@ function Create() {
     };
     console.log("payload=>", payload);
     const { data } = await axios.post(
-      "https://consultancy-crm-serverside.onrender.com/api/role",
+      "https://consultancy-crm-serverside-1.onrender.com/api/role",
       payload,
       {
         headers: {

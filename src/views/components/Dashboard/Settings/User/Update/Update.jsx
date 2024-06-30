@@ -90,18 +90,19 @@ function Update() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    alert("update form clicked");
     const uploadData = {
       user_name: name,
       contact_no,
-      role: roleRef.current.props.value.label,
+      role: roleRef.current.props.value.label ?? "",
       verified: verificationRef.current.props.value.value,
       file,
     };
+    // console.log(uploadData);
 
     await axios
       .put(
-        `https://consultancy-crm-serverside.onrender.com/api/user/${user.id}`,
+        `https://consultancy-crm-serverside-1.onrender.com/api/user/${user.id}/update`,
         uploadData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -153,11 +154,7 @@ function Update() {
               {user.storage_link !== "" ? (
                 <img
                   className="w-full h-full"
-                  src={
-                    userImage
-                      ? userImage
-                      : site_sensitive_info.site_origin + user.storage_link
-                  }
+                  src={userImage ? userImage : user.photolink}
                   alt=""
                 />
               ) : (

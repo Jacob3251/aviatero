@@ -3,12 +3,13 @@ import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegFileImage } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../../../../../utils/contexts/AppContext";
 
 function AddClient() {
   const { loggedUserData } = useContext(AppContext);
   const [file, setFile] = useState(null);
+  const navigate = useNavigate();
   const [userImage, setUserImage] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -18,35 +19,9 @@ function AddClient() {
     phone_no: "",
     preferredDestination: "",
     dealAmount: 0,
-
+    client_address: "",
     recent_update: "",
   });
-  const [attachments, setAttachments] = useState([
-    {
-      attachment_title: "",
-      attachment_description: "",
-      owner_id: "",
-      type: "CLIENT",
-      attachment_file: null,
-    },
-  ]);
-  const handleAddAttachment = () => {
-    setAttachments([
-      ...attachments,
-      {
-        attachment_title: "",
-        attachment_description: "",
-        owner_id: "",
-        type: "CLIENT",
-        attachment_file: null,
-      },
-    ]);
-  };
-  const handleAttachmentChange = (index, attachment) => {
-    const newAttachments = [...attachments];
-    newAttachments[index] = attachment;
-    setAttachments(newAttachments);
-  };
   const {
     name,
     clientType,
@@ -55,6 +30,7 @@ function AddClient() {
     phone_no,
     preferredDestination,
     dealAmount,
+    client_address,
     recent_update,
   } = formData;
   const onChange = (e) => {
@@ -77,67 +53,44 @@ function AddClient() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-    const { data } = await axios.post(
-      "https://consultancy-crm-serverside.onrender.com/api/client",
-      { ...formData, file },
-      {
-        headers: {
-          Authorization: `Bearer ${loggedUserData.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    if (data) {
-      console.log(data.data);
-      if (attachments.length !== 0) {
-        attachments.map(async (item) => {
-          const {
-            attachment_title,
-            attachment_description,
-            type,
-            attachment_file,
-          } = item;
-          if (attachment_file !== null) {
-            await axios.post(
-              "https://consultancy-crm-serverside.onrender.com/api/attachment",
-              {
-                title: attachment_title,
-                desc: attachment_description,
-                file: attachment_file,
-                ownerId: data.data.id,
-                type,
-              },
-
-              {
-                headers: {
-                  Authorization: `Bearer ${loggedUserData.token}`,
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            );
-          }
+    const { data } = await axios
+      .post(
+        "https://consultancy-crm-serverside-1.onrender.com/api/client",
+        { ...formData, file },
+        {
+          headers: {
+            Authorization: `Bearer ${loggedUserData.token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((data) => {
+        console.log(data);
+        setFormData({
+          name: "",
+          clientType: "",
+          clientDesc: "",
+          clientEmail: "",
+          phone_no: "",
+          preferredDestination: "",
+          dealAmount: 0,
+          client_address: "",
+          recent_update: "",
         });
-      }
-      setFormData({
-        name: "",
-        clientType: "",
-        clientDesc: "",
-        clientEmail: "",
-        phone_no: "",
-        preferredDestination: "",
-        dealAmount: 0,
-        recent_update: "",
-      });
+        setFile(null);
 
-      toast.success("Client Added Successfully", {
-        style: {
-          backgroundColor: "#333333",
-          color: "#fafafa",
-        },
-        className: "font-monrope",
+        toast.success("Client Added Successfully", {
+          style: {
+            backgroundColor: "#333333",
+            color: "#fafafa",
+          },
+          className: "font-monrope",
+        });
+        navigate(`/dashboard/clients/information/${data.data.data.id}`);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
       });
-    }
-    window.location.reload();
   };
 
   return (
@@ -245,20 +198,18 @@ function AddClient() {
                   placeholder="EXP: 017-XXXX-XXXX"
                 />
               </div>
-              {/* Preferred Destination */}
+              {/* Address */}
               <div className=" w-full text-primary font-semibold space-y-2 text-[18px] ">
-                <label htmlFor="preferredDestination">
-                  Preferred Destination *
-                </label>
+                <label htmlFor="preferredDestination">Address *</label>
                 <input
-                  value={preferredDestination}
+                  value={client_address}
                   onChange={onChange}
                   required
                   className="w-full py-2  text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
                   type="text"
-                  name="preferredDestination"
-                  id="preferredDestination"
-                  placeholder="Exp: THAILAND, UK, USA, CANADA"
+                  name="client_address"
+                  id="client_address"
+                  placeholder="Exp: Road No:1.."
                 />
               </div>
             </div>
@@ -286,21 +237,40 @@ function AddClient() {
                 />
               </div>
             </div>
-            {/* Recent Update */}
-            <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
-              <label htmlFor="recent_update">Recent Update</label>
-              <input
-                value={recent_update}
-                onChange={onChange}
-                className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
-                type="text"
-                name="recent_update"
-                id="recent_update"
-                placeholder="Exp: NO UPDATE"
-              />
+            <div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-10">
+              {/* preferred destination */}
+              <div className=" w-full text-primary font-semibold space-y-2 text-[18px] ">
+                <label htmlFor="preferredDestination">
+                  Preferred Destination *
+                </label>
+                <input
+                  value={preferredDestination}
+                  onChange={onChange}
+                  required
+                  className="w-full py-2  text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
+                  type="text"
+                  name="preferredDestination"
+                  id="preferredDestination"
+                  placeholder="Exp: THAILAND, UK, USA, CANADA"
+                />
+              </div>
+              {/* Recent Update */}
+
+              <div className="w-full text-primary font-semibold space-y-2 text-[18px] ">
+                <label htmlFor="recent_update">Recent Update</label>
+                <input
+                  value={recent_update}
+                  onChange={onChange}
+                  className="w-full py-2 text-primary placeholder:text-primary placeholder:text-opacity-50 bg-transparent outline-none border-t-0 border-r-0 border-l-0 border-b-primary border-b-2"
+                  type="text"
+                  name="recent_update"
+                  id="recent_update"
+                  placeholder="Exp: NO UPDATE"
+                />
+              </div>
             </div>
             {/* attachment div */}
-            <div className="flex flex-col ">
+            {/* <div className="flex flex-col ">
               <div className="">
                 {attachments.map((attachment, index) => (
                   <AttachmentComponent
@@ -323,7 +293,7 @@ function AddClient() {
                   Add Attachment
                 </button>
               </div>
-            </div>
+            </div> */}
             <div className="">
               <input
                 className="bg-primary text-white px-5 py-3 text-[18px] rounded-sm hover:border-primary border-2 border-transparent hover:bg-transparent  duration-300 cursor-pointer"

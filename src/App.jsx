@@ -34,7 +34,9 @@ import IndividualLead from "./views/components/Dashboard/Leads/IndividualLead/In
 import CreateRole from "./views/components/Dashboard/Settings/Role/Create/Create";
 import UpdateRole from "./views/components/Dashboard/Settings/Role/Update/Update";
 import CreatePermission from "./views/components/Dashboard/Settings/Permission/Create/Create";
-import CreateService from "./views/components/Dashboard/LandingManagement/Home/Service/Create";
+import CreatePage from "./views/components/Dashboard/LandingManagement/Home/Service/Create";
+import ViewPage from "./views/components/Dashboard/LandingManagement/Home/Service/View";
+import UpdatePage from "./views/components/Dashboard/LandingManagement/Home/Service/Update";
 import AuthChecker from "./utils/Other/AuthChecker";
 import Blogs from "./views/pages/Blogs";
 import User from "./views/components/Dashboard/Settings/User/User";
@@ -65,7 +67,10 @@ function App() {
           index: 1,
           element: <Default></Default>,
         },
-        { path: "clients/:id/update", element: <UpdateClient></UpdateClient> },
+        {
+          path: "clients/:userid/update",
+          element: <UpdateClient></UpdateClient>,
+        },
         { path: "clients/addclient", element: <AddClient></AddClient> },
         {
           path: "clients/manageclient",
@@ -75,7 +80,7 @@ function App() {
           path: "clients/information/:id",
           element: <IndividualClient></IndividualClient>,
         },
-        { path: "leads/:id/update", element: <UpdateLeads></UpdateLeads> },
+        { path: "leads/:leadid/update", element: <UpdateLeads></UpdateLeads> },
         { path: "leads/addlead", element: <AddLeads></AddLeads> },
         {
           path: "leads/information/:id",
@@ -106,8 +111,16 @@ function App() {
           element: <LandingManagement></LandingManagement>,
         },
         {
-          path: "lcm/home/add-service",
-          element: <CreateService></CreateService>,
+          path: "lcm/home/add-page",
+          element: <CreatePage></CreatePage>,
+        },
+        {
+          path: "lcm/home/view-page",
+          element: <ViewPage></ViewPage>,
+        },
+        {
+          path: "lcm/home/update-page",
+          element: <UpdatePage></UpdatePage>,
         },
 
         {
@@ -157,7 +170,7 @@ function App() {
       ],
     },
     {
-      path: "/blogs",
+      path: "/blogs/:id",
       element: <Blogs></Blogs>,
     },
 

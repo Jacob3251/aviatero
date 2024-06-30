@@ -53,24 +53,28 @@ export function removeFromLocale() {
 // checking if there is session token in localstorage
 export function findInLocale() {
   const value = JSON.parse(localStorage.getItem("session-token"));
-  console.log(value);
+  // console.log(value);
   if (value) {
     return value;
   }
 }
-
+export function getFileExtension(url) {
+  const regex = /(?:\.([^.]+))?$/;
+  const matches = url.match(regex);
+  return matches && matches[1] ? matches[1] : "";
+}
 // download file name creator
 export const customFileName = (title, link) => {
   // console.log(link);
   const address = link
-    .split("https://consultancy-crm-serverside.onrender.com/")[1]
+    .split("https://consultancy-crm-serverside-1.onrender.com/")[1]
     .split(".")[1];
   return title + "." + address;
 };
 // export site configs
 
 export const site_sensitive_info = {
-  site_origin: "https://consultancy-crm-serverside.onrender.com/",
+  site_origin: "https://consultancy-crm-serverside-1.onrender.com/",
 };
 
 // format date

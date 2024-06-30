@@ -25,14 +25,11 @@ function Services() {
               >
                 <img
                   className="w-full h-full object-cover"
-                  src={
-                    site_sensitive_info.site_origin +
-                    item.storage_imagelink.split("\\")[1]
-                  }
+                  src={item.service_package_imageLink}
                   alt=""
                 />
               </div>
-              <div className="w-full h-full ">
+              <div className="w-full h-full mt-2 sm:mt-0">
                 <h1 className="text-[20px] sm:text-[24px] md:text-[24px] lg:text-[36px] xl:text-[48px] text-primary font-noto mb-[10px] sm:mb-[16px] md:mb-[24px] lg:mb-[32px] xl:mb-[45px]">
                   {item.service_package_title}
                 </h1>

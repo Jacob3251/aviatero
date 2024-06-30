@@ -20,7 +20,7 @@ function Create() {
     e.preventDefault();
     console.log(formData);
     const { data } = await axios.post(
-      "https://consultancy-crm-serverside.onrender.com/api/permission",
+      "https://consultancy-crm-serverside-1.onrender.com/api/permission",
       formData
     );
     if (data) {
